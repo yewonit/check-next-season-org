@@ -286,7 +286,8 @@ export default function CheckMyNewGroupPage() {
                   key={member.id}
                   style={{
                     display: "flex",
-                    justifyContent: "space-between",
+                    justifyContent: "center", // 변경: space-between -> center
+                    gap: spacing.sm, // 텍스트 사이 간격
                     padding: `${spacing.md}px ${spacing.lg}px`,
                     backgroundColor: "#F9FAFB",
                     borderRadius: "12px",
@@ -299,11 +300,9 @@ export default function CheckMyNewGroupPage() {
                       fontSize: "15px",
                       margin: 0,
                       lineHeight: 1.5,
-                      flex: 1,
-                      textAlign: "center",
                     }}
                   >
-                    {member.name}({member.birthYear})
+                    {member.name}({String(member.birthYear).slice(-2)})
                   </Typography3_Medium>
                   <Typography3_Medium
                     style={{
@@ -311,8 +310,6 @@ export default function CheckMyNewGroupPage() {
                       fontSize: "15px",
                       margin: 0,
                       lineHeight: 1.5,
-                      flex: 1,
-                      textAlign: "center",
                     }}
                   >
                     {member.phoneBack}
