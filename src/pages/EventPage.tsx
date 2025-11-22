@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { colors, spacing } from "../styles/foundation";
 import {
   Typography1_Bold,
@@ -50,11 +50,8 @@ const CONTENTS = [
 
 export default function EventPage() {
   const navigate = useNavigate();
-  const location = useLocation();
   const [index, setIndex] = useState(0);
   const [fade, setFade] = useState(true);
-
-  const user = location.state?.user;
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -73,7 +70,7 @@ export default function EventPage() {
   };
 
   const handleGiftOpen = () => {
-    navigate("/new-group-check-my-group", { state: { user } });
+    navigate("/new-group-check-my-group");
   };
 
   const currentContent = CONTENTS[index];

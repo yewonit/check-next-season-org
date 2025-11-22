@@ -12,7 +12,9 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 import {
   useAllNationQuery,
   useAllNationSoonMemberQuery,
+  useAllNationNextQuery,
 } from "../api/allNationQuery";
+import { useUserStore } from "../stores/userStore";
 
 // --- Utils ---
 // 그룹명 파싱 ("237국_인드라그룹_인드라순" -> "인드라 그룹 인드라순")
@@ -87,7 +89,13 @@ const RollingTitle = () => {
 
 export default function CheckMyGroupPageForAllNationPage() {
   const navigate = useNavigate();
+  const setSelectedUser = useUserStore(
+    (state: {
+      setSelectedUser: (user: import("../api/name").UserInfo) => void;
+    }) => state.setSelectedUser
+  );
   const [selectedGroupId, setSelectedGroupId] = useState<number>(0);
+  const [selectedUserId, setSelectedUserId] = useState<number>(0);
   const [isBottomSheetOpen, setIsBottomSheetOpen] = useState(false);
 
   // 올네이션 순 리스트 조회
@@ -97,18 +105,27 @@ export default function CheckMyGroupPageForAllNationPage() {
   const { data: membersData, isLoading: isMembersLoading } =
     useAllNationSoonMemberQuery(selectedGroupId);
 
+  // 선택된 멤버의 결과 조회
+  const { data: userNextData } = useAllNationNextQuery(selectedUserId);
+
+  // userNextData가 변경되면 store에 저장하고 이동
+  useEffect(() => {
+    if (userNextData?.data && userNextData.data.length > 0) {
+      setSelectedUser(userNextData.data[0]);
+      navigate("/event");
+    }
+  }, [userNextData, setSelectedUser, navigate]);
+
   // 그룹 선택 핸들러
   const handleGroupClick = (groupId: number) => {
     setSelectedGroupId(groupId);
     setIsBottomSheetOpen(true);
   };
 
-  // 멤버 선택 핸들러 (결과 페이지로 이동)
+  // 멤버 선택 핸들러 (userId 설정 -> useAllNationNextQuery 자동 실행)
   const handleMemberClick = (memberId: number) => {
     setIsBottomSheetOpen(false);
-    // userId를 사용하여 결과 페이지로 이동
-    // 결과 페이지에서 useAllNationNextQuery(memberId)를 사용하여 데이터 조회
-    navigate("/event", { state: { userId: memberId } });
+    setSelectedUserId(memberId);
   };
 
   return (
