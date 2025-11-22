@@ -3,11 +3,11 @@
  * 선물 박스 인터랙션 컴포넌트 (애니메이션 페이지용)
  */
 
-import { useState, useMemo } from "react";
-import type { CSSProperties, ReactNode } from "react";
-import { colors, spacing } from "../../../styles/foundation";
-import { Typography5_Regular } from "../../atoms/Typography";
-import { Gift } from "lucide-react";
+import { useState, useMemo } from 'react';
+import type { CSSProperties, ReactNode } from 'react';
+import { colors, spacing } from '../../../styles/foundation';
+import { Typography5_Regular } from '../../atoms/Typography';
+import { Gift } from 'lucide-react';
 
 export interface GiftBoxProps {
   onComplete: () => void;
@@ -34,11 +34,11 @@ export const GiftBox = ({
         color: [
           colors.primary500,
           colors.secondary500,
-          "#FFD700",
+          '#FFD700',
           colors.green500,
-          "#FF69B4",
+          '#FF69B4',
         ][i % 5],
-        borderRadius: i % 2 === 0 ? "50%" : "0",
+        borderRadius: i % 2 === 0 ? '50%' : '0',
         rotation: i * 12,
         distance: 100 + ((i * 7) % 100),
         delay: (i * 0.007) % 0.2,
@@ -53,7 +53,7 @@ export const GiftBox = ({
     setTapCount(nextTapCount);
 
     // 진동 피드백
-    if (typeof navigator !== "undefined" && navigator.vibrate) {
+    if (typeof navigator !== 'undefined' && navigator.vibrate) {
       try {
         navigator.vibrate(40);
       } catch {
@@ -73,35 +73,35 @@ export const GiftBox = ({
   };
 
   const containerStyle: CSSProperties = {
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-    justifyContent: "center",
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
     gap: spacing.xl,
-    cursor: isExploding ? "default" : "pointer",
-    userSelect: "none",
-    WebkitTapHighlightColor: "transparent",
-    touchAction: "manipulation",
+    cursor: isExploding ? 'default' : 'pointer',
+    userSelect: 'none',
+    WebkitTapHighlightColor: 'transparent',
+    touchAction: 'manipulation',
   };
   const currentGiftSize = scaleList[Math.min(tapCount, scaleList.length - 1)];
   const rotationAngle = tapCount * 15;
   const giftBoxStyle: CSSProperties = {
-    width: children ? "auto" : `${currentGiftSize}px`,
-    height: children ? "auto" : `${currentGiftSize}px`,
+    width: children ? 'auto' : `${currentGiftSize}px`,
+    height: children ? 'auto' : `${currentGiftSize}px`,
     color: colors.primary500,
     transition: isExploding
-      ? "none"
-      : "transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275)",
+      ? 'none'
+      : 'transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275)',
     transform: isExploding
-      ? "scale(3) rotate(360deg)"
+      ? 'scale(3) rotate(360deg)'
       : `scale(${currentGiftSize / 60}) rotate(${rotationAngle}deg)`,
     opacity: isExploding ? 0 : 1,
-    animation: isExploding ? "explode 0.8s forwards infinite" : undefined,
+    animation: isExploding ? 'explode 0.8s forwards infinite' : undefined,
   };
 
   const textStyle: CSSProperties = {
     color: colors.grey700,
-    textAlign: "center",
+    textAlign: 'center',
   };
 
   return (
@@ -112,10 +112,10 @@ export const GiftBox = ({
       {showGuideText && !isExploding && (
         <Typography5_Regular style={textStyle}>
           {tapCount === 0
-            ? "탭하여 선물을 열어보세요"
+            ? '탭하여 선물을 열어보세요'
             : tapCount < minTaps
-            ? `${minTaps - tapCount}번 더 탭하세요`
-            : "펑!"}
+              ? `${minTaps - tapCount}번 더 탭하세요`
+              : '펑!'}
         </Typography5_Regular>
       )}
 
@@ -123,10 +123,10 @@ export const GiftBox = ({
       {isExploding && (
         <div
           style={{
-            position: "absolute",
-            width: "200px",
-            height: "200px",
-            pointerEvents: "none",
+            position: 'absolute',
+            width: '200px',
+            height: '200px',
+            pointerEvents: 'none',
             zIndex: 10,
           }}
         >
@@ -135,17 +135,17 @@ export const GiftBox = ({
               key={i}
               style={
                 {
-                  position: "absolute",
-                  width: "10px",
-                  height: "10px",
+                  position: 'absolute',
+                  width: '10px',
+                  height: '10px',
                   backgroundColor: particle.color,
                   borderRadius: particle.borderRadius,
-                  left: "50%",
-                  top: "50%",
+                  left: '50%',
+                  top: '50%',
                   animation: `particle 0.8s ease-out forwards`,
                   animationDelay: `${particle.delay}s`,
-                  ["--rotation"]: `${particle.rotation}deg`,
-                  ["--distance"]: `${particle.distance}px`,
+                  ['--rotation']: `${particle.rotation}deg`,
+                  ['--distance']: `${particle.distance}px`,
                 } as CSSProperties & Record<string, string>
               }
             />

@@ -12,11 +12,7 @@ export interface BottomCTAProps {
   style?: CSSProperties;
 }
 
-export const BottomCTA = ({
-  children,
-  className,
-  style,
-}: BottomCTAProps) => {
+export const BottomCTA = ({ children, className, style }: BottomCTAProps) => {
   const containerStyle: CSSProperties = {
     position: 'fixed',
     bottom: 0,
@@ -37,4 +33,3 @@ export const BottomCTA = ({
     </div>
   );
 };
-

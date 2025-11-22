@@ -94,12 +94,7 @@ const getTextColor = (type: ToastType): string => {
   }
 };
 
-export const Toast = ({
-  type,
-  children,
-  onClose,
-  className,
-}: ToastProps) => {
+export const Toast = ({ type, children, onClose, className }: ToastProps) => {
   const toastStyle = getToastStyles(type);
   const IconComponent = getIcon(type);
   const iconColor = getIconColor(type);
@@ -131,4 +126,3 @@ export const Toast = ({
     </div>
   );
 };
-

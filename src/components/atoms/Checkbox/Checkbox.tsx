@@ -73,15 +73,9 @@ export const Checkbox = {
         tabIndex={disabled ? -1 : 0}
       >
         {checked && (
-          <Icon
-            icon={Check}
-            size={16}
-            color="white"
-            aria-hidden="true"
-          />
+          <Icon icon={Check} size={16} color="white" aria-hidden="true" />
         )}
       </div>
     );
   },
 };
-

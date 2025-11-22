@@ -13,7 +13,7 @@ interface ImportMeta {
 // Lottie Web Component 타입 선언
 declare namespace JSX {
   interface IntrinsicElements {
-    "dotlottie-wc": {
+    'dotlottie-wc': {
       src: string;
       speed?: string;
       mode?: string;

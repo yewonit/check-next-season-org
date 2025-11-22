@@ -17,13 +17,7 @@ export interface TopProps {
   style?: CSSProperties;
 }
 
-export const Top = ({
-  title,
-  left,
-  right,
-  className,
-  style,
-}: TopProps) => {
+export const Top = ({ title, left, right, className, style }: TopProps) => {
   const containerStyle: CSSProperties = {
     display: 'flex',
     alignItems: 'center',
@@ -95,11 +89,7 @@ const TopBackButton = ({
   };
 
   return (
-    <button
-      onClick={onClick}
-      style={buttonStyle}
-      aria-label={ariaLabel}
-    >
+    <button onClick={onClick} style={buttonStyle} aria-label={ariaLabel}>
       <Icon icon={ArrowLeft} size="md" color={colors.grey900} />
     </button>
   );
@@ -130,11 +120,7 @@ const TopIcon = ({
   };
 
   return (
-    <button
-      onClick={onClick}
-      style={buttonStyle}
-      aria-label={ariaLabel}
-    >
+    <button onClick={onClick} style={buttonStyle} aria-label={ariaLabel}>
       <Icon icon={icon} size="md" color={colors.grey900} />
     </button>
   );
@@ -145,4 +131,3 @@ const TopIcon = ({
 (Top as any).Icon = TopIcon;
 
 export { TopBackButton, TopIcon };
-

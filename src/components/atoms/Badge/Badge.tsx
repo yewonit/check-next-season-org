@@ -7,7 +7,15 @@ import { ReactNode, CSSProperties } from 'react';
 import { colors, spacing, typography } from '../../../styles/foundation';
 import { Typography7_Regular } from '../Typography';
 
-export type BadgeColor = 'primary' | 'secondary' | 'accent' | 'green' | 'red' | 'yellow' | 'blue' | 'grey';
+export type BadgeColor =
+  | 'primary'
+  | 'secondary'
+  | 'accent'
+  | 'green'
+  | 'red'
+  | 'yellow'
+  | 'blue'
+  | 'grey';
 export type BadgeVariant = 'fill' | 'weak';
 export type BadgeSize = 'small' | 'medium' | 'large';
 
@@ -20,7 +28,10 @@ export interface BadgeProps {
   style?: CSSProperties;
 }
 
-const getBadgeColorStyles = (color: BadgeColor, variant: BadgeVariant): CSSProperties => {
+const getBadgeColorStyles = (
+  color: BadgeColor,
+  variant: BadgeVariant
+): CSSProperties => {
   if (variant === 'fill') {
     switch (color) {
       case 'primary':
@@ -176,4 +187,3 @@ export const Badge = ({
     </span>
   );
 };
-

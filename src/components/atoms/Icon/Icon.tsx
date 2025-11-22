@@ -3,10 +3,10 @@
  * lucide-react 아이콘을 래핑하는 컴포넌트
  */
 
-import type { ComponentType, SVGProps } from "react";
-import { colors } from "../../../styles/foundation";
+import type { ComponentType, SVGProps } from 'react';
+import { colors } from '../../../styles/foundation';
 
-export type IconSize = "xs" | "sm" | "md" | "lg" | "xl";
+export type IconSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl';
 
 // Lucide 아이콘 타입 정의
 type LucideIcon = ComponentType<
@@ -18,8 +18,8 @@ export interface IconProps {
   size?: IconSize | number;
   color?: string;
   className?: string;
-  "aria-label"?: string;
-  "aria-hidden"?: boolean;
+  'aria-label'?: string;
+  'aria-hidden'?: boolean;
 }
 
 const sizeMap: Record<IconSize, number> = {
@@ -32,13 +32,13 @@ const sizeMap: Record<IconSize, number> = {
 
 export const Icon = ({
   icon: IconComponent,
-  size = "md",
+  size = 'md',
   color = colors.grey700,
   className,
-  "aria-label": ariaLabel,
-  "aria-hidden": ariaHidden = !ariaLabel,
+  'aria-label': ariaLabel,
+  'aria-hidden': ariaHidden = !ariaLabel,
 }: IconProps) => {
-  const iconSize = typeof size === "number" ? size : sizeMap[size];
+  const iconSize = typeof size === 'number' ? size : sizeMap[size];
 
   return (
     <IconComponent

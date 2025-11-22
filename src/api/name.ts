@@ -1,4 +1,4 @@
-import axiosInstance from "./axios";
+import axiosInstance from './axios';
 
 // 조직 구성원 인터페이스
 export interface OrganizationPerson {

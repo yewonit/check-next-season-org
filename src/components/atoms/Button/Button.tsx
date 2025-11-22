@@ -7,12 +7,19 @@ import { ReactNode, ButtonHTMLAttributes, CSSProperties } from 'react';
 import { colors, spacing, shadows } from '../../../styles/foundation';
 import clsx from 'clsx';
 
-export type ButtonColor = 'primary' | 'dark' | 'danger' | 'light' | 'secondary' | 'accent';
+export type ButtonColor =
+  | 'primary'
+  | 'dark'
+  | 'danger'
+  | 'light'
+  | 'secondary'
+  | 'accent';
 export type ButtonVariant = 'fill' | 'weak';
 export type ButtonSize = 'xlarge' | 'large' | 'medium' | 'small';
 export type ButtonDisplay = 'full' | 'block' | 'inline';
 
-export interface ButtonProps extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'color'> {
+export interface ButtonProps
+  extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'color'> {
   children: ReactNode;
   color?: ButtonColor;
   variant?: ButtonVariant;
@@ -26,7 +33,10 @@ export interface ButtonProps extends Omit<ButtonHTMLAttributes<HTMLButtonElement
 /**
  * 버튼 색상 스타일 생성
  */
-const getButtonColorStyles = (color: ButtonColor, variant: ButtonVariant): CSSProperties => {
+const getButtonColorStyles = (
+  color: ButtonColor,
+  variant: ButtonVariant
+): CSSProperties => {
   if (variant === 'fill') {
     switch (color) {
       case 'primary':
@@ -281,4 +291,3 @@ if (!document.head.querySelector('style[data-button-spinner]')) {
   style.setAttribute('data-button-spinner', 'true');
   document.head.appendChild(style);
 }
-

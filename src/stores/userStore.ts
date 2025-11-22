@@ -1,5 +1,5 @@
-import { create } from "zustand";
-import type { UserInfo } from "../api/name";
+import { create } from 'zustand';
+import type { UserInfo } from '../api/name';
 
 interface UserState {
   selectedUser: UserInfo | null;

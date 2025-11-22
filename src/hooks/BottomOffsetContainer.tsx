@@ -1,4 +1,4 @@
-import { useKeyboardBottomOffset } from "./useKeyboardBottomOffset";
+import { useKeyboardBottomOffset } from './useKeyboardBottomOffset';
 
 export default function BottomOffsetContainer({
   children,
@@ -7,6 +7,6 @@ export default function BottomOffsetContainer({
 }) {
   const bottomOffset = useKeyboardBottomOffset();
   return (
-    <div style={{ paddingBottom: bottomOffset, width: "100%" }}>{children}</div>
+    <div style={{ paddingBottom: bottomOffset, width: '100%' }}>{children}</div>
   );
 }

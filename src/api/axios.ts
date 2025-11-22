@@ -1,12 +1,12 @@
-import axios, { AxiosError } from "axios";
-import type { InternalAxiosRequestConfig, AxiosResponse } from "axios";
+import axios, { AxiosError } from 'axios';
+import type { InternalAxiosRequestConfig, AxiosResponse } from 'axios';
 
 // Axios 인스턴스 생성
 const axiosInstance = axios.create({
-  baseURL: import.meta.env.VITE_API_BASE_URL || "http://localhost:3000",
+  baseURL: import.meta.env.VITE_API_BASE_URL || 'http://localhost:3000',
   timeout: 10000,
   headers: {
-    "Content-Type": "application/json",
+    'Content-Type': 'application/json',
   },
 });
 
@@ -34,7 +34,7 @@ axiosInstance.interceptors.response.use(
     // 에러 처리
     if (error.response) {
       // 서버 응답이 있는 경우
-      console.error("API Error:", error.response.data);
+      console.error('API Error:', error.response.data);
 
       // 401 에러 처리 (인증 실패)
       if (error.response.status === 401) {
@@ -43,10 +43,10 @@ axiosInstance.interceptors.response.use(
       }
     } else if (error.request) {
       // 요청은 보냈지만 응답이 없는 경우
-      console.error("Network Error:", error.request);
+      console.error('Network Error:', error.request);
     } else {
       // 요청 설정 중 에러 발생
-      console.error("Error:", error.message);
+      console.error('Error:', error.message);
     }
 
     return Promise.reject(error);

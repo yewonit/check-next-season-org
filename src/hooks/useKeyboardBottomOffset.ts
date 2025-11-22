@@ -1,10 +1,10 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState } from 'react';
 
 export function useKeyboardBottomOffset() {
   const [bottomOffset, setBottomOffset] = useState(0);
 
   useEffect(() => {
-    if (typeof window === "undefined") return;
+    if (typeof window === 'undefined') return;
 
     const initialHeight = window.innerHeight;
 
@@ -14,8 +14,8 @@ export function useKeyboardBottomOffset() {
       setBottomOffset(diff > 0 ? diff : 0);
     };
 
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
   }, []);
 
   return bottomOffset;
