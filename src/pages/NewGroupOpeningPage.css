@@ -24,32 +24,91 @@
   touch-action: none;
   --scale-value: 1;
   transform: scale(var(--scale-value));
+  transition: transform 0.3s ease;
 }
 
-.gift-box.pressing {
-  animation: shake 0.15s infinite;
-  transform: scale(var(--scale-value));
+.gift-box.shake-level-1 {
+  animation: shake-1 0.2s ease-in-out;
+}
+
+.gift-box.shake-level-2 {
+  animation: shake-2 0.15s ease-in-out;
+}
+
+.gift-box.shake-level-3 {
+  animation: shake-3 0.1s ease-in-out;
 }
 
 .gift-box.exploding {
   animation: explode 0.5s ease-out forwards;
 }
 
-@keyframes shake {
-  0% {
+/* 1단계 떨림 - 약한 흔들림 */
+@keyframes shake-1 {
+  0%,
+  100% {
     transform: scale(var(--scale-value)) rotate(0deg);
   }
   25% {
-    transform: scale(var(--scale-value)) rotate(-5deg);
-  }
-  50% {
-    transform: scale(var(--scale-value)) rotate(0deg);
+    transform: scale(var(--scale-value)) rotate(-3deg);
   }
   75% {
-    transform: scale(var(--scale-value)) rotate(5deg);
+    transform: scale(var(--scale-value)) rotate(3deg);
   }
+}
+
+/* 2단계 떨림 - 중간 흔들림 */
+@keyframes shake-2 {
+  0%,
   100% {
     transform: scale(var(--scale-value)) rotate(0deg);
+  }
+  20% {
+    transform: scale(var(--scale-value)) rotate(-8deg);
+  }
+  40% {
+    transform: scale(var(--scale-value)) rotate(8deg);
+  }
+  60% {
+    transform: scale(var(--scale-value)) rotate(-8deg);
+  }
+  80% {
+    transform: scale(var(--scale-value)) rotate(8deg);
+  }
+}
+
+/* 3단계 떨림 - 강한 흔들림 */
+@keyframes shake-3 {
+  0%,
+  100% {
+    transform: scale(var(--scale-value)) rotate(0deg);
+  }
+  10% {
+    transform: scale(var(--scale-value)) rotate(-15deg) translateX(-5px);
+  }
+  20% {
+    transform: scale(var(--scale-value)) rotate(15deg) translateX(5px);
+  }
+  30% {
+    transform: scale(var(--scale-value)) rotate(-15deg) translateX(-5px);
+  }
+  40% {
+    transform: scale(var(--scale-value)) rotate(15deg) translateX(5px);
+  }
+  50% {
+    transform: scale(var(--scale-value)) rotate(-15deg) translateX(-5px);
+  }
+  60% {
+    transform: scale(var(--scale-value)) rotate(15deg) translateX(5px);
+  }
+  70% {
+    transform: scale(var(--scale-value)) rotate(-15deg) translateX(-5px);
+  }
+  80% {
+    transform: scale(var(--scale-value)) rotate(15deg) translateX(5px);
+  }
+  90% {
+    transform: scale(var(--scale-value)) rotate(-15deg) translateX(-5px);
   }
 }
 

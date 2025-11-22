@@ -1,79 +1,62 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./NewGroupOpeningPage.css";
 
 export default function NewGroupOpeningPage() {
   const navigate = useNavigate();
-  const [isPressing, setIsPressing] = useState(false);
-  const [progress, setProgress] = useState(0);
+  const [tapCount, setTapCount] = useState(0); // 3회 탭 후, 라우팅 처리
   const [isExploding, setIsExploding] = useState(false);
 
-  useEffect(() => {
-    let timer: number;
-    let interval: number;
+  const handleTap = () => {
+    if (tapCount < 3) {
+      const newCount = tapCount + 1;
+      setTapCount(newCount);
 
-    if (isPressing && progress < 100) {
-      interval = window.setInterval(() => {
-        setProgress((prev) => {
-          const newProgress = prev + 20; // 100% in 3 seconds (30 intervals)
-          if (newProgress >= 100) {
-            setIsExploding(true);
-            // 폭발 애니메이션 후 라우팅
-            timer = window.setTimeout(() => {
-              navigate("/new-group-check-my-group");
-            }, 500);
-            return 100;
-          }
-          return newProgress;
-        });
-      }, 100);
+      // 3번째 탭이면 폭발 후 라우팅
+      if (newCount === 3) {
+        setIsExploding(true);
+        window.setTimeout(() => {
+          navigate("/new-group-check-my-group");
+        }, 500);
+      }
     }
-
-    return () => {
-      clearTimeout(timer);
-      clearInterval(interval);
-    };
-  }, [isPressing, progress, navigate]);
-
-  // 누르기를 멈추면 리셋
-  useEffect(() => {
-    if (!isPressing && progress > 0 && progress < 100) {
-      const resetTimer = window.setTimeout(() => {
-        setProgress(0);
-      }, 0);
-      return () => clearTimeout(resetTimer);
-    }
-  }, [isPressing, progress]);
-
-  const handlePressStart = () => {
-    setIsPressing(true);
   };
 
-  const handlePressEnd = () => {
-    if (progress < 100) {
-      setIsPressing(false);
-    }
+  // tapCount에 따른 크기 계산 (0: 1배, 1: 1.5배, 2: 2배, 3: 3배)
+  const getScale = () => {
+    if (tapCount === 0) return 1;
+    if (tapCount === 1) return 1.5;
+    if (tapCount === 2) return 2;
+    return 3;
+  };
+
+  // tapCount에 따른 떨림 강도 클래스
+  const getShakeClass = () => {
+    if (tapCount === 0) return "";
+    if (tapCount === 1) return "shake-level-1";
+    if (tapCount === 2) return "shake-level-2";
+    return "shake-level-3";
   };
 
   return (
     <div className="container">
       <p className="message">
-        새로운 그룹이 도착했습니다. 선물상자를 꾹~꾹 눌러보세요
+        새로운 그룹이 도착했습니다. 선물상자를 꾹~꾹 눌러보세요 ({tapCount}/3)
       </p>
       <div
-        className={`gift-box ${isPressing ? "pressing" : ""} ${
+        className={`gift-box ${getShakeClass()} ${
           isExploding ? "exploding" : ""
         }`}
         style={
           {
-            "--scale-value": 1 + 2 * (progress / 100),
+            "--scale-value": getScale(),
           } as React.CSSProperties
         }
-        onMouseDown={handlePressStart}
-        onMouseUp={handlePressEnd}
-        onMouseLeave={handlePressEnd}
-        onTouchStart={handlePressStart}
-        onTouchEnd={handlePressEnd}
+        onClick={handleTap}
+        onTouchEnd={(e) => {
+          e.preventDefault();
+          handleTap();
+        }}
       >
         🎁
       </div>
