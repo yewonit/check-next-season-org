@@ -10,7 +10,6 @@ import { Icon } from "../components/atoms/Icon";
 import { GiftBox } from "../components/molecules/GiftBox";
 import { ChevronLeft } from "lucide-react";
 
-// 다국어 텍스트 데이터
 const CONTENTS = [
   {
     lang: "ko",
@@ -55,7 +54,6 @@ export default function EventPage() {
   const [index, setIndex] = useState(0);
   const [fade, setFade] = useState(true);
 
-  // 이전 페이지(MainPage)에서 전달된 사용자 정보
   const user = location.state?.user;
 
   useEffect(() => {
@@ -75,7 +73,6 @@ export default function EventPage() {
   };
 
   const handleGiftOpen = () => {
-    // 선물 상자가 열리면 다음 페이지로 이동
     navigate("/new-group-check-my-group", { state: { user } });
   };
 
@@ -91,7 +88,6 @@ export default function EventPage() {
         position: "relative",
       }}
     >
-      {/* 헤더 (뒤로가기 버튼) */}
       <div
         style={{
           padding: `${spacing.lg}px ${spacing.md}px`,
@@ -118,7 +114,6 @@ export default function EventPage() {
         </button>
       </div>
 
-      {/* 메인 컨텐츠 */}
       <div
         style={{
           flex: 1,
@@ -126,10 +121,9 @@ export default function EventPage() {
           flexDirection: "column",
           alignItems: "center",
           padding: spacing.xl,
-          paddingTop: "15vh", // 상단에서 15% 정도 내려온 위치에서 시작
+          paddingTop: "15vh",
         }}
       >
-        {/* 롤링 텍스트 영역 - 높이 고정으로 UI 흔들림 방지 */}
         <div
           style={{
             display: "flex",
@@ -137,8 +131,8 @@ export default function EventPage() {
             alignItems: "center",
             textAlign: "center",
             gap: spacing.sm,
-            height: "140px", // 텍스트 영역 높이 고정
-            marginBottom: "160px", // 선물 상자와의 간격 고정 (60px -> 160px로 100px 증가)
+            height: "140px",
+            marginBottom: "160px",
             opacity: fade ? 1 : 0,
             transition: "opacity 0.5s ease-in-out",
           }}
@@ -151,7 +145,7 @@ export default function EventPage() {
               color: colors.grey700,
               marginBottom: spacing.xs,
               wordBreak: "keep-all",
-              whiteSpace: "pre-line", // 줄바꿈 적용을 위해 추가
+              whiteSpace: "pre-line",
               lineHeight: 1.4,
             }}
           >
@@ -162,7 +156,7 @@ export default function EventPage() {
               color: "#333D4B",
               fontSize: "22px",
               wordBreak: "keep-all",
-              whiteSpace: "pre-line", // 줄바꿈 적용을 위해 추가
+              whiteSpace: "pre-line",
               lineHeight: 1.3,
             }}
           >
@@ -170,30 +164,26 @@ export default function EventPage() {
           </Typography1_Bold>
         </div>
 
-        {/* 선물 상자 */}
         <div style={{ flex: 1, display: "flex", alignItems: "flex-start" }}>
           <GiftBox
             onComplete={handleGiftOpen}
-            minTaps={10}
-            children={
-              <div style={{ fontSize: "120px", lineHeight: 1 }}>🎁</div>
-            }
+            minTaps={3}
+            children={<div style={{ fontSize: "60px", lineHeight: 1 }}>🎁</div>}
           />
         </div>
       </div>
 
-      {/* 하단 안내 텍스트 */}
       <div
         style={{
           padding: `${spacing.xl}px`,
-          paddingBottom: "60px", // 하단 여백 넉넉하게
+          paddingBottom: "60px",
           display: "flex",
           justifyContent: "center",
         }}
       >
         <Typography5_Semibold
           style={{
-            color: "#009E7F", // 청록색 (이미지 참고)
+            color: "#009E7F",
             opacity: fade ? 1 : 0,
             transition: "opacity 0.5s ease-in-out",
             textAlign: "center",

@@ -70,9 +70,9 @@ export default function CheckMyNewGroupPage() {
           position: "absolute",
           top: 0,
           left: 0,
-          width: "100%",
-          height: "100%",
-          zIndex: 0, // 컨텐츠 뒤
+          width: "120%",
+          height: "120%",
+          zIndex: 999, // 컨텐츠 뒤
           overflow: "hidden",
           pointerEvents: "none", // 클릭 통과
         }}
@@ -85,11 +85,11 @@ export default function CheckMyNewGroupPage() {
             width: "100%",
             height: "100%",
             objectFit: "cover",
-            opacity: 0.6,
+            opacity: 1,
           }}
           mode="forward"
           autoplay
-          loop
+          loop={false}
         />
       </div>
 
@@ -232,6 +232,9 @@ export default function CheckMyNewGroupPage() {
             animationDelay: "0.8s",
             opacity: 0,
             animationFillMode: "forwards",
+            backgroundColor: "#F9FAFB",
+            padding: spacing.lg,
+            borderRadius: "16px",
           }}
         >
           <button
@@ -248,7 +251,11 @@ export default function CheckMyNewGroupPage() {
             }}
           >
             <div
-              style={{ display: "flex", alignItems: "center", gap: spacing.xs }}
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: spacing.xs,
+              }}
             >
               <span style={{ fontSize: "22px" }}>🏃🏻</span>
               <Typography2_Semibold
