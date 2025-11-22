@@ -1,4 +1,3 @@
-import "./App.css";
 import CheckMyGroupPageForAllNation from "./pages/CheckMyGroupPageForAllNationPage";
 import CheckMyNewGroupPage from "./pages/CheckMyNewGroupPage";
 import MainPage from "./pages/MainPage";
