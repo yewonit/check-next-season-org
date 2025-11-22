@@ -9,45 +9,10 @@ import {
 import { Icon } from "../components/atoms/Icon";
 import { BottomSheet } from "../components/molecules/BottomSheet";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-
-// --- Types (API 구조 반영) ---
-interface Group {
-  id: number;
-  name: string; // "237국_인드라그룹_인드라순"
-}
-
-interface Member {
-  id: number;
-  name: string;
-  email: string | null;
-  roleName: string; // "그룹장", "부순장", "순원"
-}
-
-// --- Mock Data ---
-const MOCK_GROUPS: Group[] = [
-  { id: 129, name: "237국_인드라그룹_인드라순" },
-  { id: 130, name: "237국_인드라그룹_박규현순" },
-  { id: 131, name: "237국_인드라그룹_장지영순" },
-  { id: 133, name: "237국_권진이그룹_권진이순" },
-  { id: 134, name: "237국_권진이그룹_심규민순" },
-  { id: 135, name: "237국_권진이그룹_정의중순" },
-  { id: 136, name: "237국_김주현그룹_김주현순" },
-  { id: 137, name: "237국_김주현그룹_이선경순" },
-  { id: 138, name: "237국_김주현그룹_이원석순" },
-];
-
-const MOCK_MEMBERS: Record<number, Member[]> = {
-  129: [
-    { id: 2069, name: "인드라", email: null, roleName: "그룹장" },
-    { id: 2070, name: "윤준혁", email: null, roleName: "부순장" },
-    { id: 2071, name: "이지예", email: null, roleName: "부순장" },
-    { id: 2072, name: "김철수", email: null, roleName: "순원" },
-    { id: 2073, name: "시스코", email: null, roleName: "순원" },
-    { id: 2074, name: "이영희", email: null, roleName: "순원" },
-    { id: 2075, name: "박민수", email: null, roleName: "순원" },
-  ],
-  // 다른 그룹 데이터는 자동으로 생성하거나 추가
-};
+import {
+  useAllNationQuery,
+  useAllNationSoonMemberQuery,
+} from "../api/allNationQuery";
 
 // --- Utils ---
 // 그룹명 파싱 ("237국_인드라그룹_인드라순" -> "인드라 그룹 인드라순")
@@ -122,32 +87,28 @@ const RollingTitle = () => {
 
 export default function CheckMyGroupPageForAllNationPage() {
   const navigate = useNavigate();
-  // API 연동 시에는 빈 배열로 초기화하고 useEffect에서 fetch
-  const [groups] = useState<Group[]>(MOCK_GROUPS);
-  const [members, setMembers] = useState<Member[]>([]);
+  const [selectedGroupId, setSelectedGroupId] = useState<number>(0);
   const [isBottomSheetOpen, setIsBottomSheetOpen] = useState(false);
 
+  // 올네이션 순 리스트 조회
+  const { data: groupsData, isLoading: isGroupsLoading } = useAllNationQuery();
+
+  // 선택된 순의 멤버 조회
+  const { data: membersData, isLoading: isMembersLoading } =
+    useAllNationSoonMemberQuery(selectedGroupId);
+
   // 그룹 선택 핸들러
-  const handleGroupClick = (group: Group) => {
-    // 실제 구현 시 여기서 API 호출 (GET organizations/{id})
-    const groupMembers = MOCK_MEMBERS[group.id] || [
-      // 데이터 없을 경우 더미 데이터 생성
-      { id: 1, name: "임시멤버1", email: null, roleName: "순원" },
-      { id: 2, name: "임시멤버2", email: null, roleName: "순원" },
-      { id: 3, name: "임시멤버3", email: null, roleName: "순원" },
-      { id: 4, name: "임시멤버4", email: null, roleName: "순원" },
-      { id: 5, name: "임시멤버5", email: null, roleName: "순원" },
-    ];
-    setMembers(groupMembers);
+  const handleGroupClick = (groupId: number) => {
+    setSelectedGroupId(groupId);
     setIsBottomSheetOpen(true);
   };
 
   // 멤버 선택 핸들러 (결과 페이지로 이동)
-  const handleMemberClick = (member: Member) => {
+  const handleMemberClick = (memberId: number) => {
     setIsBottomSheetOpen(false);
-    // TODO: 실제 user ID를 사용하여 다음 페이지로 이동
-    // GET seasons/next?userId={member.id} 로직은 다음 페이지나 중간 단계에서 처리
-    navigate("/new-group-check-my-group", { state: { user: member } });
+    // userId를 사용하여 결과 페이지로 이동
+    // 결과 페이지에서 useAllNationNextQuery(memberId)를 사용하여 데이터 조회
+    navigate("/event", { state: { userId: memberId } });
   };
 
   return (
@@ -219,50 +180,58 @@ export default function CheckMyGroupPageForAllNationPage() {
           overflowY: "auto", // 스크롤 허용
         }}
       >
-        {groups.map((group) => {
-          const leader = getLeaderName(group.name);
-          const icon = LEADER_ICONS[leader] || "🌱"; // 기본 아이콘
+        {isGroupsLoading ? (
+          <div style={{ textAlign: "center", padding: spacing.xl }}>
+            <Typography5_Semibold style={{ color: colors.grey600 }}>
+              로딩 중...
+            </Typography5_Semibold>
+          </div>
+        ) : (
+          groupsData?.data?.map((group) => {
+            const leader = getLeaderName(group.name);
+            const icon = LEADER_ICONS[leader] || "🌱"; // 기본 아이콘
 
-          return (
-            <button
-              key={group.id}
-              onClick={() => handleGroupClick(group)}
-              style={{
-                width: "100%",
-                padding: spacing.lg,
-                backgroundColor: "#F9FAFB", // 옅은 회색 배경
-                border: "none",
-                borderRadius: "16px",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "space-between",
-                cursor: "pointer",
-                textAlign: "left",
-                transition: "background-color 0.2s",
-              }}
-              onMouseEnter={(e) =>
-                (e.currentTarget.style.backgroundColor = colors.grey100)
-              }
-              onMouseLeave={(e) =>
-                (e.currentTarget.style.backgroundColor = "#F9FAFB")
-              }
-            >
-              <div
+            return (
+              <button
+                key={group.id}
+                onClick={() => handleGroupClick(group.id)}
                 style={{
+                  width: "100%",
+                  padding: spacing.lg,
+                  backgroundColor: "#F9FAFB", // 옅은 회색 배경
+                  border: "none",
+                  borderRadius: "16px",
                   display: "flex",
                   alignItems: "center",
-                  gap: spacing.sm,
+                  justifyContent: "space-between",
+                  cursor: "pointer",
+                  textAlign: "left",
+                  transition: "background-color 0.2s",
                 }}
+                onMouseEnter={(e) =>
+                  (e.currentTarget.style.backgroundColor = colors.grey100)
+                }
+                onMouseLeave={(e) =>
+                  (e.currentTarget.style.backgroundColor = "#F9FAFB")
+                }
               >
-                <span style={{ fontSize: "20px" }}>{icon}</span>
-                <Typography5_Semibold style={{ color: colors.grey900 }}>
-                  {parseGroupName(group.name)}
-                </Typography5_Semibold>
-              </div>
-              <Icon icon={ChevronRight} size="sm" color={colors.grey400} />
-            </button>
-          );
-        })}
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: spacing.sm,
+                  }}
+                >
+                  <span style={{ fontSize: "20px" }}>{icon}</span>
+                  <Typography5_Semibold style={{ color: colors.grey900 }}>
+                    {parseGroupName(group.name)}
+                  </Typography5_Semibold>
+                </div>
+                <Icon icon={ChevronRight} size="sm" color={colors.grey400} />
+              </button>
+            );
+          })
+        )}
       </div>
 
       {/* 멤버 선택 바텀시트 */}
@@ -291,29 +260,37 @@ export default function CheckMyGroupPageForAllNationPage() {
             paddingBottom: spacing.xl,
           }}
         >
-          {members.map((member) => (
-            <button
-              key={member.id}
-              onClick={() => handleMemberClick(member)}
-              style={{
-                width: "100%",
-                padding: spacing.lg,
-                border: "none",
-                borderRadius: "12px",
-                backgroundColor: "#F9FAFB",
-                cursor: "pointer",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "space-between",
-                textAlign: "left",
-              }}
-            >
-              <Typography5_Semibold style={{ color: colors.grey900 }}>
-                {member.name}
+          {isMembersLoading ? (
+            <div style={{ textAlign: "center", padding: spacing.xl }}>
+              <Typography5_Semibold style={{ color: colors.grey600 }}>
+                멤버 로딩 중...
               </Typography5_Semibold>
-              <Icon icon={ChevronRight} size="sm" color={colors.grey400} />
-            </button>
-          ))}
+            </div>
+          ) : (
+            membersData?.members?.map((member) => (
+              <button
+                key={member.id}
+                onClick={() => handleMemberClick(member.id)}
+                style={{
+                  width: "100%",
+                  padding: spacing.lg,
+                  border: "none",
+                  borderRadius: "12px",
+                  backgroundColor: "#F9FAFB",
+                  cursor: "pointer",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                  textAlign: "left",
+                }}
+              >
+                <Typography5_Semibold style={{ color: colors.grey900 }}>
+                  {member.name}
+                </Typography5_Semibold>
+                <Icon icon={ChevronRight} size="sm" color={colors.grey400} />
+              </button>
+            ))
+          )}
         </div>
       </BottomSheet>
     </div>
