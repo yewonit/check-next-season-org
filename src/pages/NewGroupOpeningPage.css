@@ -1,0 +1,88 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  gap: 2rem;
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+}
+
+.message {
+  font-size: 1.2rem;
+  text-align: center;
+  padding: 0 1rem;
+  margin: 0;
+}
+
+.gift-box {
+  font-size: 8rem;
+  cursor: pointer;
+  touch-action: none;
+  --scale-value: 1;
+  transform: scale(var(--scale-value));
+}
+
+.gift-box.pressing {
+  animation: shake 0.15s infinite;
+  transform: scale(var(--scale-value));
+}
+
+.gift-box.exploding {
+  animation: explode 0.5s ease-out forwards;
+}
+
+@keyframes shake {
+  0% {
+    transform: scale(var(--scale-value)) rotate(0deg);
+  }
+  25% {
+    transform: scale(var(--scale-value)) rotate(-5deg);
+  }
+  50% {
+    transform: scale(var(--scale-value)) rotate(0deg);
+  }
+  75% {
+    transform: scale(var(--scale-value)) rotate(5deg);
+  }
+  100% {
+    transform: scale(var(--scale-value)) rotate(0deg);
+  }
+}
+
+@keyframes explode {
+  0% {
+    opacity: 1;
+    transform: scale(3);
+  }
+  50% {
+    opacity: 0.8;
+    transform: scale(3.5);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(4.5);
+  }
+}
+
+.progress-indicator {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #ff6b6b;
+  animation: pulse 0.5s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.7;
+    transform: scale(1.1);
+  }
+}
