@@ -232,6 +232,9 @@ export default function CheckMyNewGroupPage() {
             animationDelay: "0.8s",
             opacity: 0,
             animationFillMode: "forwards",
+            backgroundColor: "#F9FAFB",
+            padding: spacing.lg,
+            borderRadius: "16px",
           }}
         >
           <button
@@ -248,7 +251,11 @@ export default function CheckMyNewGroupPage() {
             }}
           >
             <div
-              style={{ display: "flex", alignItems: "center", gap: spacing.xs }}
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: spacing.xs,
+              }}
             >
               <span style={{ fontSize: "22px" }}>🏃🏻</span>
               <Typography2_Semibold
