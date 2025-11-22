@@ -15,7 +15,7 @@ import { BottomSheet } from "../components/molecules/BottomSheet";
 import { ToastProvider } from "../components/molecules/Toast";
 import { ChevronRight, Globe } from "lucide-react";
 import coramdeoLogo from "../assets/coramdeo_logo.png";
-import { useCheckNameMutation } from "../api/checkNameQuery";
+import { useCheckNameQuery } from "../api/checkNameQuery";
 import type { UserInfo } from "../api/name";
 
 // 디자인 시안 스타일 변수 (TextField 커스텀용)
@@ -27,12 +27,16 @@ function MainPageContent() {
   const [name, setName] = useState("");
   const [isBottomSheetOpen, setIsBottomSheetOpen] = useState(false);
   const [error, setError] = useState("");
-  const [users, setUsers] = useState<UserInfo[]>([]);
 
-  // API 호출을 위한 mutation
-  const { mutate, isPending } = useCheckNameMutation();
+  // API 호출을 위한 query (enabled: false로 수동 제어)
+  const {
+    data,
+    refetch,
+    isLoading,
+    error: queryError,
+  } = useCheckNameQuery(name.trim());
 
-  const handleSearch = () => {
+  const handleSearch = async () => {
     setError("");
 
     if (!name.trim()) {
@@ -45,29 +49,27 @@ function MainPageContent() {
       return;
     }
 
-    // API 호출
-    mutate(name.trim(), {
-      onSuccess: (response) => {
-        if (response.data && response.data.length > 0) {
-          setUsers(response.data);
+    // API 호출 (refetch)
+    const result = await refetch();
 
-          // 사용자가 여러 명이면 BottomSheet 표시
-          if (response.data.length > 1) {
-            setIsBottomSheetOpen(true);
-          } else {
-            // 사용자가 1명이면 바로 이동
-            navigate("/event", {
-              state: { user: response.data[0] },
-            });
-          }
-        } else {
-          setError("검색 결과가 없습니다.");
-        }
-      },
-      onError: (err) => {
-        setError(err.message || "조회 중 오류가 발생했습니다.");
-      },
-    });
+    if (result.isError) {
+      setError(queryError?.message || "조회 중 오류가 발생했습니다.");
+      return;
+    }
+
+    if (result.data?.data && result.data.data.length > 0) {
+      // 사용자가 여러 명이면 BottomSheet 표시
+      if (result.data.data.length > 1) {
+        setIsBottomSheetOpen(true);
+      } else {
+        // 사용자가 1명이면 바로 이동
+        navigate("/event", {
+          state: { user: result.data.data[0] },
+        });
+      }
+    } else {
+      setError("검색 결과가 없습니다.");
+    }
   };
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
@@ -78,7 +80,7 @@ function MainPageContent() {
 
   const handleUserSelect = (user: UserInfo) => {
     setIsBottomSheetOpen(false);
-    navigate("/new-group-check-my-group", { state: { user } });
+    navigate("/event", { state: { user } });
   };
 
   const handleAllNationClick = () => {
@@ -207,7 +209,7 @@ function MainPageContent() {
           size="xlarge"
           display="full"
           onClick={handleSearch}
-          disabled={isPending}
+          disabled={isLoading}
           style={{
             maxWidth: "400px",
             backgroundColor:
@@ -219,7 +221,7 @@ function MainPageContent() {
             // 하지만 디자인상 색상만 변경하고 클릭 시 에러 메시지를 보여주는 UX라면 disabled 아님.
           }}
         >
-          {isPending ? "조회 중..." : "확인하기"}
+          {isLoading ? "조회 중..." : "확인하기"}
         </Button>
       </div>
 
@@ -248,7 +250,7 @@ function MainPageContent() {
             paddingTop: spacing.md,
           }}
         >
-          {users.map((user, index) => (
+          {data?.data?.map((user, index) => (
             <ListRow
               key={`${user.phoneNumber}-${index}`}
               onClick={() => handleUserSelect(user)}

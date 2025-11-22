@@ -1,4 +1,4 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 // import { checkNameApiRequest } from "./name";
 import type { CheckNameResponse } from "./name";
 
@@ -105,7 +105,23 @@ const mockCheckNameApi = async (name: string): Promise<CheckNameResponse> => {
   };
 };
 
-// useCheckNameMutation 훅 - 버튼 클릭 시 사용
+// useCheckNameQuery 훅 - 버튼 클릭 시 refetch 방식
+export const useCheckNameQuery = (name: string) => {
+  return useQuery<CheckNameResponse, Error>({
+    queryKey: checkNameKeys.byName(name),
+    // 실제 API 연동 시 아래 주석 해제
+    // queryFn: () => checkNameApiRequest(name),
+
+    // 모킹 API 사용
+    queryFn: () => mockCheckNameApi(name),
+
+    enabled: false, // 자동 실행 비활성화 (수동으로 refetch 호출)
+    staleTime: 1000 * 60 * 5, // 5분
+    gcTime: 1000 * 60 * 10, // 10분
+  });
+};
+
+// useCheckNameMutation 훅 - 기존 mutation 방식 (호환성 유지)
 export const useCheckNameMutation = () => {
   const queryClient = useQueryClient();
 

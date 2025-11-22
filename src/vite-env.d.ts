@@ -10,3 +10,15 @@ interface ImportMeta {
   readonly env: ImportMetaEnv;
 }
 
+// Lottie Web Component 타입 선언
+declare namespace JSX {
+  interface IntrinsicElements {
+    "dotlottie-wc": {
+      src: string;
+      speed?: string;
+      mode?: string;
+      autoplay?: boolean;
+      style?: React.CSSProperties;
+    };
+  }
+}
