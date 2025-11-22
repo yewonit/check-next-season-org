@@ -18,6 +18,7 @@ import coramdeoLogo from "../assets/coramdeo_logo.png";
 import { useCheckNameQuery } from "../api/checkNameQuery";
 import type { UserInfo } from "../api/name";
 import { useUserStore } from "../stores/userStore";
+import BottomOffsetContainer from "../hooks/BottomOffsetContainer";
 
 // 디자인 시안 스타일 변수 (TextField 커스텀용)
 const PRIMARY_COLOR_CUSTOM = "#009E7F";
@@ -208,26 +209,29 @@ function MainPageContent() {
         </button>
 
         {/* 확인하기 버튼 (Button 컴포넌트 활용) */}
-        <Button
-          color="primary"
-          variant="fill"
-          size="xlarge"
-          display="full"
-          onClick={handleSearch}
-          disabled={isLoading}
-          style={{
-            maxWidth: "400px",
-            backgroundColor:
-              name.trim().length >= 2
-                ? PRIMARY_COLOR_CUSTOM
-                : colors.primary200,
-            // Button 컴포넌트는 disabled 처리가 아니면 hover 효과가 있으므로,
-            // 비활성화 상태(연한 초록)일 때도 클릭 이벤트를 막으려면 disabled 처리가 나을 수 있음.
-            // 하지만 디자인상 색상만 변경하고 클릭 시 에러 메시지를 보여주는 UX라면 disabled 아님.
-          }}
-        >
-          {isLoading ? "조회 중..." : "확인하기"}
-        </Button>
+        <BottomOffsetContainer>
+          <Button
+            color="primary"
+            variant="fill"
+            size="xlarge"
+            display="full"
+            onClick={handleSearch}
+            disabled={isLoading}
+            style={{
+              maxWidth: "400px",
+              width: "100%",
+              backgroundColor:
+                name.trim().length >= 2
+                  ? PRIMARY_COLOR_CUSTOM
+                  : colors.primary200,
+              // Button 컴포넌트는 disabled 처리가 아니면 hover 효과가 있으므로,
+              // 비활성화 상태(연한 초록)일 때도 클릭 이벤트를 막으려면 disabled 처리가 나을 수 있음.
+              // 하지만 디자인상 색상만 변경하고 클릭 시 에러 메시지를 보여주는 UX라면 disabled 아님.
+            }}
+          >
+            {isLoading ? "조회 중..." : "확인하기"}
+          </Button>
+        </BottomOffsetContainer>
       </div>
 
       {/* 중복자 선택 바텀시트 */}
