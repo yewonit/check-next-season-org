@@ -219,7 +219,9 @@ function MainPageContent() {
         onClose={() => setIsBottomSheetOpen(false)}
         header={
           <div style={{ paddingTop: spacing.sm }}>
-            <Typography3_Medium style={{ fontSize: "18px", marginBottom: "2px" }}>
+            <Typography3_Medium
+              style={{ fontSize: "18px", marginBottom: "2px" }}
+            >
               나의 정보를 클릭하여
             </Typography3_Medium>
             <Typography3_Medium style={{ fontSize: "18px" }}>
