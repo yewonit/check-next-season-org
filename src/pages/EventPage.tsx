@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import "./NewGroupOpeningPage.css";
+import "./EventPage.css";
 
 export default function NewGroupOpeningPage() {
   const navigate = useNavigate();

@@ -1,8 +1,8 @@
 import CheckMyGroupPageForAllNation from "./pages/CheckMyGroupPageForAllNationPage";
 import CheckMyNewGroupPage from "./pages/CheckMyNewGroupPage";
 import MainPage from "./pages/MainPage";
-import NewGroupOpeningPage from "./pages/NewGroupOpeningPage";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import EventPage from "./pages/EventPage";
 
 const router = createBrowserRouter([
   {
@@ -19,8 +19,8 @@ const router = createBrowserRouter([
   },
 
   {
-    path: "/new-group-arrival",
-    element: <NewGroupOpeningPage />,
+    path: "/event",
+    element: <EventPage />,
   },
 ]);
 
