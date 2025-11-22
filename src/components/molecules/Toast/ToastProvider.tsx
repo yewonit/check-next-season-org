@@ -4,7 +4,8 @@
  */
 
 import { createContext, useContext, useState, ReactNode, useCallback } from 'react';
-import { Toast, ToastType } from './Toast';
+import { Toast } from './Toast';
+import type { ToastType } from './Toast';
 import type { CSSProperties } from 'react';
 import { spacing } from '../../../styles/foundation';
 

@@ -3,8 +3,9 @@
  * 재사용 가능한 그라데이션 배경 컴포넌트
  */
 
-import { ReactNode, CSSProperties } from 'react';
-import { gradients, GradientKey } from '../../../styles/foundation';
+import type { ReactNode, CSSProperties } from "react";
+import { gradients } from "../../../styles/foundation";
+import type { GradientKey } from "../../../styles/foundation";
 
 export interface GradientBackgroundProps {
   children?: ReactNode;
@@ -15,14 +16,15 @@ export interface GradientBackgroundProps {
 
 export const GradientBackground = ({
   children,
-  gradient = 'primary',
+  gradient = "primary",
   className,
   style,
 }: GradientBackgroundProps) => {
   const backgroundStyle: CSSProperties = {
-    background: typeof gradient === 'string' && gradient.startsWith('linear-gradient')
-      ? gradient
-      : gradients[gradient as GradientKey] || gradients.primary,
+    background:
+      typeof gradient === "string" && gradient.startsWith("linear-gradient")
+        ? gradient
+        : gradients[gradient as GradientKey] || gradients.primary,
     ...style,
   };
 
@@ -32,4 +34,3 @@ export const GradientBackground = ({
     </div>
   );
 };
-
