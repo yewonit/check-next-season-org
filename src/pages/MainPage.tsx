@@ -250,7 +250,7 @@ function MainPageContent() {
         >
           {users.map((user, index) => (
             <ListRow
-              key={`${user.phone_number}-${index}`}
+              key={`${user.phoneNumber}-${index}`}
               onClick={() => handleUserSelect(user)}
               style={{
                 backgroundColor: "#F9FAFB",
@@ -267,13 +267,13 @@ function MainPageContent() {
                   }}
                 >
                   <Typography3_Medium style={{ color: colors.grey900 }}>
-                    {user.name}({user.birth_year})
+                    {user.name}({user.birthYear})
                   </Typography3_Medium>
                   <Typography3_Medium style={{ color: colors.grey900 }}>
                     -
                   </Typography3_Medium>
                   <Typography3_Medium style={{ color: colors.grey900 }}>
-                    {user.phone_number.slice(-4)}
+                    {user.phoneNumber.slice(-4)}
                   </Typography3_Medium>
                 </div>
               }

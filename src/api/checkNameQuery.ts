@@ -24,52 +24,52 @@ const mockCheckNameApi = async (name: string): Promise<CheckNameResponse> => {
       data: [
         {
           name: name,
-          birth_year: "95",
-          phone_number: "01012345272",
+          birthYear: "95",
+          phoneNumber: "01012345272",
           role: "순원",
           organization: "1국_김민수그룹_김민수순",
-          organization_people: [
+          organizationPeople: [
             {
               name: "김민수",
               role: "그룹장",
-              phone_number: "01098765432",
-              birth_year: "93",
+              phoneNumber: "01098765432",
+              birthYear: "93",
             },
             {
               name: "박지영",
               role: "부순장",
-              phone_number: "01087654321",
-              birth_year: "94",
+              phoneNumber: "01087654321",
+              birthYear: "94",
             },
           ],
         },
         {
           name: name,
-          birth_year: "90",
-          phone_number: "01098761234",
+          birthYear: "90",
+          phoneNumber: "01098761234",
           role: "부순장",
           organization: "2국_이영희그룹_이영희순",
-          organization_people: [
+          organizationPeople: [
             {
               name: "이영희",
               role: "그룹장",
-              phone_number: "01055556666",
-              birth_year: "89",
+              phoneNumber: "01055556666",
+              birthYear: "89",
             },
           ],
         },
         {
           name: name,
-          birth_year: "88",
-          phone_number: "01011118472",
+          birthYear: "88",
+          phoneNumber: "01011118472",
           role: "그룹장",
           organization: "3국_" + name + "그룹_" + name + "순",
-          organization_people: [
+          organizationPeople: [
             {
               name: "정수현",
               role: "부순장",
-              phone_number: "01044445555",
-              birth_year: "87",
+              phoneNumber: "01044445555",
+              birthYear: "87",
             },
           ],
         },
@@ -82,22 +82,22 @@ const mockCheckNameApi = async (name: string): Promise<CheckNameResponse> => {
     data: [
       {
         name: name,
-        birth_year: "96",
-        phone_number: "01098847662",
+        birthYear: "96",
+        phoneNumber: "01098847662",
         role: "순원",
         organization: "3국_김보연그룹_김보연순",
-        organization_people: [
+        organizationPeople: [
           {
             name: "김보연",
             role: "그룹장",
-            phone_number: "01042331206",
-            birth_year: "94",
+            phoneNumber: "01042331206",
+            birthYear: "94",
           },
           {
             name: "이진수",
             role: "부순장",
-            phone_number: "01099896005",
-            birth_year: "94",
+            phoneNumber: "01099896005",
+            birthYear: "94",
           },
         ],
       },
