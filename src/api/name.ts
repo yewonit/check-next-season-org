@@ -4,18 +4,18 @@ import axiosInstance from "./axios";
 export interface OrganizationPerson {
   name: string;
   role: string;
-  phone_number: string;
-  birth_year: string;
+  phoneNumber: string;
+  birthYear: string;
 }
 
 // 사용자 정보 인터페이스
 export interface UserInfo {
   name: string;
-  birth_year: string;
-  phone_number: string;
+  birthYear: string;
+  phoneNumber: string;
   role: string;
   organization: string;
-  organization_people: OrganizationPerson[];
+  organizationPeople: OrganizationPerson[];
 }
 
 // API 응답 인터페이스
