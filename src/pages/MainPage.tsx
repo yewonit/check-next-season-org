@@ -218,7 +218,6 @@ function MainPageContent() {
             onClick={handleSearch}
             disabled={isLoading}
             style={{
-              maxWidth: "400px",
               width: "100%",
               backgroundColor:
                 name.trim().length >= 2
