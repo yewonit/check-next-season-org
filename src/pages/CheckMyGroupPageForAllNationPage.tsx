@@ -315,7 +315,14 @@ export default function CheckMyGroupPageForAllNationPage() {
                   textAlign: 'left',
                 }}
               >
-                <Typography5_Semibold style={{ color: colors.grey900, letterSpacing: '-0.5px' }}>
+                <Typography5_Semibold
+                  style={{
+                    color: colors.grey900,
+                    letterSpacing: '-0.5px',
+                    fontSize: '15px',
+                    lineHeight: '22.5px',
+                  }}
+                >
                   {member.name}
                 </Typography5_Semibold>
                 <Icon icon={ChevronRight} size="sm" color={colors.grey400} />
