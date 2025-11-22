@@ -1,9 +1,8 @@
-import "./App.css";
 import CheckMyGroupPageForAllNation from "./pages/CheckMyGroupPageForAllNationPage";
 import CheckMyNewGroupPage from "./pages/CheckMyNewGroupPage";
 import MainPage from "./pages/MainPage";
 import NewGroupOpeningPage from "./pages/NewGroupOpeningPage";
-import { createBrowserRouter, RouterProvider } from "react-router";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
 const router = createBrowserRouter([
   {
