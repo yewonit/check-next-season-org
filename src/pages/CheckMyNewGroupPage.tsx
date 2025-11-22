@@ -34,7 +34,7 @@ export default function CheckMyNewGroupPage() {
   /**
    * 리더 추출 로직:
    * 1. 순장이 있으면 순장을 사용
-   * 2. 순장이 없으면 부순장을 순장으로 승격
+   * 2. 순장이 없으면 부그룹장을 순장으로 승격
    * 3. 순장도 부순장도 없으면 그룹장을 순장으로 승격
    */
   const leaders = useMemo(() => {
@@ -47,10 +47,13 @@ export default function CheckMyNewGroupPage() {
     const foundGroupLeader = user.organizationPeople.find(
       (p) => p.role === "그룹장"
     );
+    const foundAssistantGroupLeader = user.organizationPeople.find(
+      (p) => p.role === "부그룹장"
+    );
 
-    // 순장이 없으면 부순장 -> 그룹장 순으로 대체
+    // 순장이 없으면 부그룹장, 부그룹장 없으면 그룹장 순으로 대체
     const cellLeader =
-      foundCellLeader || foundAssistantCellLeader || foundGroupLeader;
+      foundCellLeader || foundAssistantGroupLeader || foundGroupLeader;
 
     return {
       cellLeader,
