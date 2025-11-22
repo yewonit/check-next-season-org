@@ -17,12 +17,17 @@ import { ChevronRight, Globe } from "lucide-react";
 import coramdeoLogo from "../assets/coramdeo_logo.png";
 import { useCheckNameQuery } from "../api/checkNameQuery";
 import type { UserInfo } from "../api/name";
+import { useUserStore } from "../stores/userStore";
 
 // 디자인 시안 스타일 변수 (TextField 커스텀용)
 const PRIMARY_COLOR_CUSTOM = "#009E7F";
 
 function MainPageContent() {
   const navigate = useNavigate();
+  const setSelectedUser = useUserStore(
+    (state: { setSelectedUser: (user: UserInfo) => void }) =>
+      state.setSelectedUser
+  );
 
   const [name, setName] = useState("");
   const [isBottomSheetOpen, setIsBottomSheetOpen] = useState(false);
@@ -62,10 +67,9 @@ function MainPageContent() {
       if (result.data.data.length > 1) {
         setIsBottomSheetOpen(true);
       } else {
-        // 사용자가 1명이면 바로 이동
-        navigate("/event", {
-          state: { user: result.data.data[0] },
-        });
+        // 사용자가 1명이면 바로 store에 저장하고 이동
+        setSelectedUser(result.data.data[0]);
+        navigate("/event");
       }
     } else {
       setError("검색 결과가 없습니다.");
@@ -80,7 +84,8 @@ function MainPageContent() {
 
   const handleUserSelect = (user: UserInfo) => {
     setIsBottomSheetOpen(false);
-    navigate("/event", { state: { user } });
+    setSelectedUser(user);
+    navigate("/event");
   };
 
   const handleAllNationClick = () => {

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { colors, spacing } from "../styles/foundation";
 import {
   Typography1_Bold,
@@ -9,30 +9,22 @@ import {
 } from "../components/atoms/Typography";
 import { Icon } from "../components/atoms/Icon";
 import { ChevronLeft, ChevronDown, ChevronUp } from "lucide-react";
-
-// --- Mock Data ---
-const LEADERS = {
-  cellLeader: { name: "이여진", phone: "010-0000-0000" },
-  viceCellLeader: { name: "이여진", phone: "010-0000-0000" },
-  groupLeader: { name: "이여진", phone: "010-0000-0000" },
-};
-
-const MEMBERS = Array(15)
-  .fill(null)
-  .map((_, i) => ({
-    id: i,
-    name: "이여진",
-    birthYear: 95,
-    phoneBack: "0000",
-  }));
+import { useUserStore } from "../stores/userStore";
 
 export default function CheckMyNewGroupPage() {
   const navigate = useNavigate();
-  const location = useLocation();
-  const user = location.state?.user || {
+  const selectedUser = useUserStore(
+    (state: { selectedUser: import("../api/name").UserInfo | null }) =>
+      state.selectedUser
+  );
+
+  const user = selectedUser || {
     name: "이름",
     organization: "N국_OOO그룹_OOO순",
+    organizationPeople: [],
     role: "순원",
+    birthYear: "",
+    phoneNumber: "",
   };
 
   const [isListOpen, setIsListOpen] = useState(false);
@@ -167,62 +159,54 @@ export default function CheckMyNewGroupPage() {
           zIndex: 10,
         }}
       >
-        {/* 1. 순장 카드 (Large) */}
-        <div
-          className="animate-slide-up"
-          style={{
-            animationDelay: "0.2s",
-            opacity: 0,
-            animationFillMode: "forwards",
-          }}
-        >
-          <LeaderCard
-            variant="large"
-            roleIcon="👋🏻"
-            roleName="순장"
-            name={LEADERS.cellLeader.name}
-            phone={LEADERS.cellLeader.phone}
-            roleEn="Cell Leader"
-          />
-        </div>
+        {/* organizationPeople에서 리더 정보 추출 */}
+        {user.organizationPeople.map(
+          (
+            person: { role: string; phoneNumber: string; name: string },
+            index: number
+          ) => {
+            const roleMap: Record<
+              string,
+              { icon: string; nameKo: string; nameEn: string }
+            > = {
+              순장: { icon: "👋🏻", nameKo: "순장", nameEn: "Cell Leader" },
+              부순장: {
+                icon: "📌",
+                nameKo: "부순장",
+                nameEn: "Assistant Cell Leader",
+              },
+              그룹장: { icon: "📌", nameKo: "그룹장", nameEn: "Group Leader" },
+            };
 
-        {/* 2. 부순장 카드 (Row) */}
-        <div
-          className="animate-slide-up"
-          style={{
-            animationDelay: "0.4s",
-            opacity: 0,
-            animationFillMode: "forwards",
-          }}
-        >
-          <LeaderCard
-            variant="row"
-            roleIcon="📌"
-            roleName="부순장"
-            name={LEADERS.viceCellLeader.name}
-            phone={LEADERS.viceCellLeader.phone}
-            roleEn="Assistant Cell Leader"
-          />
-        </div>
+            const roleInfo = roleMap[person.role] || {
+              icon: "📌",
+              nameKo: person.role,
+              nameEn: person.role,
+            };
+            const variant = person.role === "순장" ? "large" : "row";
 
-        {/* 3. 그룹장 카드 (Row) */}
-        <div
-          className="animate-slide-up"
-          style={{
-            animationDelay: "0.6s",
-            opacity: 0,
-            animationFillMode: "forwards",
-          }}
-        >
-          <LeaderCard
-            variant="row"
-            roleIcon="📌"
-            roleName="그룹장"
-            name={LEADERS.groupLeader.name}
-            phone={LEADERS.groupLeader.phone}
-            roleEn="Group Leader"
-          />
-        </div>
+            return (
+              <div
+                key={person.phoneNumber}
+                className="animate-slide-up"
+                style={{
+                  animationDelay: `${0.2 + index * 0.2}s`,
+                  opacity: 0,
+                  animationFillMode: "forwards",
+                }}
+              >
+                <LeaderCard
+                  variant={variant}
+                  roleIcon={roleInfo.icon}
+                  roleName={roleInfo.nameKo}
+                  name={person.name}
+                  phone={person.phoneNumber}
+                  roleEn={roleInfo.nameEn}
+                />
+              </div>
+            );
+          }
+        )}
 
         {/* 4. 동역자 리스트 (Accordion) */}
         <div
@@ -278,7 +262,7 @@ export default function CheckMyNewGroupPage() {
             </div>
           </button>
 
-          {isListOpen && (
+          {isListOpen && user.organizationPeople.length > 0 && (
             <div
               style={{
                 display: "flex",
@@ -288,41 +272,54 @@ export default function CheckMyNewGroupPage() {
                 animation: "fadeIn 0.3s ease-in-out",
               }}
             >
-              {MEMBERS.map((member) => (
-                <div
-                  key={member.id}
-                  style={{
-                    display: "flex",
-                    justifyContent: "center", // 변경: space-between -> center
-                    gap: spacing.sm, // 텍스트 사이 간격
-                    padding: `${spacing.md}px ${spacing.lg}px`,
-                    backgroundColor: "#F9FAFB",
-                    borderRadius: "12px",
-                    alignItems: "center",
-                  }}
-                >
-                  <Typography3_Medium
-                    style={{
-                      color: colors.grey800,
-                      fontSize: "15px",
-                      margin: 0,
-                      lineHeight: 1.5,
-                    }}
-                  >
-                    {member.name}({String(member.birthYear).slice(-2)})
-                  </Typography3_Medium>
-                  <Typography3_Medium
-                    style={{
-                      color: colors.grey600,
-                      fontSize: "15px",
-                      margin: 0,
-                      lineHeight: 1.5,
-                    }}
-                  >
-                    {member.phoneBack}
-                  </Typography3_Medium>
-                </div>
-              ))}
+              {user.organizationPeople
+                .filter(
+                  (person: { role: string }) =>
+                    person.role !== "순장" &&
+                    person.role !== "부순장" &&
+                    person.role !== "그룹장"
+                )
+                .map(
+                  (member: {
+                    phoneNumber: string;
+                    name: string;
+                    birthYear: string;
+                  }) => (
+                    <div
+                      key={member.phoneNumber}
+                      style={{
+                        display: "flex",
+                        justifyContent: "center",
+                        gap: spacing.sm,
+                        padding: `${spacing.md}px ${spacing.lg}px`,
+                        backgroundColor: "#F9FAFB",
+                        borderRadius: "12px",
+                        alignItems: "center",
+                      }}
+                    >
+                      <Typography3_Medium
+                        style={{
+                          color: colors.grey800,
+                          fontSize: "15px",
+                          margin: 0,
+                          lineHeight: 1.5,
+                        }}
+                      >
+                        {member.name}({member.birthYear.slice(-2)})
+                      </Typography3_Medium>
+                      <Typography3_Medium
+                        style={{
+                          color: colors.grey600,
+                          fontSize: "15px",
+                          margin: 0,
+                          lineHeight: 1.5,
+                        }}
+                      >
+                        {member.phoneNumber.slice(-4)}
+                      </Typography3_Medium>
+                    </div>
+                  )
+                )}
             </div>
           )}
         </div>
