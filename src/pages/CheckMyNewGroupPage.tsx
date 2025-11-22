@@ -70,6 +70,16 @@ export default function CheckMyNewGroupPage() {
     };
   };
 
+  const formatPhoneNumber = (phone: string) => {
+    const cleaned = phone.replace(/\D/g, "");
+    if (cleaned.length === 11) {
+      return `${cleaned.slice(0, 3)}-${cleaned.slice(3, 7)}-${cleaned.slice(
+        7
+      )}`;
+    }
+    return phone;
+  };
+
   const { nation, group, cell } = parseOrg(user.organization);
 
   const handleBack = () => {
@@ -206,7 +216,7 @@ export default function CheckMyNewGroupPage() {
             roleIcon="👋🏻"
             roleName="순장"
             name={cellLeader?.name || ""}
-            phone={cellLeader?.phoneNumber || ""}
+            phone={formatPhoneNumber(cellLeader?.phoneNumber || "")}
             roleEn="Leader"
           />
         </div>
@@ -225,7 +235,7 @@ export default function CheckMyNewGroupPage() {
             roleIcon="📌"
             roleName="부순장"
             name={assistantCellLeader?.name || ""}
-            phone={assistantCellLeader?.phoneNumber || ""}
+            phone={formatPhoneNumber(assistantCellLeader?.phoneNumber || "")}
             roleEn="Support Leader"
           />
         </div>
@@ -244,7 +254,7 @@ export default function CheckMyNewGroupPage() {
             roleIcon="📌"
             roleName="그룹장"
             name={groupLeader?.name || ""}
-            phone={groupLeader?.phoneNumber || ""}
+            phone={formatPhoneNumber(groupLeader?.phoneNumber || "")}
             roleEn="Group Leader"
           />
         </div>
