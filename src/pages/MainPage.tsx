@@ -2,28 +2,22 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { colors, spacing } from "../styles/foundation";
 import {
-  Typography1_Bold,
+  Typography2_Semibold,
   Typography3_Medium,
   Typography5_Medium,
   Typography6_Regular,
 } from "../components/atoms/Typography";
 import { Icon } from "../components/atoms/Icon";
+import { Button } from "../components/atoms/Button";
+import { TextField } from "../components/molecules/TextField";
+import { ListRow } from "../components/molecules/ListRow";
 import { BottomSheet } from "../components/molecules/BottomSheet";
 import { ToastProvider } from "../components/molecules/Toast";
 import { ChevronRight, Globe } from "lucide-react";
 import coramdeoLogo from "../assets/coramdeo_logo.png";
 
-// 디자인 시안 스타일 변수
-const INPUT_STYLES = {
-  backgroundColor: "rgba(0, 23, 51, 0.02)", // --adaptiveGreyOpacity50
-  color: "#333d4b", // --adaptiveGrey800
-  placeholderColor: "#8b95a1", // --adaptiveGrey500
-  borderColor: "rgba(2, 32, 71, 0.05)",
-  borderRadius: "14px",
-  padding: "14px 16px",
-  fontSize: "17px",
-  lineHeight: "25.5px",
-};
+// 디자인 시안 스타일 변수 (TextField 커스텀용)
+const PRIMARY_COLOR_CUSTOM = "#009E7F";
 
 function MainPageContent() {
   const navigate = useNavigate();
@@ -116,57 +110,54 @@ function MainPageContent() {
           <img
             src={coramdeoLogo}
             alt="Coram Deo"
-            style={{ width: "180px", height: "auto", marginBottom: spacing.md }}
+            style={{ width: "160px", height: "auto", marginBottom: spacing.sm }}
           />
-          <Typography5_Medium
+          <Typography6_Regular
             style={{ textAlign: "center", color: colors.grey600 }}
           >
             2026년 새로운 여정을 기대하며
-          </Typography5_Medium>
-          <Typography1_Bold
+          </Typography6_Regular>
+          <Typography2_Semibold
             style={{ textAlign: "center", color: colors.grey900 }}
           >
             이름을 입력해주세요
-          </Typography1_Bold>
+          </Typography2_Semibold>
         </div>
 
-        {/* 입력 폼 */}
+        {/* 입력 폼 (TextField 컴포넌트 활용) */}
         <div style={{ width: "100%", maxWidth: "320px" }}>
-          <input
-            type="text"
-            placeholder="이름/Name"
+          <TextField
             value={name}
-            onChange={(e) => setName(e.target.value)}
+            onChange={setName}
+            placeholder="이름/Name"
             onKeyDown={handleKeyDown}
-            style={{
-              width: "100%",
-              backgroundColor: INPUT_STYLES.backgroundColor,
-              color: INPUT_STYLES.color,
-              border: `1px solid ${INPUT_STYLES.borderColor}`,
-              borderRadius: INPUT_STYLES.borderRadius,
-              padding: INPUT_STYLES.padding,
-              fontSize: INPUT_STYLES.fontSize,
-              lineHeight: INPUT_STYLES.lineHeight,
-              outline: "none",
-              boxSizing: "border-box",
-              fontFamily: "inherit",
-              // 플레이스홀더 스타일링을 위한 클래스나 가상요소는 인라인 스타일에 제한이 있어 기본 색상 사용
-              // 필요시 별도 CSS 파일 또는 styled-components 사용 권장
-            }}
+            error={error}
+            style={
+              {
+                // TextField 컨테이너 스타일
+              }
+            }
+            // 내부 input 스타일 커스터마이징 (현재 TextField 컴포넌트 구조상 style prop이 컨테이너에 적용됨)
+            // TextField 컴포넌트를 수정하지 않고 사용하기 위해,
+            // TextField 내부 구현을 확인했을 때 inputStyle에 backgroundColor가 지정되어 있음.
+            // 하지만 TextField는 style prop을 container에만 적용함.
+            // 여기서는 TextField 컴포넌트의 기본 스타일을 활용하되, 배경색만 CSS로 오버라이드하거나
+            // TextField가 className을 지원하므로 global.css 등을 통해 제어 가능하지만,
+            // 인라인 스타일로는 한계가 있을 수 있음.
+            // 여기서는 TextField가 기본적으로 제공하는 디자인을 최대한 수용하되, 배경색 변경이 필요하다면
+            // TextField 컴포넌트에 inputStyle prop을 추가하는 것이 좋음.
+            // 하지만 지금은 일단 기본 TextField를 사용하고, 필요시 수정.
+            // 디자인 시안의 회색 배경을 적용하기 위해 인라인 스타일로 input 요소 선택자를 사용할 수 없으므로,
+            // TextField를 감싸는 div에서 input을 타겟팅하거나, TextField가 투명 배경을 지원하도록 해야 함.
+            // 현재 TextField는 backgroundColor: disabled ? colors.grey100 : colors.background 로 고정됨.
+            // 일단 기본 흰색 배경을 사용하거나, TextField 컴포넌트 수정 없이 진행.
+            // 디자인 시스템 활용이 우선이므로 TextField 기본 스타일(흰색)을 따르되,
+            // 시안과 너무 다르면 TextField 컴포넌트를 수정해야 함.
+            // 여기서는 시안의 회색 배경이 중요해 보이므로, TextField를 감싸는 div가 아니라
+            // TextField 자체를 사용하되, 디자인 시스템의 일관성을 위해 흰색 배경을 유지하는 것도 방법.
+            // 하지만 사용자가 "디자인 시스템에 구현되어 있는 친구들을 기반으로 활용"하라고 했으므로
+            // TextField 그대로 사용.
           />
-
-          {/* 에러 메시지 */}
-          {error && (
-            <Typography6_Regular
-              style={{
-                color: colors.red500,
-                marginTop: spacing.sm,
-                paddingLeft: spacing.sm,
-              }}
-            >
-              {error}
-            </Typography6_Regular>
-          )}
         </div>
       </div>
 
@@ -200,26 +191,26 @@ function MainPageContent() {
           </Typography5_Medium>
         </button>
 
-        {/* 확인하기 버튼 */}
-        <button
+        {/* 확인하기 버튼 (Button 컴포넌트 활용) */}
+        <Button
+          color="primary"
+          variant="fill"
+          size="xlarge"
+          display="full"
           onClick={handleSearch}
           style={{
-            width: "100%",
             maxWidth: "400px",
-            height: "56px",
             backgroundColor:
-              name.trim().length >= 2 ? "#009E7F" : colors.primary200,
-            color: "white",
-            border: "none",
-            borderRadius: "16px",
-            fontSize: "18px",
-            fontWeight: "bold",
-            cursor: "pointer",
-            transition: "background-color 0.2s ease",
+              name.trim().length >= 2
+                ? PRIMARY_COLOR_CUSTOM
+                : colors.primary200,
+            // Button 컴포넌트는 disabled 처리가 아니면 hover 효과가 있으므로,
+            // 비활성화 상태(연한 초록)일 때도 클릭 이벤트를 막으려면 disabled 처리가 나을 수 있음.
+            // 하지만 디자인상 색상만 변경하고 클릭 시 에러 메시지를 보여주는 UX라면 disabled 아님.
           }}
         >
           확인하기
-        </button>
+        </Button>
       </div>
 
       {/* 중복자 선택 바텀시트 */}
@@ -227,13 +218,13 @@ function MainPageContent() {
         open={isBottomSheetOpen}
         onClose={() => setIsBottomSheetOpen(false)}
         header={
-          <div style={{ paddingTop: spacing.md }}>
-            <Typography1_Bold style={{ fontSize: "20px", marginBottom: "4px" }}>
+          <div style={{ paddingTop: spacing.sm }}>
+            <Typography3_Medium style={{ fontSize: "18px", marginBottom: "2px" }}>
               나의 정보를 클릭하여
-            </Typography1_Bold>
-            <Typography1_Bold style={{ fontSize: "20px" }}>
+            </Typography3_Medium>
+            <Typography3_Medium style={{ fontSize: "18px" }}>
               그룹과 순을 확인해보세요
-            </Typography1_Bold>
+            </Typography3_Medium>
           </div>
         }
       >
@@ -246,27 +237,38 @@ function MainPageContent() {
           }}
         >
           {duplicateUsers.map((user) => (
-            <button
+            <ListRow
               key={user.id}
               onClick={() => handleUserSelect(user)}
               style={{
-                width: "100%",
-                padding: spacing.lg,
-                border: "none",
-                borderRadius: "12px",
                 backgroundColor: "#F9FAFB",
-                cursor: "pointer",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "space-between",
-                textAlign: "left",
+                borderRadius: "12px",
+                padding: spacing.md, // ListRow 기본 패딩 오버라이드
               }}
-            >
-              <Typography3_Medium style={{ color: colors.grey900 }}>
-                {user.name}({user.birthYear}) - {user.phoneNumber}
-              </Typography3_Medium>
-              <Icon icon={ChevronRight} size="sm" color={colors.grey400} />
-            </button>
+              border="none"
+              contents={
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: spacing.xs,
+                  }}
+                >
+                  <Typography3_Medium style={{ color: colors.grey900 }}>
+                    {user.name}({user.birthYear})
+                  </Typography3_Medium>
+                  <Typography3_Medium style={{ color: colors.grey900 }}>
+                    -
+                  </Typography3_Medium>
+                  <Typography3_Medium style={{ color: colors.grey900 }}>
+                    {user.phoneNumber}
+                  </Typography3_Medium>
+                </div>
+              }
+              right={
+                <Icon icon={ChevronRight} size="sm" color={colors.grey400} />
+              }
+            />
           ))}
         </div>
       </BottomSheet>
