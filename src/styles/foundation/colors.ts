@@ -18,7 +18,7 @@ export const colors = {
   grey600: '#6b7684', // 일반 텍스트
   grey700: '#4e5968', // 강조 텍스트
   grey800: '#333d4b', // 제목, 중요 텍스트
-  grey900: '#191f28', // 최대 강조 텍스트
+  grey900: '#333d4b', // 최대 강조 텍스트
 
   // Primary (Teal) 계열 - #00B493 기반
   primary50: '#e6faf7', // 매우 밝은 배경
@@ -121,7 +121,7 @@ export const colors = {
   greyBackground: '#f2f4f6',
 
   // 텍스트 색상 (시맨틱)
-  textPrimary: '#191f28', // grey900
+  textPrimary: '#333d4b', // grey900
   textSecondary: '#4e5968', // grey700
   textTertiary: '#8b95a1', // grey500
   textDisabled: '#b0b8c1', // grey400

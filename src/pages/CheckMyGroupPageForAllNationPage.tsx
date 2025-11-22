@@ -78,8 +78,13 @@ const RollingTitle = () => {
         transition: 'opacity 0.5s ease-in-out',
         opacity: fade ? 1 : 0,
         minHeight: '80px', // 높이 고정으로 레이아웃 흔들림 방지
-        color: colors.grey900,
-        fontSize: '24px', // 크기 약간 축소
+        color: '#333D4B',
+        fontSize: '24px',
+        fontWeight: 700,
+        letterSpacing: '-0.5px',
+        lineHeight: 1.2,
+        paddingLeft: '10px',
+        paddingTop: '10px',
       }}
     >
       {TITLES[index]}
@@ -135,6 +140,7 @@ export default function CheckMyGroupPageForAllNationPage() {
         backgroundColor: colors.background,
         display: 'flex',
         flexDirection: 'column',
+        fontFamily: 'Pretendard, -apple-system, BlinkMacSystemFont, sans-serif',
       }}
     >
       {/* 상단 고정 영역 (헤더 + 타이틀) */}
@@ -181,7 +187,7 @@ export default function CheckMyGroupPageForAllNationPage() {
         </div>
 
         {/* 타이틀 영역 */}
-        <div style={{ padding: `0 ${spacing.xl}px ${spacing.sm}px` }}>
+        <div style={{ padding: `0 ${spacing.xl}px 0` }}>
           <RollingTitle />
         </div>
       </div>
@@ -199,7 +205,7 @@ export default function CheckMyGroupPageForAllNationPage() {
       >
         {isGroupsLoading ? (
           <div style={{ textAlign: 'center', padding: spacing.xl }}>
-            <Typography5_Semibold style={{ color: colors.grey600 }}>
+            <Typography5_Semibold style={{ color: colors.grey600, letterSpacing: '-0.5px' }}>
               로딩 중...
             </Typography5_Semibold>
           </div>
@@ -240,7 +246,7 @@ export default function CheckMyGroupPageForAllNationPage() {
                   }}
                 >
                   <span style={{ fontSize: '20px' }}>{icon}</span>
-                  <Typography5_Semibold style={{ color: colors.grey900 }}>
+                  <Typography5_Semibold style={{ color: colors.grey900, letterSpacing: '-0.5px' }}>
                     {parseGroupName(group.name)}
                   </Typography5_Semibold>
                 </div>
@@ -257,10 +263,18 @@ export default function CheckMyGroupPageForAllNationPage() {
         onClose={() => setIsBottomSheetOpen(false)}
         header={
           <div style={{ paddingTop: spacing.md }}>
-            <Typography1_Bold style={{ fontSize: '20px', marginBottom: '4px' }}>
-              나의 정보를 클릭해서
-            </Typography1_Bold>
-            <Typography1_Bold style={{ fontSize: '20px' }}>
+            <Typography1_Bold
+              style={{
+                fontSize: '18px',
+                marginBottom: '2px',
+                color: '#333D4B',
+                fontWeight: 700,
+                letterSpacing: '-0.5px',
+                lineHeight: 1.2,
+                paddingLeft: '5px',
+              }}
+            >
+              나의 정보를 클릭하여<br />
               그룹과 순을 확인해보세요
             </Typography1_Bold>
           </div>
@@ -279,7 +293,7 @@ export default function CheckMyGroupPageForAllNationPage() {
         >
           {isMembersLoading ? (
             <div style={{ textAlign: 'center', padding: spacing.xl }}>
-              <Typography5_Semibold style={{ color: colors.grey600 }}>
+              <Typography5_Semibold style={{ color: colors.grey600, letterSpacing: '-0.5px' }}>
                 멤버 로딩 중...
               </Typography5_Semibold>
             </div>
@@ -301,7 +315,7 @@ export default function CheckMyGroupPageForAllNationPage() {
                   textAlign: 'left',
                 }}
               >
-                <Typography5_Semibold style={{ color: colors.grey900 }}>
+                <Typography5_Semibold style={{ color: colors.grey900, letterSpacing: '-0.5px' }}>
                   {member.name}
                 </Typography5_Semibold>
                 <Icon icon={ChevronRight} size="sm" color={colors.grey400} />
