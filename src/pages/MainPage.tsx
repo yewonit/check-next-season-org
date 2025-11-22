@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { colors, spacing } from "../styles/foundation";
 import {
@@ -42,24 +42,29 @@ function MainPageContent() {
     error: queryError,
   } = useCheckNameQuery(name.trim());
 
+  // 버튼 활성화 조건: name이 있고, 에러가 없고, 로딩 중이 아닐 때
+  const isButtonDisabled = !name.trim() || !!error || isLoading;
+
+  useEffect(() => {
+    let timeoutId: ReturnType<typeof setTimeout>;
+    if (queryError) {
+      timeoutId = setTimeout(() => {
+        setError("");
+      }, 2000);
+    }
+    return () => {
+      clearTimeout(timeoutId);
+    };
+  }, [queryError]);
+
   const handleSearch = async () => {
     setError("");
-
-    if (!name.trim()) {
-      setError("이름을 입력해주세요.");
-      return;
-    }
-
-    if (name.trim().length < 2) {
-      setError("이름을 잘못 작성했는지 확인해주세요.");
-      return;
-    }
 
     // API 호출 (refetch)
     const result = await refetch();
 
     if (result.isError) {
-      setError(queryError?.message || "조회 중 오류가 발생했습니다.");
+      setError("이름을 잘못 작성했는지 확인해주세요.");
       return;
     }
 
@@ -75,6 +80,31 @@ function MainPageContent() {
     } else {
       setError("검색 결과가 없습니다.");
     }
+  };
+
+  const handleChangeName = (value: string) => {
+    setName(value);
+
+    // 빈 값 체크
+    if (!value.trim()) {
+      setError("이름을 입력해주세요.");
+      return;
+    }
+
+    // 최소 길이 체크
+    if (value.trim().length < 2) {
+      setError("이름은 두 글자 이상 입력해주세요.");
+      return;
+    }
+
+    // 이스터에그
+    if (value.trim() === "김삼순97") {
+      setError("정신차리세요❤️");
+      return;
+    }
+
+    // 에러 없음
+    setError("");
   };
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
@@ -100,6 +130,8 @@ function MainPageContent() {
         backgroundColor: colors.background,
         display: "flex",
         flexDirection: "column",
+        alignItems: "stretch",
+        paddingTop: "235px",
         position: "relative",
       }}
     >
@@ -109,8 +141,6 @@ function MainPageContent() {
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
-          justifyContent: "center",
-          padding: `${spacing.xxxl}px ${spacing.xl}px`,
           gap: spacing.xl,
         }}
       >
@@ -127,25 +157,38 @@ function MainPageContent() {
           <img
             src={coramdeoLogo}
             alt="Coram Deo"
-            style={{ width: "160px", height: "auto", marginBottom: spacing.sm }}
+            style={{
+              width: "101px",
+              height: "auto",
+              marginBottom: spacing.sm,
+            }}
           />
-          <Typography6_Regular
-            style={{ textAlign: "center", color: colors.grey600 }}
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              gap: spacing.xs,
+            }}
           >
-            2026년 새로운 여정을 기대하며
-          </Typography6_Regular>
-          <Typography2_Semibold
-            style={{ textAlign: "center", color: colors.grey900 }}
-          >
-            이름을 입력해주세요
-          </Typography2_Semibold>
+            <Typography6_Regular
+              style={{ textAlign: "center", color: colors.grey600 }}
+            >
+              2026년 새로운 여정을 기대하며
+            </Typography6_Regular>
+            <Typography2_Semibold
+              style={{ textAlign: "center", color: colors.grey900 }}
+            >
+              이름을 입력해주세요
+            </Typography2_Semibold>
+          </div>
         </div>
 
         {/* 입력 폼 (TextField 컴포넌트 활용) */}
         <div style={{ width: "100%", maxWidth: "320px" }}>
           <TextField
             value={name}
-            onChange={setName}
+            onChange={handleChangeName}
             placeholder="이름/Name"
             onKeyDown={handleKeyDown}
             error={error}
@@ -216,16 +259,12 @@ function MainPageContent() {
             size="xlarge"
             display="full"
             onClick={handleSearch}
-            disabled={isLoading}
+            disabled={isButtonDisabled}
             style={{
               width: "100%",
-              backgroundColor:
-                name.trim().length >= 2
-                  ? PRIMARY_COLOR_CUSTOM
-                  : colors.primary200,
-              // Button 컴포넌트는 disabled 처리가 아니면 hover 효과가 있으므로,
-              // 비활성화 상태(연한 초록)일 때도 클릭 이벤트를 막으려면 disabled 처리가 나을 수 있음.
-              // 하지만 디자인상 색상만 변경하고 클릭 시 에러 메시지를 보여주는 UX라면 disabled 아님.
+              backgroundColor: isButtonDisabled
+                ? colors.primary200
+                : PRIMARY_COLOR_CUSTOM,
             }}
           >
             {isLoading ? "조회 중..." : "확인하기"}
