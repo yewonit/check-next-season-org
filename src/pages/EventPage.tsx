@@ -52,6 +52,9 @@ export default function NewGroupOpeningPage() {
       <p className="message">
         새로운 그룹이 도착했습니다. 선물상자를 꾹~꾹 눌러보세요 ({tapCount}/3)
       </p>
+      {/**
+       * @todo 선물상자 클릭 영역을 Figma에 정의된 대로 크게 만들기
+       */}
       <div
         className={`gift-box ${getShakeClass()} ${
           isExploding ? "exploding" : ""
