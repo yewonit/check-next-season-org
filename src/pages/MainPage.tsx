@@ -4,7 +4,7 @@ import { colors, spacing } from '../styles/foundation';
 import {
   Typography2_Semibold,
   Typography3_Medium,
-  Typography5_Medium,
+  Typography5_Semibold,
   Typography6_Regular,
 } from '../components/atoms/Typography';
 import { Icon } from '../components/atoms/Icon';
@@ -13,7 +13,7 @@ import { TextField } from '../components/molecules/TextField';
 import { ListRow } from '../components/molecules/ListRow';
 import { BottomSheet } from '../components/molecules/BottomSheet';
 import { ToastProvider } from '../components/molecules/Toast';
-import { ChevronRight, Globe } from 'lucide-react';
+import { ChevronRight } from 'lucide-react';
 import coramdeoLogo from '../assets/coramdeo_logo.png';
 import { useCheckNameQuery } from '../api/checkNameQuery';
 import type { UserInfo } from '../api/name';
@@ -22,6 +22,47 @@ import BottomOffsetContainer from '../hooks/BottomOffsetContainer';
 
 // 디자인 시안 스타일 변수 (TextField 커스텀용)
 const PRIMARY_COLOR_CUSTOM = '#009E7F';
+
+// 올네이션 링크 다국어 텍스트
+const ALL_NATION_TEXTS = [
+  '🌍   올네이션국은 여기를 클릭해주세요  >',
+  '🌍   Click here for the All Nations Department  >',
+  '🌍   请点击这里进入 All Nations 部门  >',
+  '🌍   Haz clic aquí para All Nations Department  >',
+  '🌍   オールネーションズ局はこちら  ＞',
+];
+
+// RollingText 컴포넌트
+const RollingText = () => {
+  const [index, setIndex] = useState(0);
+  const [fade, setFade] = useState(true);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setFade(false);
+      setTimeout(() => {
+        setIndex((prev) => (prev + 1) % ALL_NATION_TEXTS.length);
+        setFade(true);
+      }, 500); // 페이드 아웃 후 텍스트 변경
+    }, 2500); // 2.5초마다 변경
+
+    return () => clearInterval(interval);
+  }, []);
+
+  return (
+    <Typography5_Semibold
+      style={{
+        fontSize: '15px',
+        color: colors.grey600,
+        transition: 'opacity 0.5s ease-in-out',
+        opacity: fade ? 1 : 0,
+        letterSpacing: '-0.5px',
+      }}
+    >
+      {ALL_NATION_TEXTS[index]}
+    </Typography5_Semibold>
+  );
+};
 
 function MainPageContent() {
   const navigate = useNavigate();
@@ -64,7 +105,7 @@ function MainPageContent() {
     const result = await refetch();
 
     if (result.isError) {
-      setError('이름을 잘못 작성했는지 확인해주세요.');
+      setError('이름을 정확하게 입력했는지 확인해 주세요!');
       return;
     }
 
@@ -87,19 +128,19 @@ function MainPageContent() {
 
     // 빈 값 체크
     if (!value.trim()) {
-      setError('이름을 입력해주세요.');
+      setError('이름을 다시 한번 써 주세요');
       return;
     }
 
     // 최소 길이 체크
     if (value.trim().length < 2) {
-      setError('이름은 두 글자 이상 입력해주세요.');
+      setError('이름을 계속 완성시켜볼까요?');
       return;
     }
 
     // 이스터에그
     if (value.trim() === '김삼순97') {
-      setError('정신차리세요❤️');
+      setError('정신 차리세요 ❤️');
       return;
     }
 
@@ -169,16 +210,15 @@ function MainPageContent() {
               display: 'flex',
               flexDirection: 'column',
               alignItems: 'center',
-              gap: spacing.xs,
             }}
           >
             <Typography6_Regular
-              style={{ textAlign: 'center', color: colors.grey600 }}
+              style={{ textAlign: 'center', color: '#6B7684', letterSpacing: '-0.5px', fontWeight: 500}}
             >
               2026년 새로운 여정을 기대하며
             </Typography6_Regular>
             <Typography2_Semibold
-              style={{ textAlign: 'center', color: colors.grey900 }}
+              style={{ textAlign: 'center', color: '#333D4B', letterSpacing: '-0.5px', fontWeight: 700}}
             >
               이름을 입력해주세요
             </Typography2_Semibold>
@@ -238,17 +278,11 @@ function MainPageContent() {
           style={{
             background: 'none',
             border: 'none',
-            display: 'flex',
-            alignItems: 'center',
-            gap: spacing.xs,
             cursor: 'pointer',
             padding: spacing.sm,
           }}
         >
-          <Icon icon={Globe} size="sm" color={colors.blue500} />
-          <Typography5_Medium style={{ color: colors.grey600 }}>
-            올네이션국은 여기를 클릭해주세요 &gt;
-          </Typography5_Medium>
+          <RollingText />
         </button>
 
         {/* 확인하기 버튼 (Button 컴포넌트 활용) */}
@@ -279,11 +313,17 @@ function MainPageContent() {
         header={
           <div style={{ paddingTop: spacing.sm }}>
             <Typography3_Medium
-              style={{ fontSize: '18px', marginBottom: '2px' }}
+              style={{
+                fontSize: '18px',
+                marginBottom: '2px',
+                color: '#333D4B',
+                fontWeight: 700,
+                letterSpacing: '-0.5px',
+                lineHeight: 1.2,
+                paddingLeft: '5px',
+              }}
             >
-              나의 정보를 클릭하여
-            </Typography3_Medium>
-            <Typography3_Medium style={{ fontSize: '18px' }}>
+              나의 정보를 클릭하여<br />
               그룹과 순을 확인해보세요
             </Typography3_Medium>
           </div>
@@ -315,13 +355,34 @@ function MainPageContent() {
                     gap: spacing.xs,
                   }}
                 >
-                  <Typography3_Medium style={{ color: colors.grey900 }}>
+                  <Typography3_Medium
+                    style={{
+                      fontSize: '15px',
+                      fontWeight: 600,
+                      letterSpacing: '-0.5px',
+                      color: '#333D4B',
+                    }}
+                  >
                     {user.name}({user.birthYear})
                   </Typography3_Medium>
-                  <Typography3_Medium style={{ color: colors.grey900 }}>
+                  <Typography3_Medium
+                    style={{
+                      fontSize: '15px',
+                      fontWeight: 600,
+                      letterSpacing: '-0.5px',
+                      color: '#333D4B',
+                    }}
+                  >
                     -
                   </Typography3_Medium>
-                  <Typography3_Medium style={{ color: colors.grey900 }}>
+                  <Typography3_Medium
+                    style={{
+                      fontSize: '15px',
+                      fontWeight: 600,
+                      letterSpacing: '-0.5px',
+                      color: '#333D4B',
+                    }}
+                  >
                     {user.phoneNumber.slice(-4)}
                   </Typography3_Medium>
                 </div>
