@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./NewGroupOpeningPage.css";
 
@@ -6,6 +6,15 @@ export default function NewGroupOpeningPage() {
   const navigate = useNavigate();
   const [tapCount, setTapCount] = useState(0); // 3회 탭 후, 라우팅 처리
   const [isExploding, setIsExploding] = useState(false);
+
+  useEffect(() => {
+    if (tapCount > 0 && tapCount < 3) {
+      const resetTimer = window.setTimeout(() => {
+        setTapCount(0);
+      }, 1000);
+      return () => clearTimeout(resetTimer);
+    }
+  }, [tapCount, navigate]);
 
   const handleTap = () => {
     if (tapCount < 3) {
