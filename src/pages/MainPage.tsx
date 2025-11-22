@@ -15,6 +15,8 @@ import { BottomSheet } from "../components/molecules/BottomSheet";
 import { ToastProvider } from "../components/molecules/Toast";
 import { ChevronRight, Globe } from "lucide-react";
 import coramdeoLogo from "../assets/coramdeo_logo.png";
+import { useCheckNameMutation } from "../api/checkNameQuery";
+import type { UserInfo } from "../api/name";
 
 // 디자인 시안 스타일 변수 (TextField 커스텀용)
 const PRIMARY_COLOR_CUSTOM = "#009E7F";
@@ -25,11 +27,10 @@ function MainPageContent() {
   const [name, setName] = useState("");
   const [isBottomSheetOpen, setIsBottomSheetOpen] = useState(false);
   const [error, setError] = useState("");
+  const [users, setUsers] = useState<UserInfo[]>([]);
 
-  // 중복 사용자 모킹 데이터
-  const [duplicateUsers, setDuplicateUsers] = useState<
-    Array<{ id: string; name: string; birthYear: string; phoneNumber: string }>
-  >([]);
+  // API 호출을 위한 mutation
+  const { mutate, isPending } = useCheckNameMutation();
 
   const handleSearch = () => {
     setError("");
@@ -44,16 +45,29 @@ function MainPageContent() {
       return;
     }
 
-    if (name === "이여진" || name === "홍길동") {
-      setDuplicateUsers([
-        { id: "1", name: "이여진", birthYear: "95", phoneNumber: "5272" },
-        { id: "2", name: "이여진", birthYear: "90", phoneNumber: "1234" },
-        { id: "3", name: "이여진", birthYear: "88", phoneNumber: "8472" },
-      ]);
-      setIsBottomSheetOpen(true);
-    } else {
-      navigate("/new-group-check-my-group", { state: { name } });
-    }
+    // API 호출
+    mutate(name.trim(), {
+      onSuccess: (response) => {
+        if (response.data && response.data.length > 0) {
+          setUsers(response.data);
+
+          // 사용자가 여러 명이면 BottomSheet 표시
+          if (response.data.length > 1) {
+            setIsBottomSheetOpen(true);
+          } else {
+            // 사용자가 1명이면 바로 이동
+            navigate("/event", {
+              state: { user: response.data[0] },
+            });
+          }
+        } else {
+          setError("검색 결과가 없습니다.");
+        }
+      },
+      onError: (err) => {
+        setError(err.message || "조회 중 오류가 발생했습니다.");
+      },
+    });
   };
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
@@ -62,12 +76,7 @@ function MainPageContent() {
     }
   };
 
-  const handleUserSelect = (user: {
-    id: string;
-    name: string;
-    birthYear: string;
-    phoneNumber: string;
-  }) => {
+  const handleUserSelect = (user: UserInfo) => {
     setIsBottomSheetOpen(false);
     navigate("/new-group-check-my-group", { state: { user } });
   };
@@ -198,6 +207,7 @@ function MainPageContent() {
           size="xlarge"
           display="full"
           onClick={handleSearch}
+          disabled={isPending}
           style={{
             maxWidth: "400px",
             backgroundColor:
@@ -209,7 +219,7 @@ function MainPageContent() {
             // 하지만 디자인상 색상만 변경하고 클릭 시 에러 메시지를 보여주는 UX라면 disabled 아님.
           }}
         >
-          확인하기
+          {isPending ? "조회 중..." : "확인하기"}
         </Button>
       </div>
 
@@ -238,9 +248,9 @@ function MainPageContent() {
             paddingTop: spacing.md,
           }}
         >
-          {duplicateUsers.map((user) => (
+          {users.map((user, index) => (
             <ListRow
-              key={user.id}
+              key={`${user.phone_number}-${index}`}
               onClick={() => handleUserSelect(user)}
               style={{
                 backgroundColor: "#F9FAFB",
@@ -257,13 +267,13 @@ function MainPageContent() {
                   }}
                 >
                   <Typography3_Medium style={{ color: colors.grey900 }}>
-                    {user.name}({user.birthYear})
+                    {user.name}({user.birth_year})
                   </Typography3_Medium>
                   <Typography3_Medium style={{ color: colors.grey900 }}>
                     -
                   </Typography3_Medium>
                   <Typography3_Medium style={{ color: colors.grey900 }}>
-                    {user.phoneNumber}
+                    {user.phone_number.slice(-4)}
                   </Typography3_Medium>
                 </div>
               }
