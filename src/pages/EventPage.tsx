@@ -1,76 +1,206 @@
-import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import "./EventPage.css";
+import { useState, useEffect } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
+import { colors, spacing } from "../styles/foundation";
+import {
+  Typography1_Bold,
+  Typography2_Semibold,
+  Typography5_Semibold,
+} from "../components/atoms/Typography";
+import { Icon } from "../components/atoms/Icon";
+import { GiftBox } from "../components/molecules/GiftBox";
+import { ChevronLeft } from "lucide-react";
 
-export default function NewGroupOpeningPage() {
+// 다국어 텍스트 데이터
+const CONTENTS = [
+  {
+    lang: "ko",
+    top1: "짜잔~",
+    top2: "2026년 만남의 축복이 도착했어요!",
+    top3: "선물 상자를 눌러 확인해봐요",
+    bottom: "선물 상자가 열릴 때까지 연속으로 눌러봐요!",
+  },
+  {
+    lang: "en",
+    top1: "Ta-da!",
+    top2: "The 2026 blessing of our meeting has arrived!",
+    top3: "Tap the gift box to check it out.",
+    bottom: "Keep tapping until the box opens!",
+  },
+  {
+    lang: "cn",
+    top1: "嘭！",
+    top2: "2026年的相遇祝福已经到啦！",
+    top3: "点击礼物盒查看吧。",
+    bottom: "连续点击，直到盒子打开！",
+  },
+  {
+    lang: "jp",
+    top1: "じゃじゃーん！",
+    top2: "2026年の\n出会いの祝福が届きました！",
+    top3: "ボックスをタップして\n確認してみてください。",
+    bottom: "箱が開くまで連続でタップして！",
+  },
+  {
+    lang: "es",
+    top1: "¡Tarán!",
+    top2: "¡La bendición de nuestro encuentro 2026 ha llegado!",
+    top3: "Haz clic en la caja de regalo para verlo.",
+    bottom: "¡Sigue pulsando hasta que se abra la caja!",
+  },
+];
+
+export default function EventPage() {
   const navigate = useNavigate();
-  const [tapCount, setTapCount] = useState(0); // 3회 탭 후, 라우팅 처리
-  const [isExploding, setIsExploding] = useState(false);
+  const location = useLocation();
+  const [index, setIndex] = useState(0);
+  const [fade, setFade] = useState(true);
+
+  // 이전 페이지(MainPage)에서 전달된 사용자 정보
+  const user = location.state?.user;
 
   useEffect(() => {
-    if (tapCount > 0 && tapCount < 3) {
-      const resetTimer = window.setTimeout(() => {
-        setTapCount(0);
-      }, 1000);
-      return () => clearTimeout(resetTimer);
-    }
-  }, [tapCount, navigate]);
+    const interval = setInterval(() => {
+      setFade(false);
+      setTimeout(() => {
+        setIndex((prev) => (prev + 1) % CONTENTS.length);
+        setFade(true);
+      }, 500);
+    }, 2500);
 
-  const handleTap = () => {
-    if (tapCount < 3) {
-      const newCount = tapCount + 1;
-      setTapCount(newCount);
+    return () => clearInterval(interval);
+  }, []);
 
-      // 3번째 탭이면 폭발 후 라우팅
-      if (newCount === 3) {
-        setIsExploding(true);
-        window.setTimeout(() => {
-          navigate("/new-group-check-my-group");
-        }, 500);
-      }
-    }
+  const handleBack = () => {
+    navigate(-1);
   };
 
-  // tapCount에 따른 크기 계산 (0: 1배, 1: 1.5배, 2: 2배, 3: 3배)
-  const getScale = () => {
-    if (tapCount === 0) return 1;
-    if (tapCount === 1) return 1.5;
-    if (tapCount === 2) return 2;
-    return 3;
+  const handleGiftOpen = () => {
+    // 선물 상자가 열리면 다음 페이지로 이동
+    navigate("/new-group-check-my-group", { state: { user } });
   };
 
-  // tapCount에 따른 떨림 강도 클래스
-  const getShakeClass = () => {
-    if (tapCount === 0) return "";
-    if (tapCount === 1) return "shake-level-1";
-    if (tapCount === 2) return "shake-level-2";
-    return "shake-level-3";
-  };
+  const currentContent = CONTENTS[index];
 
   return (
-    <div className="container">
-      <p className="message">
-        새로운 그룹이 도착했습니다. 선물상자를 꾹~꾹 눌러보세요 ({tapCount}/3)
-      </p>
-      {/**
-       * @todo 선물상자 클릭 영역을 Figma에 정의된 대로 크게 만들기
-       */}
+    <div
+      style={{
+        minHeight: "100vh",
+        backgroundColor: colors.background,
+        display: "flex",
+        flexDirection: "column",
+        position: "relative",
+      }}
+    >
+      {/* 헤더 (뒤로가기 버튼) */}
       <div
-        className={`gift-box ${getShakeClass()} ${
-          isExploding ? "exploding" : ""
-        }`}
-        style={
-          {
-            "--scale-value": getScale(),
-          } as React.CSSProperties
-        }
-        onClick={handleTap}
-        onTouchEnd={(e) => {
-          e.preventDefault();
-          handleTap();
+        style={{
+          padding: `${spacing.lg}px ${spacing.md}px`,
+          position: "absolute",
+          top: 0,
+          left: 0,
+          width: "100%",
+          zIndex: 10,
         }}
       >
-        🎁
+        <button
+          onClick={handleBack}
+          style={{
+            background: "none",
+            border: "none",
+            padding: spacing.sm,
+            cursor: "pointer",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          <Icon icon={ChevronLeft} size="lg" color={colors.grey900} />
+        </button>
+      </div>
+
+      {/* 메인 컨텐츠 */}
+      <div
+        style={{
+          flex: 1,
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          padding: spacing.xl,
+          paddingTop: "15vh", // 상단에서 15% 정도 내려온 위치에서 시작
+        }}
+      >
+        {/* 롤링 텍스트 영역 - 높이 고정으로 UI 흔들림 방지 */}
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            textAlign: "center",
+            gap: spacing.sm,
+            height: "140px", // 텍스트 영역 높이 고정
+            marginBottom: "160px", // 선물 상자와의 간격 고정 (60px -> 160px로 100px 증가)
+            opacity: fade ? 1 : 0,
+            transition: "opacity 0.5s ease-in-out",
+          }}
+        >
+          <Typography5_Semibold style={{ color: colors.grey600 }}>
+            {currentContent.top1}
+          </Typography5_Semibold>
+          <Typography2_Semibold
+            style={{
+              color: colors.grey700,
+              marginBottom: spacing.xs,
+              wordBreak: "keep-all",
+              whiteSpace: "pre-line", // 줄바꿈 적용을 위해 추가
+              lineHeight: 1.4,
+            }}
+          >
+            {currentContent.top2}
+          </Typography2_Semibold>
+          <Typography1_Bold
+            style={{
+              color: "#333D4B",
+              fontSize: "22px",
+              wordBreak: "keep-all",
+              whiteSpace: "pre-line", // 줄바꿈 적용을 위해 추가
+              lineHeight: 1.3,
+            }}
+          >
+            {currentContent.top3}
+          </Typography1_Bold>
+        </div>
+
+        {/* 선물 상자 */}
+        <div style={{ flex: 1, display: "flex", alignItems: "flex-start" }}>
+          <GiftBox
+            onComplete={handleGiftOpen}
+            minTaps={10}
+            children={
+              <div style={{ fontSize: "120px", lineHeight: 1 }}>🎁</div>
+            }
+          />
+        </div>
+      </div>
+
+      {/* 하단 안내 텍스트 */}
+      <div
+        style={{
+          padding: `${spacing.xl}px`,
+          paddingBottom: "60px", // 하단 여백 넉넉하게
+          display: "flex",
+          justifyContent: "center",
+        }}
+      >
+        <Typography5_Semibold
+          style={{
+            color: "#009E7F", // 청록색 (이미지 참고)
+            opacity: fade ? 1 : 0,
+            transition: "opacity 0.5s ease-in-out",
+            textAlign: "center",
+          }}
+        >
+          {currentContent.bottom}
+        </Typography5_Semibold>
       </div>
     </div>
   );
