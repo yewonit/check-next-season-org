@@ -13,13 +13,20 @@ import { Icon } from '../components/atoms/Icon';
 import { Loader, LoaderSpinner } from '../components/atoms/Loader';
 import { Skeleton } from '../components/atoms/Skeleton';
 import { GradientBackground } from '../components/atoms/GradientBackground';
+import { Checkbox } from '../components/atoms/Checkbox';
+import { Switch } from '../components/atoms/Switch';
 import { Search, ArrowRight, Check } from 'lucide-react';
+import { useState } from 'react';
 
 export default function MainPage() {
   /**
    * @todo 이름 입력
    * @todo 올네이션 그룹의 경우 라우팅 버튼 또는 문구 필요
    */
+  
+  // Form Atoms 테스트용 state
+  const [checkboxChecked, setCheckboxChecked] = useState(false);
+  const [switchChecked, setSwitchChecked] = useState(false);
   
   return (
     <div
@@ -261,7 +268,7 @@ export default function MainPage() {
         </div>
 
         {/* 그라데이션 테스트 */}
-        <div>
+        <div style={{ marginBottom: spacing.xxl }}>
           <Typography2_Semibold style={{ marginBottom: spacing.md }}>
             GradientBackground 컴포넌트
           </Typography2_Semibold>
@@ -286,6 +293,85 @@ export default function MainPage() {
                 Premium 그라데이션
               </Typography3_Medium>
             </GradientBackground>
+          </div>
+        </div>
+
+        {/* Form Atoms 테스트 */}
+        <div>
+          <Typography2_Semibold style={{ marginBottom: spacing.md }}>
+            Form Atoms 컴포넌트
+          </Typography2_Semibold>
+          
+          {/* Checkbox 테스트 */}
+          <div style={{ marginBottom: spacing.lg }}>
+            <Typography3_Medium style={{ marginBottom: spacing.md }}>
+              Checkbox 컴포넌트
+            </Typography3_Medium>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: spacing.md }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: spacing.md }}>
+                <Checkbox.Circle
+                  checked={checkboxChecked}
+                  onCheckedChange={setCheckboxChecked}
+                  aria-label="전체 동의"
+                />
+                <Typography5_Regular>전체 동의</Typography5_Regular>
+              </div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: spacing.md }}>
+                <Checkbox.Circle
+                  checked={true}
+                  onCheckedChange={() => {}}
+                  aria-label="이용약관 동의 (체크됨)"
+                />
+                <Typography5_Regular>(필수) 이용약관 동의</Typography5_Regular>
+              </div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: spacing.md }}>
+                <Checkbox.Circle
+                  checked={false}
+                  onCheckedChange={() => {}}
+                  disabled
+                  aria-label="비활성화된 체크박스"
+                />
+                <Typography5_Regular style={{ color: colors.grey400 }}>
+                  비활성화된 체크박스
+                </Typography5_Regular>
+              </div>
+            </div>
+          </div>
+
+          {/* Switch 테스트 */}
+          <div>
+            <Typography3_Medium style={{ marginBottom: spacing.md }}>
+              Switch 컴포넌트
+            </Typography3_Medium>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: spacing.md }}>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                <Typography5_Regular>푸시 알림</Typography5_Regular>
+                <Switch
+                  checked={switchChecked}
+                  onChange={setSwitchChecked}
+                  aria-label="푸시 알림"
+                />
+              </div>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                <Typography5_Regular>알림 받기 (켜짐)</Typography5_Regular>
+                <Switch
+                  checked={true}
+                  onChange={() => {}}
+                  aria-label="알림 받기"
+                />
+              </div>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                <Typography5_Regular style={{ color: colors.grey400 }}>
+                  비활성화된 스위치
+                </Typography5_Regular>
+                <Switch
+                  checked={false}
+                  onChange={() => {}}
+                  disabled
+                  aria-label="비활성화된 스위치"
+                />
+              </div>
+            </div>
           </div>
         </div>
       </section>
