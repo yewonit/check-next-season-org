@@ -3,12 +3,12 @@
  * 입력 필드 컴포넌트
  */
 
-import type { InputHTMLAttributes, CSSProperties, ReactNode } from "react";
-import { colors, spacing } from "../../../styles/foundation";
-import { Typography7_Regular } from "../../atoms/Typography";
+import type { InputHTMLAttributes, CSSProperties, ReactNode } from 'react';
+import { colors, spacing } from '../../../styles/foundation';
+import { Typography7_Regular } from '../../atoms/Typography';
 
 export interface TextFieldProps
-  extends Omit<InputHTMLAttributes<HTMLInputElement>, "onChange"> {
+  extends Omit<InputHTMLAttributes<HTMLInputElement>, 'onChange'> {
   value: string;
   onChange: (value: string) => void;
   error?: string;
@@ -32,60 +32,60 @@ export const TextField = ({
   ...props
 }: TextFieldProps) => {
   const containerStyle: CSSProperties = {
-    display: "flex",
-    flexDirection: "column",
+    display: 'flex',
+    flexDirection: 'column',
     gap: spacing.sm,
     ...style,
   };
 
   const inputWrapperStyle: CSSProperties = {
-    position: "relative",
-    display: "flex",
-    alignItems: "center",
-    width: "100%",
+    position: 'relative',
+    display: 'flex',
+    alignItems: 'center',
+    width: '100%',
   };
 
   const inputStyle: CSSProperties = {
-    width: "100%",
-    height: "52px",
-    padding: `0 ${rightIcon || suffix ? "48px" : spacing.xl}px 0 ${
-      leftIcon ? "48px" : spacing.xl
+    width: '100%',
+    height: '52px',
+    padding: `0 ${rightIcon || suffix ? '48px' : spacing.xl}px 0 ${
+      leftIcon ? '48px' : spacing.xl
     }px`,
     border: `1px solid ${error ? colors.red500 : colors.grey300}`,
-    borderRadius: "12px",
+    borderRadius: '12px',
     backgroundColor: disabled ? colors.grey100 : colors.background,
     color: colors.grey900,
-    fontSize: "17px",
-    lineHeight: "25.5px",
-    transition: "all 0.2s ease",
+    fontSize: '17px',
+    lineHeight: '25.5px',
+    transition: 'all 0.2s ease',
     ...(disabled && {
-      cursor: "not-allowed",
+      cursor: 'not-allowed',
       opacity: 0.5,
     }),
   };
 
   const leftIconStyle: CSSProperties = {
-    position: "absolute",
+    position: 'absolute',
     left: spacing.md,
-    display: "flex",
-    alignItems: "center",
+    display: 'flex',
+    alignItems: 'center',
     color: colors.grey500,
   };
 
   const rightIconStyle: CSSProperties = {
-    position: "absolute",
+    position: 'absolute',
     right: spacing.md,
-    display: "flex",
-    alignItems: "center",
+    display: 'flex',
+    alignItems: 'center',
     color: colors.grey500,
   };
 
   const suffixStyle: CSSProperties = {
-    position: "absolute",
+    position: 'absolute',
     right: spacing.md,
     color: colors.grey600,
-    fontSize: "17px",
-    lineHeight: "25.5px",
+    fontSize: '17px',
+    lineHeight: '25.5px',
   };
 
   return (
@@ -94,7 +94,7 @@ export const TextField = ({
         {leftIcon && <div style={leftIconStyle}>{leftIcon}</div>}
         <input
           {...props}
-          type={props.type || "text"}
+          type={props.type || 'text'}
           value={value}
           onChange={(e) => onChange(e.target.value)}
           disabled={disabled}
@@ -109,7 +109,7 @@ export const TextField = ({
           }}
           onBlur={(e) => {
             e.target.style.borderColor = error ? colors.red500 : colors.grey300;
-            e.target.style.boxShadow = "none";
+            e.target.style.boxShadow = 'none';
           }}
         />
         {rightIcon && <div style={rightIconStyle}>{rightIcon}</div>}

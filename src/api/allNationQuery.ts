@@ -1,17 +1,17 @@
-import { useQuery } from "@tanstack/react-query";
+import { useQuery } from '@tanstack/react-query';
 import {
   getAllNation,
   getAllNationSoonMember,
   getAllNationNext,
-} from "./allNation";
+} from './allNation';
 
 // Query Key Factory
 export const allNationKeys = {
-  all: ["allNation"] as const,
-  soonList: () => [...allNationKeys.all, "soonList"] as const,
-  soonMember: (id: number) => [...allNationKeys.all, "soonMember", id] as const,
+  all: ['allNation'] as const,
+  soonList: () => [...allNationKeys.all, 'soonList'] as const,
+  soonMember: (id: number) => [...allNationKeys.all, 'soonMember', id] as const,
   nextByUserId: (userId: number) =>
-    [...allNationKeys.all, "next", userId] as const,
+    [...allNationKeys.all, 'next', userId] as const,
 };
 
 // 올네이션 순 리스트 조회

@@ -5,7 +5,10 @@
 
 import { ReactNode, CSSProperties } from 'react';
 import { colors, spacing } from '../../../styles/foundation';
-import { Typography2_Semibold, Typography5_Regular } from '../../atoms/Typography';
+import {
+  Typography2_Semibold,
+  Typography5_Regular,
+} from '../../atoms/Typography';
 import { Icon } from '../../atoms/Icon';
 import { CheckCircle, XCircle, AlertCircle } from 'lucide-react';
 
@@ -118,4 +121,3 @@ export const Result = ({
     </div>
   );
 };
-

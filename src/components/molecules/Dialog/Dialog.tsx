@@ -5,7 +5,10 @@
 
 import { ReactNode, CSSProperties, useEffect } from 'react';
 import { colors, spacing, shadows } from '../../../styles/foundation';
-import { Typography3_Semibold, Typography5_Regular } from '../../atoms/Typography';
+import {
+  Typography3_Semibold,
+  Typography5_Regular,
+} from '../../atoms/Typography';
 import { Button } from '../../atoms/Button';
 
 export interface DialogButton {
@@ -154,4 +157,3 @@ export const Dialog = ({
     </>
   );
 };
-

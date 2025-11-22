@@ -1,9 +1,9 @@
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { checkNameApiRequest, type CheckNameResponse } from "./name";
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { checkNameApiRequest, type CheckNameResponse } from './name';
 
 // Query Key Factory
 export const checkNameKeys = {
-  all: ["checkName"] as const,
+  all: ['checkName'] as const,
   byName: (name: string) => [...checkNameKeys.all, name] as const,
 };
 

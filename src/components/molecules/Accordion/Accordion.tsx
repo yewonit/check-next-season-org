@@ -5,7 +5,10 @@
 
 import { ReactNode, useState, CSSProperties } from 'react';
 import { colors, spacing } from '../../../styles/foundation';
-import { Typography5_Medium, Typography5_Regular } from '../../atoms/Typography';
+import {
+  Typography5_Medium,
+  Typography5_Regular,
+} from '../../atoms/Typography';
 import { Icon } from '../../atoms/Icon';
 import { ChevronDown } from 'lucide-react';
 
@@ -86,4 +89,3 @@ export const Accordion = ({ children, className, style }: AccordionProps) => {
 
 // Accordion에 Item 서브컴포넌트 추가
 (Accordion as any).Item = AccordionItem;
-

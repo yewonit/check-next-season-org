@@ -5,7 +5,10 @@
 
 import { ReactNode, CSSProperties, useEffect } from 'react';
 import { colors, spacing, shadows } from '../../../styles/foundation';
-import { Typography3_Semibold, Typography5_Regular } from '../../atoms/Typography';
+import {
+  Typography3_Semibold,
+  Typography5_Regular,
+} from '../../atoms/Typography';
 import { Icon } from '../../atoms/Icon';
 import { X } from 'lucide-react';
 
@@ -183,7 +186,11 @@ const BottomSheetHeader = ({ children }: { children: ReactNode }) => (
 /**
  * BottomSheet.HeaderDescription 서브컴포넌트
  */
-const BottomSheetHeaderDescription = ({ children }: { children: ReactNode }) => (
+const BottomSheetHeaderDescription = ({
+  children,
+}: {
+  children: ReactNode;
+}) => (
   <Typography5_Regular style={{ color: colors.grey600, marginTop: spacing.sm }}>
     {children}
   </Typography5_Regular>
@@ -226,7 +233,11 @@ interface BottomSheetSelectProps {
   options: BottomSheetSelectOption[];
 }
 
-const BottomSheetSelect = ({ value, onChange, options }: BottomSheetSelectProps) => {
+const BottomSheetSelect = ({
+  value,
+  onChange,
+  options,
+}: BottomSheetSelectProps) => {
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: spacing.xs }}>
       {options.map((option) => (
@@ -252,7 +263,8 @@ const BottomSheetSelect = ({ value, onChange, options }: BottomSheetSelectProps)
         >
           <Typography5_Regular
             style={{
-              color: value === option.value ? colors.primary500 : colors.grey900,
+              color:
+                value === option.value ? colors.primary500 : colors.grey900,
             }}
           >
             {option.name}
@@ -270,5 +282,10 @@ const BottomSheetSelect = ({ value, onChange, options }: BottomSheetSelectProps)
 (BottomSheet as any).DoubleCTA = BottomSheetDoubleCTA;
 (BottomSheet as any).Select = BottomSheetSelect;
 
-export { BottomSheetHeader, BottomSheetHeaderDescription, BottomSheetCTA, BottomSheetDoubleCTA, BottomSheetSelect };
-
+export {
+  BottomSheetHeader,
+  BottomSheetHeaderDescription,
+  BottomSheetCTA,
+  BottomSheetDoubleCTA,
+  BottomSheetSelect,
+};

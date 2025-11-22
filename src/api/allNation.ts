@@ -1,5 +1,5 @@
-import axiosInstance from "./axios";
-import type { UserInfo } from "./name";
+import axiosInstance from './axios';
+import type { UserInfo } from './name';
 
 interface AllNationSoonItem {
   id: number;
@@ -20,7 +20,7 @@ interface AllNationSoonResponse {
 
 export const getAllNation = async (): Promise<AllNationSoonResponse> => {
   const response = await axiosInstance.get<AllNationSoonResponse>(
-    "/seasons/all-nations"
+    '/seasons/all-nations'
   );
   return response.data;
 };

@@ -5,7 +5,12 @@
 
 import { ReactNode, CSSProperties } from 'react';
 import { colors, spacing } from '../../../styles/foundation';
-import { Typography5_Medium, Typography5_Regular, Typography6_Regular, Typography7_Regular } from '../../atoms/Typography';
+import {
+  Typography5_Medium,
+  Typography5_Regular,
+  Typography6_Regular,
+  Typography7_Regular,
+} from '../../atoms/Typography';
 
 export type ListRowBorder = 'none' | 'full' | 'indented';
 
@@ -83,9 +88,7 @@ export const ListRow = ({
           {left}
         </div>
       )}
-      <div style={{ flex: 1, minWidth: 0 }}>
-        {contents}
-      </div>
+      <div style={{ flex: 1, minWidth: 0 }}>{contents}</div>
       {right && (
         <div style={{ flexShrink: 0, display: 'flex', alignItems: 'center' }}>
           {right}
@@ -115,10 +118,12 @@ const ListRowTexts = ({ type, top, bottom, label }: ListRowTextsProps) => {
           {top}
         </Typography5_Medium>
       );
-    
+
     case '2RowTypeA':
       return (
-        <div style={{ display: 'flex', flexDirection: 'column', gap: spacing.xs }}>
+        <div
+          style={{ display: 'flex', flexDirection: 'column', gap: spacing.xs }}
+        >
           <Typography5_Medium style={{ color: colors.grey900 }}>
             {top}
           </Typography5_Medium>
@@ -129,10 +134,12 @@ const ListRowTexts = ({ type, top, bottom, label }: ListRowTextsProps) => {
           )}
         </div>
       );
-    
+
     case '3RowTypeA':
       return (
-        <div style={{ display: 'flex', flexDirection: 'column', gap: spacing.xs }}>
+        <div
+          style={{ display: 'flex', flexDirection: 'column', gap: spacing.xs }}
+        >
           {label && (
             <Typography7_Regular style={{ color: colors.grey500 }}>
               {label}
@@ -148,7 +155,7 @@ const ListRowTexts = ({ type, top, bottom, label }: ListRowTextsProps) => {
           )}
         </div>
       );
-    
+
     default:
       return null;
   }
@@ -158,4 +165,3 @@ const ListRowTexts = ({ type, top, bottom, label }: ListRowTextsProps) => {
 (ListRow as any).Texts = ListRowTexts;
 
 export { ListRowTexts };
-

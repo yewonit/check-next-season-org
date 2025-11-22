@@ -1,27 +1,27 @@
-import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { colors, spacing } from "../styles/foundation";
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { colors, spacing } from '../styles/foundation';
 import {
   Typography2_Semibold,
   Typography3_Medium,
   Typography5_Medium,
   Typography6_Regular,
-} from "../components/atoms/Typography";
-import { Icon } from "../components/atoms/Icon";
-import { Button } from "../components/atoms/Button";
-import { TextField } from "../components/molecules/TextField";
-import { ListRow } from "../components/molecules/ListRow";
-import { BottomSheet } from "../components/molecules/BottomSheet";
-import { ToastProvider } from "../components/molecules/Toast";
-import { ChevronRight, Globe } from "lucide-react";
-import coramdeoLogo from "../assets/coramdeo_logo.png";
-import { useCheckNameQuery } from "../api/checkNameQuery";
-import type { UserInfo } from "../api/name";
-import { useUserStore } from "../stores/userStore";
-import BottomOffsetContainer from "../hooks/BottomOffsetContainer";
+} from '../components/atoms/Typography';
+import { Icon } from '../components/atoms/Icon';
+import { Button } from '../components/atoms/Button';
+import { TextField } from '../components/molecules/TextField';
+import { ListRow } from '../components/molecules/ListRow';
+import { BottomSheet } from '../components/molecules/BottomSheet';
+import { ToastProvider } from '../components/molecules/Toast';
+import { ChevronRight, Globe } from 'lucide-react';
+import coramdeoLogo from '../assets/coramdeo_logo.png';
+import { useCheckNameQuery } from '../api/checkNameQuery';
+import type { UserInfo } from '../api/name';
+import { useUserStore } from '../stores/userStore';
+import BottomOffsetContainer from '../hooks/BottomOffsetContainer';
 
 // 디자인 시안 스타일 변수 (TextField 커스텀용)
-const PRIMARY_COLOR_CUSTOM = "#009E7F";
+const PRIMARY_COLOR_CUSTOM = '#009E7F';
 
 function MainPageContent() {
   const navigate = useNavigate();
@@ -30,9 +30,9 @@ function MainPageContent() {
       state.setSelectedUser
   );
 
-  const [name, setName] = useState("");
+  const [name, setName] = useState('');
   const [isBottomSheetOpen, setIsBottomSheetOpen] = useState(false);
-  const [error, setError] = useState("");
+  const [error, setError] = useState('');
 
   // API 호출을 위한 query (enabled: false로 수동 제어)
   const {
@@ -49,7 +49,7 @@ function MainPageContent() {
     let timeoutId: ReturnType<typeof setTimeout>;
     if (queryError) {
       timeoutId = setTimeout(() => {
-        setError("");
+        setError('');
       }, 2000);
     }
     return () => {
@@ -58,13 +58,13 @@ function MainPageContent() {
   }, [queryError]);
 
   const handleSearch = async () => {
-    setError("");
+    setError('');
 
     // API 호출 (refetch)
     const result = await refetch();
 
     if (result.isError) {
-      setError("이름을 잘못 작성했는지 확인해주세요.");
+      setError('이름을 잘못 작성했는지 확인해주세요.');
       return;
     }
 
@@ -75,10 +75,10 @@ function MainPageContent() {
       } else {
         // 사용자가 1명이면 바로 store에 저장하고 이동
         setSelectedUser(result.data.data[0]);
-        navigate("/event");
+        navigate('/event');
       }
     } else {
-      setError("검색 결과가 없습니다.");
+      setError('검색 결과가 없습니다.');
     }
   };
 
@@ -87,28 +87,28 @@ function MainPageContent() {
 
     // 빈 값 체크
     if (!value.trim()) {
-      setError("이름을 입력해주세요.");
+      setError('이름을 입력해주세요.');
       return;
     }
 
     // 최소 길이 체크
     if (value.trim().length < 2) {
-      setError("이름은 두 글자 이상 입력해주세요.");
+      setError('이름은 두 글자 이상 입력해주세요.');
       return;
     }
 
     // 이스터에그
-    if (value.trim() === "김삼순97") {
-      setError("정신차리세요❤️");
+    if (value.trim() === '김삼순97') {
+      setError('정신차리세요❤️');
       return;
     }
 
     // 에러 없음
-    setError("");
+    setError('');
   };
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === "Enter") {
+    if (e.key === 'Enter') {
       handleSearch();
     }
   };
@@ -116,40 +116,41 @@ function MainPageContent() {
   const handleUserSelect = (user: UserInfo) => {
     setIsBottomSheetOpen(false);
     setSelectedUser(user);
-    navigate("/event");
+    navigate('/event');
   };
 
   const handleAllNationClick = () => {
-    navigate("/all-nation-old-group");
+    navigate('/all-nation-old-group');
   };
 
   return (
     <div
       style={{
-        minHeight: "100vh",
+        minHeight: '100vh',
         backgroundColor: colors.background,
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "stretch",
-        paddingTop: "235px",
-        position: "relative",
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'stretch',
+        justifyContent: 'space-between',
+        paddingTop: '235px',
+        position: 'relative',
       }}
     >
       <div
         style={{
           flex: 1,
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
           gap: spacing.xl,
         }}
       >
         {/* 로고 및 타이틀 */}
         <div
           style={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
             gap: spacing.sm,
             marginBottom: spacing.xl,
           }}
@@ -158,34 +159,33 @@ function MainPageContent() {
             src={coramdeoLogo}
             alt="Coram Deo"
             style={{
-              width: "101px",
-              height: "auto",
+              width: '101px',
+              height: 'auto',
               marginBottom: spacing.sm,
             }}
           />
           <div
             style={{
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
               gap: spacing.xs,
             }}
           >
             <Typography6_Regular
-              style={{ textAlign: "center", color: colors.grey600 }}
+              style={{ textAlign: 'center', color: colors.grey600 }}
             >
               2026년 새로운 여정을 기대하며
             </Typography6_Regular>
             <Typography2_Semibold
-              style={{ textAlign: "center", color: colors.grey900 }}
+              style={{ textAlign: 'center', color: colors.grey900 }}
             >
               이름을 입력해주세요
             </Typography2_Semibold>
           </div>
         </div>
-
         {/* 입력 폼 (TextField 컴포넌트 활용) */}
-        <div style={{ width: "100%", maxWidth: "320px" }}>
+        <div style={{ width: '100%', maxWidth: '320px' }}>
           <TextField
             value={name}
             onChange={handleChangeName}
@@ -225,23 +225,23 @@ function MainPageContent() {
       <div
         style={{
           padding: `${spacing.xl}px`,
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
           gap: spacing.lg,
-          paddingBottom: "40px",
+          paddingBottom: '40px',
         }}
       >
         {/* 올네이션 링크 */}
         <button
           onClick={handleAllNationClick}
           style={{
-            background: "none",
-            border: "none",
-            display: "flex",
-            alignItems: "center",
+            background: 'none',
+            border: 'none',
+            display: 'flex',
+            alignItems: 'center',
             gap: spacing.xs,
-            cursor: "pointer",
+            cursor: 'pointer',
             padding: spacing.sm,
           }}
         >
@@ -261,13 +261,13 @@ function MainPageContent() {
             onClick={handleSearch}
             disabled={isButtonDisabled}
             style={{
-              width: "100%",
+              width: '100%',
               backgroundColor: isButtonDisabled
                 ? colors.primary200
                 : PRIMARY_COLOR_CUSTOM,
             }}
           >
-            {isLoading ? "조회 중..." : "확인하기"}
+            {isLoading ? '조회 중...' : '확인하기'}
           </Button>
         </BottomOffsetContainer>
       </div>
@@ -279,11 +279,11 @@ function MainPageContent() {
         header={
           <div style={{ paddingTop: spacing.sm }}>
             <Typography3_Medium
-              style={{ fontSize: "18px", marginBottom: "2px" }}
+              style={{ fontSize: '18px', marginBottom: '2px' }}
             >
               나의 정보를 클릭하여
             </Typography3_Medium>
-            <Typography3_Medium style={{ fontSize: "18px" }}>
+            <Typography3_Medium style={{ fontSize: '18px' }}>
               그룹과 순을 확인해보세요
             </Typography3_Medium>
           </div>
@@ -291,8 +291,8 @@ function MainPageContent() {
       >
         <div
           style={{
-            display: "flex",
-            flexDirection: "column",
+            display: 'flex',
+            flexDirection: 'column',
             gap: spacing.sm,
             paddingTop: spacing.md,
           }}
@@ -302,16 +302,16 @@ function MainPageContent() {
               key={`${user.phoneNumber}-${index}`}
               onClick={() => handleUserSelect(user)}
               style={{
-                backgroundColor: "#F9FAFB",
-                borderRadius: "12px",
+                backgroundColor: '#F9FAFB',
+                borderRadius: '12px',
                 padding: spacing.md, // ListRow 기본 패딩 오버라이드
               }}
               border="none"
               contents={
                 <div
                   style={{
-                    display: "flex",
-                    alignItems: "center",
+                    display: 'flex',
+                    alignItems: 'center',
                     gap: spacing.xs,
                   }}
                 >

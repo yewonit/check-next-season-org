@@ -3,7 +3,13 @@
  * Toast를 관리하는 Context Provider
  */
 
-import { createContext, useContext, useState, ReactNode, useCallback } from 'react';
+import {
+  createContext,
+  useContext,
+  useState,
+  ReactNode,
+  useCallback,
+} from 'react';
 import { Toast } from './Toast';
 import type { ToastType } from './Toast';
 import type { CSSProperties } from 'react';
@@ -75,10 +81,7 @@ export const ToastProvider = ({ children }: { children: ReactNode }) => {
       <div style={containerStyle}>
         {toasts.map((toast) => (
           <div key={toast.id} style={toastWrapperStyle}>
-            <Toast
-              type={toast.type}
-              onClose={() => removeToast(toast.id)}
-            >
+            <Toast type={toast.type} onClose={() => removeToast(toast.id)}>
               {toast.message}
             </Toast>
           </div>
@@ -87,4 +90,3 @@ export const ToastProvider = ({ children }: { children: ReactNode }) => {
     </ToastContext.Provider>
   );
 };
-

@@ -5,4 +5,3 @@
 export * from './Top';
 export * from './BottomCTA';
 export * from './Result';
-

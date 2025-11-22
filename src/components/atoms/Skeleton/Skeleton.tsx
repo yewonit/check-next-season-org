@@ -6,7 +6,12 @@
 import { CSSProperties } from 'react';
 import { colors, spacing } from '../../../styles/foundation';
 
-export type SkeletonType = 'text' | 'circular' | 'rectangular' | 'list' | 'card';
+export type SkeletonType =
+  | 'text'
+  | 'circular'
+  | 'rectangular'
+  | 'list'
+  | 'card';
 
 export interface SkeletonProps {
   type?: SkeletonType;
@@ -38,7 +43,12 @@ const getSkeletonStyle = (
         borderRadius: '4px',
       };
     case 'circular':
-      const size = typeof width === 'number' ? width : typeof height === 'number' ? height : 40;
+      const size =
+        typeof width === 'number'
+          ? width
+          : typeof height === 'number'
+            ? height
+            : 40;
       return {
         ...style,
         width: size,
@@ -86,7 +96,9 @@ export const Skeleton = ({
 
   if (count > 1) {
     return (
-      <div style={{ display: 'flex', flexDirection: 'column', gap: spacing.md }}>
+      <div
+        style={{ display: 'flex', flexDirection: 'column', gap: spacing.md }}
+      >
         {Array.from({ length: count }).map((_, index) => (
           <div key={index} style={style} className={className} />
         ))}
@@ -113,4 +125,3 @@ if (!document.head.querySelector('style[data-skeleton-pulse]')) {
   style.setAttribute('data-skeleton-pulse', 'true');
   document.head.appendChild(style);
 }
-
