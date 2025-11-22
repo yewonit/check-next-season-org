@@ -159,42 +159,53 @@ export default function CheckMyGroupPageForAllNationPage() {
         flexDirection: "column",
       }}
     >
-      {/* 헤더 (뒤로가기) */}
+      {/* 상단 고정 영역 (헤더 + 타이틀) */}
       <div
         style={{
-          padding: `${spacing.lg}px ${spacing.md}px`,
-          display: "flex",
-          alignItems: "center",
+          position: "sticky",
+          top: 0,
+          zIndex: 10,
+          backgroundColor: colors.background,
+          paddingBottom: spacing.md,
         }}
       >
-        <button
-          onClick={() => navigate(-1)}
+        {/* 헤더 (뒤로가기) */}
+        <div
           style={{
-            background: "none",
-            border: "none",
-            padding: spacing.sm,
-            cursor: "pointer",
-            borderRadius: "50%",
+            padding: `${spacing.lg}px ${spacing.md}px`,
             display: "flex",
             alignItems: "center",
-            justifyContent: "center",
-            color: "#333D4B", // 요청 색상
-            transition: "background-color 0.2s",
           }}
-          onMouseEnter={(e) =>
-            (e.currentTarget.style.backgroundColor = colors.grey100)
-          }
-          onMouseLeave={(e) =>
-            (e.currentTarget.style.backgroundColor = "transparent")
-          }
         >
-          <Icon icon={ChevronLeft} size="lg" />
-        </button>
-      </div>
+          <button
+            onClick={() => navigate(-1)}
+            style={{
+              background: "none",
+              border: "none",
+              padding: spacing.sm,
+              cursor: "pointer",
+              borderRadius: "50%",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              color: "#333D4B", // 요청 색상
+              transition: "background-color 0.2s",
+            }}
+            onMouseEnter={(e) =>
+              (e.currentTarget.style.backgroundColor = colors.grey100)
+            }
+            onMouseLeave={(e) =>
+              (e.currentTarget.style.backgroundColor = "transparent")
+            }
+          >
+            <Icon icon={ChevronLeft} size="lg" />
+          </button>
+        </div>
 
-      {/* 타이틀 영역 */}
-      <div style={{ padding: `0 ${spacing.xl}px ${spacing.xxl}px` }}>
-        <RollingTitle />
+        {/* 타이틀 영역 */}
+        <div style={{ padding: `0 ${spacing.xl}px ${spacing.sm}px` }}>
+          <RollingTitle />
+        </div>
       </div>
 
       {/* 그룹 리스트 영역 */}
