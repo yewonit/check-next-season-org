@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { colors, spacing } from "../styles/foundation";
 import {
@@ -18,17 +18,48 @@ export default function CheckMyNewGroupPage() {
       state.selectedUser
   );
 
-  const user = selectedUser || {
+  const initialUser = {
     name: "이름",
     organization: "N국_OOO그룹_OOO순",
-    organizationPeople: [],
     role: "순원",
     birthYear: "",
     phoneNumber: "",
+    organizationPeople: [],
   };
+
+  const user = selectedUser || initialUser;
 
   const [isListOpen, setIsListOpen] = useState(false);
 
+  /**
+   * 리더 추출 로직:
+   * 1. 순장이 있으면 순장을 사용
+   * 2. 순장이 없으면 부순장을 순장으로 승격
+   * 3. 순장도 부순장도 없으면 그룹장을 순장으로 승격
+   */
+  const leaders = useMemo(() => {
+    const foundCellLeader = user.organizationPeople.find(
+      (p) => p.role === "순장"
+    );
+    const foundAssistantCellLeader = user.organizationPeople.find(
+      (p) => p.role === "부순장"
+    );
+    const foundGroupLeader = user.organizationPeople.find(
+      (p) => p.role === "그룹장"
+    );
+
+    // 순장이 없으면 부순장 -> 그룹장 순으로 대체
+    const cellLeader =
+      foundCellLeader || foundAssistantCellLeader || foundGroupLeader;
+
+    return {
+      cellLeader,
+      assistantCellLeader: foundAssistantCellLeader,
+      groupLeader: foundGroupLeader,
+    };
+  }, [user.organizationPeople]);
+
+  const { cellLeader, assistantCellLeader, groupLeader } = leaders;
   const parseOrg = (orgName: string) => {
     if (!orgName) return { nation: "", group: "", cell: "" };
     const parts = orgName.split("_");
@@ -160,53 +191,63 @@ export default function CheckMyNewGroupPage() {
         }}
       >
         {/* organizationPeople에서 리더 정보 추출 */}
-        {user.organizationPeople.map(
-          (
-            person: { role: string; phoneNumber: string; name: string },
-            index: number
-          ) => {
-            const roleMap: Record<
-              string,
-              { icon: string; nameKo: string; nameEn: string }
-            > = {
-              순장: { icon: "👋🏻", nameKo: "순장", nameEn: "Cell Leader" },
-              부순장: {
-                icon: "📌",
-                nameKo: "부순장",
-                nameEn: "Assistant Cell Leader",
-              },
-              그룹장: { icon: "📌", nameKo: "그룹장", nameEn: "Group Leader" },
-            };
 
-            const roleInfo = roleMap[person.role] || {
-              icon: "📌",
-              nameKo: person.role,
-              nameEn: person.role,
-            };
-            const variant = person.role === "순장" ? "large" : "row";
+        {/* 1. 순장 카드 (Large) */}
+        <div
+          className="animate-slide-up"
+          style={{
+            animationDelay: "0.2s",
+            opacity: 0,
+            animationFillMode: "forwards",
+          }}
+        >
+          <LeaderCard
+            variant="large"
+            roleIcon="👋🏻"
+            roleName="순장"
+            name={cellLeader?.name || ""}
+            phone={cellLeader?.phoneNumber || ""}
+            roleEn="Leader"
+          />
+        </div>
 
-            return (
-              <div
-                key={person.phoneNumber}
-                className="animate-slide-up"
-                style={{
-                  animationDelay: `${0.2 + index * 0.2}s`,
-                  opacity: 0,
-                  animationFillMode: "forwards",
-                }}
-              >
-                <LeaderCard
-                  variant={variant}
-                  roleIcon={roleInfo.icon}
-                  roleName={roleInfo.nameKo}
-                  name={person.name}
-                  phone={person.phoneNumber}
-                  roleEn={roleInfo.nameEn}
-                />
-              </div>
-            );
-          }
-        )}
+        {/* 2. 부순장 카드 (Row) */}
+        <div
+          className="animate-slide-up"
+          style={{
+            animationDelay: "0.4s",
+            opacity: 0,
+            animationFillMode: "forwards",
+          }}
+        >
+          <LeaderCard
+            variant="row"
+            roleIcon="📌"
+            roleName="부순장"
+            name={assistantCellLeader?.name || ""}
+            phone={assistantCellLeader?.phoneNumber || ""}
+            roleEn="Support Leader"
+          />
+        </div>
+
+        {/* 3. 그룹장 카드 (Row) */}
+        <div
+          className="animate-slide-up"
+          style={{
+            animationDelay: "0.6s",
+            opacity: 0,
+            animationFillMode: "forwards",
+          }}
+        >
+          <LeaderCard
+            variant="row"
+            roleIcon="📌"
+            roleName="그룹장"
+            name={groupLeader?.name || ""}
+            phone={groupLeader?.phoneNumber || ""}
+            roleEn="Group Leader"
+          />
+        </div>
 
         {/* 4. 동역자 리스트 (Accordion) */}
         <div
@@ -371,7 +412,7 @@ const LeaderCard = ({
         style={{
           backgroundColor: "#F9FAFB",
           padding: spacing.xl,
-          borderRadius: "16px",
+          borderRadius: "10px",
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
@@ -403,24 +444,41 @@ const LeaderCard = ({
   return (
     <div
       style={{
-        backgroundColor: "#F9FAFB",
-        padding: spacing.lg,
-        borderRadius: "16px",
         display: "flex",
         alignItems: "center",
         justifyContent: "space-between",
         width: "100%",
-        boxShadow: "0 2px 8px rgba(0,0,0,0.03)",
       }}
     >
-      <div style={{ display: "flex", alignItems: "center", gap: spacing.sm }}>
-        <span style={{ fontSize: "20px" }}>{roleIcon}</span>
-        <div style={{ display: "flex", flexDirection: "column" }}>
-          <Typography3_Medium
-            style={{ color: colors.grey900, fontSize: "15px" }}
-          >
-            {roleName}
-          </Typography3_Medium>
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+          alignItems: "center",
+          // gap: spacing.sm,
+          backgroundColor: "#F9FAFB",
+          borderRadius: "10px",
+          boxShadow: "0 2px 8px rgba(0,0,0,0.03)",
+          width: "149px",
+        }}
+      >
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "start",
+          }}
+        >
+          <div style={{ display: "flex" }}>
+            <span style={{ fontSize: "20px" }}>{roleIcon}</span>
+
+            <Typography3_Medium
+              style={{ color: colors.grey900, fontSize: "15px" }}
+            >
+              {roleName}
+            </Typography3_Medium>
+          </div>
           {roleEn && (
             <span style={{ color: colors.grey400, fontSize: "11px" }}>
               {roleEn}
