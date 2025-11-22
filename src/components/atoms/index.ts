@@ -8,4 +8,7 @@ export * from './Icon';
 export * from './Loader';
 export * from './Skeleton';
 export * from './GradientBackground';
+export * from './Checkbox';
+export * from './Switch';
+export * from './Badge';
 
