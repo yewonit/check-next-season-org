@@ -34,7 +34,7 @@ export const getAllNationSoonMember = async (
   id: number
 ): Promise<AllNationSoonMemberResponse> => {
   const response = await axiosInstance.get<AllNationSoonMemberResponse>(
-    `/organizations/${id}`
+    `/organizations/${id}/members`
   );
   return response.data;
 };
