@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { colors, spacing } from '../styles/foundation';
 import {
@@ -18,7 +18,6 @@ import coramdeoLogo from '../assets/coramdeo_logo.png';
 import { useCheckNameQuery } from '../api/checkNameQuery';
 import type { UserInfo } from '../api/name';
 import { useUserStore } from '../stores/userStore';
-import BottomOffsetContainer from '../hooks/BottomOffsetContainer';
 
 // 디자인 시안 스타일 변수 (TextField 커스텀용)
 const PRIMARY_COLOR_CUSTOM = '#009E7F';
@@ -74,6 +73,8 @@ function MainPageContent() {
   const [name, setName] = useState('');
   const [isBottomSheetOpen, setIsBottomSheetOpen] = useState(false);
   const [error, setError] = useState('');
+  const bottomAreaRef = useRef<HTMLDivElement>(null);
+  const [bottomAreaHeight, setBottomAreaHeight] = useState(0);
 
   // API 호출을 위한 query (enabled: false로 수동 제어)
   const {
@@ -97,6 +98,19 @@ function MainPageContent() {
       clearTimeout(timeoutId);
     };
   }, [queryError]);
+
+  // 하단 버튼 영역 높이 계산
+  useEffect(() => {
+    const updateBottomHeight = () => {
+      if (bottomAreaRef.current) {
+        setBottomAreaHeight(bottomAreaRef.current.offsetHeight);
+      }
+    };
+
+    updateBottomHeight();
+    window.addEventListener('resize', updateBottomHeight);
+    return () => window.removeEventListener('resize', updateBottomHeight);
+  }, []);
 
   const handleSearch = async () => {
     setError('');
@@ -168,6 +182,7 @@ function MainPageContent() {
     <div
       style={{
         height: '100vh',
+        maxHeight: '100vh',
         backgroundColor: colors.background,
         display: 'flex',
         flexDirection: 'column',
@@ -184,8 +199,9 @@ function MainPageContent() {
           alignItems: 'center',
           justifyContent: 'center',
           gap: spacing.xl,
-          padding: `20px ${spacing.xl}px 180px`,
-          minHeight: 0, // flexbox에서 스크롤 방지
+          padding: `20px ${spacing.xl}px`,
+          paddingBottom: bottomAreaHeight > 0 ? `${bottomAreaHeight}px` : '180px',
+          minHeight: 0,
           overflow: 'hidden',
         }}
       >
@@ -265,6 +281,7 @@ function MainPageContent() {
 
       {/* 하단 링크 및 버튼 영역 */}
       <div
+        ref={bottomAreaRef}
         style={{
           position: 'absolute',
           bottom: 0,
@@ -294,24 +311,22 @@ function MainPageContent() {
         </button>
 
         {/* 확인하기 버튼 (Button 컴포넌트 활용) */}
-        <BottomOffsetContainer>
-          <Button
-            color="primary"
-            variant="fill"
-            size="xlarge"
-            display="full"
-            onClick={handleSearch}
-            disabled={isButtonDisabled}
-            style={{
-              width: '100%',
-              backgroundColor: isButtonDisabled
-                ? colors.primary200
-                : PRIMARY_COLOR_CUSTOM,
-            }}
-          >
-            {isLoading ? '조회 중...' : '확인하기'}
-          </Button>
-        </BottomOffsetContainer>
+        <Button
+          color="primary"
+          variant="fill"
+          size="xlarge"
+          display="full"
+          onClick={handleSearch}
+          disabled={isButtonDisabled}
+          style={{
+            width: '100%',
+            backgroundColor: isButtonDisabled
+              ? colors.primary200
+              : PRIMARY_COLOR_CUSTOM,
+          }}
+        >
+          {isLoading ? '조회 중...' : '확인하기'}
+        </Button>
       </div>
 
       {/* 중복자 선택 바텀시트 */}
