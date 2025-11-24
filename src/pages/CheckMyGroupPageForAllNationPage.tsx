@@ -51,7 +51,7 @@ const TITLES = [
   '2025년\n어떤 그룹에 있었나요?',
   'Which group was I\nin for 2025?',
   '2025年\n我属于哪个小组？',
-  '2025年、\n私はどのグループにいましたか？',
+  '2025年、\n私はどのグループ？',
   '¿En qué grupo\nestuve en 2025?',
 ];
 
@@ -194,13 +194,17 @@ export default function CheckMyGroupPageForAllNationPage() {
 
       {/* 그룹 리스트 영역 */}
       <div
+        className="hide-scrollbar"
         style={{
           flex: 1,
           padding: `0 ${spacing.xl}px ${spacing.xxl}px`,
           display: 'flex',
           flexDirection: 'column',
           gap: spacing.md,
-          overflowY: 'auto', // 스크롤 허용
+          overflowY: 'auto',
+          scrollbarWidth: 'none',
+          msOverflowStyle: 'none',
+          WebkitOverflowScrolling: 'touch',
         }}
       >
         {isGroupsLoading ? (
@@ -331,6 +335,25 @@ export default function CheckMyGroupPageForAllNationPage() {
           )}
         </div>
       </BottomSheet>
+
+      <style>{`
+        .hide-scrollbar {
+          -ms-overflow-style: none !important; /* IE and Edge */
+          scrollbar-width: none !important; /* Firefox */
+        }
+        .hide-scrollbar::-webkit-scrollbar {
+          display: none !important; /* Chrome, Safari, Opera */
+          width: 0 !important;
+          height: 0 !important;
+          background: transparent !important;
+        }
+        .hide-scrollbar::-webkit-scrollbar-track {
+          display: none !important;
+        }
+        .hide-scrollbar::-webkit-scrollbar-thumb {
+          display: none !important;
+        }
+      `}</style>
     </div>
   );
 }

@@ -168,19 +168,28 @@ export default function CheckMyNewGroupPage() {
         >
           <Typography2_Semibold
             style={{
-              color: colors.grey700,
-              marginBottom: spacing.xs,
-              fontSize: '16px', // 18px -> 16px
+              fontSize: '15px',
+              lineHeight: '22.5px',
+              letterSpacing: '-0.5px',
+              fontWeight: 500,
+              color: 'rgb(107, 118, 132)',
+              margin: 0,
+              textAlign: 'center',
+              fontFamily: 'Pretendard, sans-serif',
             }}
           >
             나는 2026년에
           </Typography2_Semibold>
           <Typography1_Bold
             style={{
-              fontSize: '26px', // 28px -> 26px
-              color: '#333D4B',
-              lineHeight: 1.3,
-              wordBreak: 'keep-all',
+              fontSize: '26px',
+              lineHeight: 1.2,
+              letterSpacing: '-0.5px',
+              fontWeight: 700,
+              color: 'rgb(51, 61, 75)',
+              margin: 0,
+              textAlign: 'center',
+              fontFamily: 'Pretendard, sans-serif',
             }}
           >
             {nation} {group} 그룹
@@ -201,7 +210,10 @@ export default function CheckMyNewGroupPage() {
           gap: spacing.md,
           position: 'relative',
           zIndex: 10,
+          scrollbarWidth: 'none', // Firefox
+          msOverflowStyle: 'none', // IE/Edge
         }}
+        className="hide-scrollbar"
       >
         {/* organizationPeople에서 리더 정보 추출 */}
 
@@ -236,7 +248,7 @@ export default function CheckMyNewGroupPage() {
           <LeaderCard
             variant="row"
             roleIcon="📌"
-            roleName="부순장"
+            roleName=" 부순장"
             name={assistantCellLeader?.name || ''}
             phone={formatPhoneNumber(assistantCellLeader?.phoneNumber || '')}
             roleEn="Support Leader"
@@ -255,7 +267,7 @@ export default function CheckMyNewGroupPage() {
           <LeaderCard
             variant="row"
             roleIcon="📌"
-            roleName="그룹장"
+            roleName=" 그룹장"
             name={groupLeader?.name || ''}
             phone={formatPhoneNumber(groupLeader?.phoneNumber || '')}
             roleEn="Group Leader"
@@ -303,9 +315,9 @@ export default function CheckMyNewGroupPage() {
               </Typography2_Semibold>
             </div>
             <Typography5_Regular
-              style={{ color: colors.grey500, marginTop: '4px' }}
+              style={{ color: colors.grey500, marginTop: '2px' }}
             >
-              Partners We’ll Serve With in 2026
+              Partners We'll Serve With in 2026
             </Typography5_Regular>
             <div style={{ marginTop: spacing.sm }}>
               <Icon
@@ -321,7 +333,7 @@ export default function CheckMyNewGroupPage() {
               style={{
                 display: 'flex',
                 flexDirection: 'column',
-                gap: spacing.sm,
+                gap: '4px',
                 marginTop: spacing.md,
                 animation: 'fadeIn 0.3s ease-in-out',
               }}
@@ -357,6 +369,7 @@ export default function CheckMyNewGroupPage() {
                           fontSize: '15px',
                           margin: 0,
                           lineHeight: 1.5,
+                          textAlign: 'center',
                         }}
                       >
                         {member.name}({member.birthYear.slice(-2)})
@@ -367,6 +380,7 @@ export default function CheckMyNewGroupPage() {
                           fontSize: '15px',
                           margin: 0,
                           lineHeight: 1.5,
+                          textAlign: 'center',
                         }}
                       >
                         {member.phoneNumber.slice(-4)}
@@ -396,6 +410,9 @@ export default function CheckMyNewGroupPage() {
         }
         .animate-slide-up {
           animation: slideUpFadeIn 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+        }
+        .hide-scrollbar::-webkit-scrollbar {
+          display: none; /* Chrome, Safari, Opera */
         }
       `}</style>
     </div>
@@ -429,7 +446,7 @@ const LeaderCard = ({
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
-          gap: spacing.xs,
+          gap: 0,
           width: '100%',
           boxShadow: '0 2px 8px rgba(0,0,0,0.03)',
         }}
@@ -437,7 +454,12 @@ const LeaderCard = ({
         <div style={{ display: 'flex', alignItems: 'center', gap: spacing.xs }}>
           <span style={{ fontSize: '20px' }}>{roleIcon}</span>
           <Typography3_Medium
-            style={{ color: colors.grey800, fontSize: '15px' }}
+            style={{
+              fontSize: '18px',
+              fontFamily: 'Pretendard, sans-serif',
+              fontWeight: 600,
+              color: '#333D4B',
+            }}
           >
             {roleName}{' '}
             <span style={{ color: colors.grey400, fontSize: '13px' }}>
@@ -446,7 +468,14 @@ const LeaderCard = ({
           </Typography3_Medium>
         </div>
         <Typography2_Semibold
-          style={{ color: colors.grey900, marginTop: '6px', fontSize: '20px' }}
+          style={{
+            fontSize: '18px',
+            fontFamily: 'Pretendard, sans-serif',
+            fontWeight: 500,
+            color: '#333D4B',
+            margin: 0,
+            textAlign: 'center',
+          }}
         >
           {name} / {phone}
         </Typography2_Semibold>
@@ -459,7 +488,7 @@ const LeaderCard = ({
       style={{
         display: 'flex',
         alignItems: 'center',
-        justifyContent: 'space-between',
+        gap: '7px',
         width: '100%',
       }}
     >
@@ -469,11 +498,11 @@ const LeaderCard = ({
           flexDirection: 'column',
           justifyContent: 'center',
           alignItems: 'center',
-          // gap: spacing.sm,
           backgroundColor: '#F9FAFB',
           borderRadius: '10px',
           boxShadow: '0 2px 8px rgba(0,0,0,0.03)',
           width: '149px',
+          padding: spacing.xs,
         }}
       >
         <div
@@ -481,6 +510,7 @@ const LeaderCard = ({
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'start',
+            gap: '2px',
           }}
         >
           <div style={{ display: 'flex' }}>
@@ -499,7 +529,14 @@ const LeaderCard = ({
           )}
         </div>
       </div>
-      <Typography3_Medium style={{ color: colors.grey700, fontSize: '15px' }}>
+      <Typography3_Medium
+        style={{
+          color: colors.grey700,
+          fontSize: '15px',
+          textAlign: 'center',
+          margin: 0,
+        }}
+      >
         {name} / {phone}
       </Typography3_Medium>
     </div>

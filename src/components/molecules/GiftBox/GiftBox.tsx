@@ -3,7 +3,7 @@
  * 선물 박스 인터랙션 컴포넌트 (애니메이션 페이지용)
  */
 
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useImperativeHandle, forwardRef } from 'react';
 import type { CSSProperties, ReactNode } from 'react';
 import { colors, spacing } from '../../../styles/foundation';
 import { Typography5_Regular } from '../../atoms/Typography';
@@ -17,13 +17,17 @@ export interface GiftBoxProps {
   children?: ReactNode;
 }
 
-export const GiftBox = ({
+export interface GiftBoxHandle {
+  handleTap: () => void;
+}
+
+export const GiftBox = forwardRef<GiftBoxHandle, GiftBoxProps>(({
   onComplete,
   minTaps = 1,
   className,
   showGuideText = false,
   children,
-}: GiftBoxProps) => {
+}, ref) => {
   const [tapCount, setTapCount] = useState(0);
   const [isExploding, setIsExploding] = useState(false);
   const scaleList = [60, 100, 150, 180];
@@ -72,16 +76,20 @@ export const GiftBox = ({
     }
   };
 
+  useImperativeHandle(ref, () => ({
+    handleTap,
+  }));
+
   const containerStyle: CSSProperties = {
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
     gap: spacing.xl,
-    cursor: isExploding ? 'default' : 'pointer',
     userSelect: 'none',
     WebkitTapHighlightColor: 'transparent',
     touchAction: 'manipulation',
+    pointerEvents: 'none', // 외부에서 클릭 처리하므로 pointer events 비활성화
   };
   const currentGiftSize = scaleList[Math.min(tapCount, scaleList.length - 1)];
   const rotationAngle = tapCount * 15;
@@ -105,7 +113,7 @@ export const GiftBox = ({
   };
 
   return (
-    <div className={className} style={containerStyle} onClick={handleTap}>
+    <div className={className} style={containerStyle}>
       <div style={giftBoxStyle}>
         {children ? children : <Gift size="100%" />}
       </div>
@@ -181,4 +189,4 @@ export const GiftBox = ({
       `}</style>
     </div>
   );
-};
+});
