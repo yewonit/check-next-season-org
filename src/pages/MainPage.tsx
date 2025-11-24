@@ -167,14 +167,13 @@ function MainPageContent() {
   return (
     <div
       style={{
-        minHeight: '100vh',
+        height: '100vh',
         backgroundColor: colors.background,
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'stretch',
-        justifyContent: 'space-between',
-        paddingTop: '235px',
         position: 'relative',
+        overflow: 'hidden',
       }}
     >
       <div
@@ -183,7 +182,11 @@ function MainPageContent() {
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
+          justifyContent: 'center',
           gap: spacing.xl,
+          padding: `20px ${spacing.xl}px 180px`,
+          minHeight: 0, // flexbox에서 스크롤 방지
+          overflow: 'hidden',
         }}
       >
         {/* 로고 및 타이틀 */}
@@ -193,7 +196,6 @@ function MainPageContent() {
             flexDirection: 'column',
             alignItems: 'center',
             gap: spacing.sm,
-            marginBottom: spacing.xl,
           }}
         >
           <img
@@ -264,12 +266,18 @@ function MainPageContent() {
       {/* 하단 링크 및 버튼 영역 */}
       <div
         style={{
+          position: 'absolute',
+          bottom: 0,
+          left: 0,
+          right: 0,
           padding: `${spacing.xl}px`,
+          paddingBottom: `calc(${spacing.xl}px + env(safe-area-inset-bottom))`,
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
           gap: spacing.lg,
-          paddingBottom: '40px',
+          backgroundColor: colors.background,
+          zIndex: 10,
         }}
       >
         {/* 올네이션 링크 */}
