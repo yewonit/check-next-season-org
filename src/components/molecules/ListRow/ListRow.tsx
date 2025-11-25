@@ -3,11 +3,10 @@
  * 리스트 아이템 컴포넌트
  */
 
-import { ReactNode, CSSProperties } from 'react';
+import { type ReactNode, type CSSProperties } from 'react';
 import { colors, spacing } from '../../../styles/foundation';
 import {
   Typography5_Medium,
-  Typography5_Regular,
   Typography6_Regular,
   Typography7_Regular,
 } from '../../atoms/Typography';
@@ -41,7 +40,7 @@ const getBorderStyle = (border: ListRowBorder): CSSProperties => {
   }
 };
 
-export const ListRow = ({
+export const ListRowBase = ({
   contents,
   left,
   right,
@@ -161,7 +160,12 @@ const ListRowTexts = ({ type, top, bottom, label }: ListRowTextsProps) => {
   }
 };
 
-// ListRow에 Texts 서브컴포넌트 추가
-(ListRow as any).Texts = ListRowTexts;
+type ListRowComponent = typeof ListRowBase & {
+  Texts: typeof ListRowTexts;
+};
 
-export { ListRowTexts };
+const ListRow = Object.assign(ListRowBase, {
+  Texts: ListRowTexts,
+}) as ListRowComponent;
+
+export { ListRow };
