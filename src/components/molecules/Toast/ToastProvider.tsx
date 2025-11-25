@@ -1,19 +1,9 @@
-/**
- * ToastProvider 컴포넌트
- * Toast를 관리하는 Context Provider
- */
-
-import {
-  createContext,
-  useContext,
-  useState,
-  ReactNode,
-  useCallback,
-} from 'react';
+import { useState, type ReactNode, useCallback } from 'react';
 import { Toast } from './Toast';
 import type { ToastType } from './Toast';
 import type { CSSProperties } from 'react';
 import { spacing } from '../../../styles/foundation';
+import { ToastContext } from './ToastContext';
 
 interface ToastItem {
   id: string;
@@ -21,20 +11,6 @@ interface ToastItem {
   message: ReactNode;
   duration?: number;
 }
-
-interface ToastContextType {
-  showToast: (type: ToastType, message: ReactNode, duration?: number) => void;
-}
-
-const ToastContext = createContext<ToastContextType | undefined>(undefined);
-
-export const useToast = () => {
-  const context = useContext(ToastContext);
-  if (!context) {
-    throw new Error('useToast must be used within ToastProvider');
-  }
-  return context;
-};
 
 export const ToastProvider = ({ children }: { children: ReactNode }) => {
   const [toasts, setToasts] = useState<ToastItem[]>([]);
