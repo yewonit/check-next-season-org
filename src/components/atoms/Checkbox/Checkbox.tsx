@@ -66,9 +66,9 @@ export const Checkbox = {
         }}
         tabIndex={disabled ? -1 : 0}
       >
-        {checked && (
-          <Icon icon={Check} size={16} color="white" aria-hidden="true" />
-        )}
+        {/* 접근성 정보 aria-hidden이 여기서 true인 이유는, Checkbox에서 Icon은 장식요소일 뿐이기 때문이다. 이미 상위 div에 aria-label이 있기 때문에,
+        시각적 장식요소인 Icon은 숨겨야 한다. */}
+        {checked && <Icon icon={Check} size={16} color="white" aria-hidden />}
       </div>
     );
   },
