@@ -3,8 +3,8 @@
  * 토스 디자인 시스템 기반의 토글 스위치 컴포넌트
  */
 
-import { CSSProperties } from 'react';
-import { colors, spacing } from '../../../styles/foundation';
+import { type CSSProperties } from 'react';
+import { colors } from '../../../styles/foundation';
 
 export interface SwitchProps {
   checked: boolean;

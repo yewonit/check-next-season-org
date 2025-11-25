@@ -3,12 +3,8 @@
  * 접었다 펼칠 수 있는 아코디언 컴포넌트
  */
 
-import { ReactNode, useState, CSSProperties } from 'react';
+import { type ReactNode, useState, type CSSProperties } from 'react';
 import { colors, spacing } from '../../../styles/foundation';
-import {
-  Typography5_Medium,
-  Typography5_Regular,
-} from '../../atoms/Typography';
 import { Icon } from '../../atoms/Icon';
 import { ChevronDown } from 'lucide-react';
 

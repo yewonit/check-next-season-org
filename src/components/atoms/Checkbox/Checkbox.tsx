@@ -3,8 +3,8 @@
  * 토스 디자인 시스템 기반의 원형 체크박스 컴포넌트
  */
 
-import { CSSProperties } from 'react';
-import { colors, spacing } from '../../../styles/foundation';
+import { type CSSProperties } from 'react';
+import { colors } from '../../../styles/foundation';
 import { Icon } from '../Icon';
 import { Check } from 'lucide-react';
 
@@ -47,12 +47,6 @@ export const Checkbox = {
       cursor: disabled ? 'not-allowed' : 'pointer',
       transition: 'all 0.2s ease',
       opacity: disabled ? 0.5 : 1,
-    };
-
-    const iconStyle: CSSProperties = {
-      color: 'white',
-      opacity: checked ? 1 : 0,
-      transition: 'opacity 0.2s ease',
     };
 
     return (

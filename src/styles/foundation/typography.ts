@@ -109,6 +109,3 @@ export const createTypographyStyle = (
 
 export type TypographyLevel = keyof typeof typography;
 export type FontWeight = keyof typeof fontWeights;
-
-// 타입도 export
-export { TypographyLevel, FontWeight };

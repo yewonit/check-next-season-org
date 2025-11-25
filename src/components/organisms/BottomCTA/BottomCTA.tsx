@@ -3,7 +3,7 @@
  * 화면 하단 고정 CTA 영역 컴포넌트
  */
 
-import { ReactNode, CSSProperties } from 'react';
+import { type ReactNode, type CSSProperties } from 'react';
 import { colors, spacing } from '../../../styles/foundation';
 
 export interface BottomCTAProps {

@@ -3,7 +3,7 @@
  * 성공/에러 결과 화면 컴포넌트
  */
 
-import { ReactNode, CSSProperties } from 'react';
+import { type ReactNode, type CSSProperties } from 'react';
 import { colors, spacing } from '../../../styles/foundation';
 import {
   Typography2_Semibold,
