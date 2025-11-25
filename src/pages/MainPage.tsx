@@ -10,7 +10,7 @@ import {
 import { Icon } from '../components/atoms/Icon';
 import { Button } from '../components/atoms/Button';
 import { TextField } from '../components/molecules/TextField';
-import { ListRow } from '../components/molecules/ListRow';
+import { ListRowBase } from '../components/molecules/ListRow';
 import { BottomSheet } from '../components/molecules/BottomSheet';
 import { ToastProvider } from '../components/molecules/Toast';
 import { ChevronRight } from 'lucide-react';
@@ -200,7 +200,8 @@ function MainPageContent() {
           justifyContent: 'center',
           gap: spacing.xl,
           padding: `20px ${spacing.xl}px`,
-          paddingBottom: bottomAreaHeight > 0 ? `${bottomAreaHeight}px` : '180px',
+          paddingBottom:
+            bottomAreaHeight > 0 ? `${bottomAreaHeight}px` : '180px',
           minHeight: 0,
           overflow: 'hidden',
         }}
@@ -231,12 +232,22 @@ function MainPageContent() {
             }}
           >
             <Typography6_Regular
-              style={{ textAlign: 'center', color: '#6B7684', letterSpacing: '-0.5px', fontWeight: 500}}
+              style={{
+                textAlign: 'center',
+                color: '#6B7684',
+                letterSpacing: '-0.5px',
+                fontWeight: 500,
+              }}
             >
               2026년 새로운 여정을 기대하며
             </Typography6_Regular>
             <Typography2_Semibold
-              style={{ textAlign: 'center', color: '#333D4B', letterSpacing: '-0.5px', fontWeight: 700}}
+              style={{
+                textAlign: 'center',
+                color: '#333D4B',
+                letterSpacing: '-0.5px',
+                fontWeight: 700,
+              }}
             >
               이름을 입력해주세요
             </Typography2_Semibold>
@@ -346,7 +357,8 @@ function MainPageContent() {
                 paddingLeft: '5px',
               }}
             >
-              나의 정보를 클릭하여<br />
+              나의 정보를 클릭하여
+              <br />
               그룹과 순을 확인해보세요
             </Typography3_Medium>
           </div>
@@ -361,7 +373,7 @@ function MainPageContent() {
           }}
         >
           {data?.data?.map((user, index) => (
-            <ListRow
+            <ListRowBase
               key={`${user.phoneNumber}-${index}`}
               onClick={() => handleUserSelect(user)}
               style={{
