@@ -3,14 +3,12 @@
  * 하단에서 올라오는 모달 컴포넌트
  */
 
-import { ReactNode, CSSProperties, useEffect } from 'react';
+import { type ReactNode, type CSSProperties, useEffect } from 'react';
 import { colors, spacing, shadows } from '../../../styles/foundation';
 import {
   Typography3_Semibold,
   Typography5_Regular,
 } from '../../atoms/Typography';
-import { Icon } from '../../atoms/Icon';
-import { X } from 'lucide-react';
 
 export interface BottomSheetProps {
   open: boolean;
@@ -28,16 +26,14 @@ export interface BottomSheetProps {
   'aria-described-by'?: string;
 }
 
-export const BottomSheet = ({
+const BottomSheetBase = ({
   open,
   onClose,
   header,
   headerDescription,
   cta,
   hasTextField = false,
-  expandBottomSheet = false,
   maxHeight = 400,
-  expandedMaxHeight,
   children,
   className,
   'aria-labelled-by': ariaLabelledBy,
@@ -275,17 +271,20 @@ const BottomSheetSelect = ({
   );
 };
 
-// 서브컴포넌트 추가
-(BottomSheet as any).Header = BottomSheetHeader;
-(BottomSheet as any).HeaderDescription = BottomSheetHeaderDescription;
-(BottomSheet as any).CTA = BottomSheetCTA;
-(BottomSheet as any).DoubleCTA = BottomSheetDoubleCTA;
-(BottomSheet as any).Select = BottomSheetSelect;
-
-export {
-  BottomSheetHeader,
-  BottomSheetHeaderDescription,
-  BottomSheetCTA,
-  BottomSheetDoubleCTA,
-  BottomSheetSelect,
+type BottomSheetComponent = typeof BottomSheetBase & {
+  Header: typeof BottomSheetHeader;
+  HeaderDescription: typeof BottomSheetHeaderDescription;
+  CTA: typeof BottomSheetCTA;
+  DoubleCTA: typeof BottomSheetDoubleCTA;
+  Select: typeof BottomSheetSelect;
 };
+
+const BottomSheet = Object.assign(BottomSheetBase, {
+  Header: BottomSheetHeader,
+  HeaderDescription: BottomSheetHeaderDescription,
+  CTA: BottomSheetCTA,
+  DoubleCTA: BottomSheetDoubleCTA,
+  Select: BottomSheetSelect,
+}) as BottomSheetComponent;
+
+export { BottomSheet };

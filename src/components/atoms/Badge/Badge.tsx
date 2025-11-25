@@ -3,9 +3,8 @@
  * 상태 표시용 뱃지 컴포넌트
  */
 
-import { ReactNode, CSSProperties } from 'react';
+import { type ReactNode, type CSSProperties } from 'react';
 import { colors, spacing, typography } from '../../../styles/foundation';
-import { Typography7_Regular } from '../Typography';
 
 export type BadgeColor =
   | 'primary'

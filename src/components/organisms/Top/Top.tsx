@@ -3,11 +3,11 @@
  * 상단 헤더 컴포넌트
  */
 
-import { ReactNode, CSSProperties } from 'react';
+import { type ReactNode, type CSSProperties } from 'react';
 import { colors, spacing } from '../../../styles/foundation';
 import { Typography3_Semibold } from '../../atoms/Typography';
 import { Icon } from '../../atoms/Icon';
-import { ArrowLeft, X } from 'lucide-react';
+import { ArrowLeft } from 'lucide-react';
 
 export interface TopProps {
   title: string;

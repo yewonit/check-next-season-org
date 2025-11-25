@@ -3,8 +3,8 @@
  * 토스 디자인 시스템 기반의 원형 체크박스 컴포넌트
  */
 
-import { CSSProperties } from 'react';
-import { colors, spacing } from '../../../styles/foundation';
+import { type CSSProperties } from 'react';
+import { colors } from '../../../styles/foundation';
 import { Icon } from '../Icon';
 import { Check } from 'lucide-react';
 
@@ -49,12 +49,6 @@ export const Checkbox = {
       opacity: disabled ? 0.5 : 1,
     };
 
-    const iconStyle: CSSProperties = {
-      color: 'white',
-      opacity: checked ? 1 : 0,
-      transition: 'opacity 0.2s ease',
-    };
-
     return (
       <div
         role="checkbox"
@@ -72,9 +66,9 @@ export const Checkbox = {
         }}
         tabIndex={disabled ? -1 : 0}
       >
-        {checked && (
-          <Icon icon={Check} size={16} color="white" aria-hidden="true" />
-        )}
+        {/* 접근성 정보 aria-hidden이 여기서 true인 이유는, Checkbox에서 Icon은 장식요소일 뿐이기 때문이다. 이미 상위 div에 aria-label이 있기 때문에,
+        시각적 장식요소인 Icon은 숨겨야 한다. */}
+        {checked && <Icon icon={Check} size={16} color="white" aria-hidden />}
       </div>
     );
   },

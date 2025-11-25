@@ -3,7 +3,7 @@
  * 중앙 모달 다이얼로그 컴포넌트
  */
 
-import { ReactNode, CSSProperties, useEffect } from 'react';
+import { type CSSProperties, useEffect } from 'react';
 import { colors, spacing, shadows } from '../../../styles/foundation';
 import {
   Typography3_Semibold,

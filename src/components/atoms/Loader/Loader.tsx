@@ -3,7 +3,7 @@
  * 로딩 상태를 표시하는 컴포넌트
  */
 
-import { ReactNode, CSSProperties } from 'react';
+import { type ReactNode, type CSSProperties } from 'react';
 import { colors, spacing } from '../../../styles/foundation';
 import { Typography5_Regular } from '../Typography';
 

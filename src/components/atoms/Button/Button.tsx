@@ -3,7 +3,11 @@
  * 토스 디자인 시스템 기반의 버튼 컴포넌트
  */
 
-import { ReactNode, ButtonHTMLAttributes, CSSProperties } from 'react';
+import {
+  type ReactNode,
+  type ButtonHTMLAttributes,
+  type CSSProperties,
+} from 'react';
 import { colors, spacing, shadows } from '../../../styles/foundation';
 import clsx from 'clsx';
 
