@@ -3,7 +3,7 @@
  * 로딩 중 콘텐츠의 플레이스홀더를 표시하는 컴포넌트
  */
 
-import { CSSProperties } from 'react';
+import { type CSSProperties } from 'react';
 import { colors, spacing } from '../../../styles/foundation';
 
 export type SkeletonType =
@@ -42,7 +42,7 @@ const getSkeletonStyle = (
         height: height || '16px',
         borderRadius: '4px',
       };
-    case 'circular':
+    case 'circular': {
       const size =
         typeof width === 'number'
           ? width
@@ -55,6 +55,7 @@ const getSkeletonStyle = (
         height: size,
         borderRadius: '50%',
       };
+    }
     case 'rectangular':
       return {
         ...style,
