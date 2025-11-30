@@ -1,15 +1,15 @@
+import { ChevronDown, ChevronLeft, ChevronUp } from 'lucide-react';
 import { useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { colors, spacing } from '../styles/foundation';
+import { Icon } from '../components/atoms/Icon';
 import {
   Typography1_Bold,
   Typography2_Semibold,
   Typography3_Medium,
   Typography5_Regular,
 } from '../components/atoms/Typography';
-import { Icon } from '../components/atoms/Icon';
-import { ChevronLeft, ChevronDown, ChevronUp } from 'lucide-react';
 import { useUserStore } from '../stores/userStore';
+import { colors, spacing } from '../styles/foundation';
 
 export default function CheckMyNewGroupPage() {
   const navigate = useNavigate();
@@ -73,7 +73,8 @@ export default function CheckMyNewGroupPage() {
     };
   };
 
-  const formatPhoneNumber = (phone: string) => {
+  const formatPhoneNumber = (phone: string | null | undefined) => {
+    if (!phone) return '';
     const cleaned = phone.replace(/\D/g, '');
     if (cleaned.length === 11) {
       return `${cleaned.slice(0, 3)}-${cleaned.slice(3, 7)}-${cleaned.slice(
@@ -231,7 +232,7 @@ export default function CheckMyNewGroupPage() {
             roleIcon="👋🏻"
             roleName="순장"
             name={cellLeader?.name || ''}
-            phone={formatPhoneNumber(cellLeader?.phoneNumber || '')}
+            phone={formatPhoneNumber(cellLeader?.phoneNumber)}
             roleEn="Leader"
           />
         </div>
@@ -250,7 +251,7 @@ export default function CheckMyNewGroupPage() {
             roleIcon="📌"
             roleName=" 부순장"
             name={assistantCellLeader?.name || ''}
-            phone={formatPhoneNumber(assistantCellLeader?.phoneNumber || '')}
+            phone={formatPhoneNumber(assistantCellLeader?.phoneNumber)}
             roleEn="Support Leader"
           />
         </div>
@@ -269,7 +270,7 @@ export default function CheckMyNewGroupPage() {
             roleIcon="📌"
             roleName=" 그룹장"
             name={groupLeader?.name || ''}
-            phone={formatPhoneNumber(groupLeader?.phoneNumber || '')}
+            phone={formatPhoneNumber(groupLeader?.phoneNumber)}
             roleEn="Group Leader"
           />
         </div>
@@ -347,12 +348,12 @@ export default function CheckMyNewGroupPage() {
                 )
                 .map(
                   (member: {
-                    phoneNumber: string;
+                    phoneNumber: string | null;
                     name: string;
-                    birthYear: string;
+                    birthYear: string | null;
                   }) => (
                     <div
-                      key={member.phoneNumber}
+                      key={member.phoneNumber || member.name}
                       style={{
                         display: 'flex',
                         justifyContent: 'center',
@@ -372,19 +373,22 @@ export default function CheckMyNewGroupPage() {
                           textAlign: 'center',
                         }}
                       >
-                        {member.name}({member.birthYear.slice(-2)})
+                        {member.name}
+                        {member.birthYear && `(${member.birthYear.slice(-2)})`}
                       </Typography3_Medium>
-                      <Typography3_Medium
-                        style={{
-                          color: colors.grey600,
-                          fontSize: '15px',
-                          margin: 0,
-                          lineHeight: 1.5,
-                          textAlign: 'center',
-                        }}
-                      >
-                        {member.phoneNumber.slice(-4)}
-                      </Typography3_Medium>
+                      {member.phoneNumber && (
+                        <Typography3_Medium
+                          style={{
+                            color: colors.grey600,
+                            fontSize: '15px',
+                            margin: 0,
+                            lineHeight: 1.5,
+                            textAlign: 'center',
+                          }}
+                        >
+                          {member.phoneNumber.slice(-4)}
+                        </Typography3_Medium>
+                      )}
                     </div>
                   )
                 )}

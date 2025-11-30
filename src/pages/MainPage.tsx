@@ -374,7 +374,7 @@ function MainPageContent() {
         >
           {data?.data?.map((user, index) => (
             <ListRowBase
-              key={`${user.phoneNumber}-${index}`}
+              key={`${user.phoneNumber || user.name}-${index}`}
               onClick={() => handleUserSelect(user)}
               style={{
                 backgroundColor: '#F9FAFB',
@@ -398,28 +398,33 @@ function MainPageContent() {
                       color: '#333D4B',
                     }}
                   >
-                    {user.name}({user.birthYear})
+                    {user.name}
+                    {user.birthYear && `(${user.birthYear})`}
                   </Typography3_Medium>
-                  <Typography3_Medium
-                    style={{
-                      fontSize: '15px',
-                      fontWeight: 600,
-                      letterSpacing: '-0.5px',
-                      color: '#333D4B',
-                    }}
-                  >
-                    -
-                  </Typography3_Medium>
-                  <Typography3_Medium
-                    style={{
-                      fontSize: '15px',
-                      fontWeight: 600,
-                      letterSpacing: '-0.5px',
-                      color: '#333D4B',
-                    }}
-                  >
-                    {user.phoneNumber.slice(-4)}
-                  </Typography3_Medium>
+                  {user.phoneNumber && (
+                    <>
+                      <Typography3_Medium
+                        style={{
+                          fontSize: '15px',
+                          fontWeight: 600,
+                          letterSpacing: '-0.5px',
+                          color: '#333D4B',
+                        }}
+                      >
+                        -
+                      </Typography3_Medium>
+                      <Typography3_Medium
+                        style={{
+                          fontSize: '15px',
+                          fontWeight: 600,
+                          letterSpacing: '-0.5px',
+                          color: '#333D4B',
+                        }}
+                      >
+                        {user.phoneNumber.slice(-4)}
+                      </Typography3_Medium>
+                    </>
+                  )}
                 </div>
               }
               right={
