@@ -15,10 +15,24 @@ const queryClient = new QueryClient({
   },
 });
 
-createRoot(document.getElementById('root')!).render(
-  <StrictMode>
-    <QueryClientProvider client={queryClient}>
-      <App />
-    </QueryClientProvider>
-  </StrictMode>
-);
+// 개발 환경에서만 MSW 활성화
+async function enableMocking() {
+  if (import.meta.env.MODE !== 'development') {
+    return;
+  }
+
+  const { worker } = await import('./mocks/browser');
+  return worker.start({
+    onUnhandledRequest: 'bypass', // 핸들러가 없는 요청은 그대로 통과
+  });
+}
+
+enableMocking().then(() => {
+  createRoot(document.getElementById('root')!).render(
+    <StrictMode>
+      <QueryClientProvider client={queryClient}>
+        <App />
+      </QueryClientProvider>
+    </StrictMode>
+  );
+});
