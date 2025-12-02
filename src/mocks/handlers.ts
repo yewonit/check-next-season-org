@@ -1,55 +1,11 @@
 import { http, HttpResponse } from 'msw';
-import type { CheckNameResponse, UserInfo } from '../api/name';
-
-// 모킹 데이터
-const mockUserInfo: UserInfo = {
-  name: '홍길동',
-  birthYear: '1990',
-  phoneNumber: '010-1234-5678',
-  role: '리더',
-  organization: '1순',
-  organizationPeople: [
-    {
-      name: '김철수',
-      role: '멤버',
-      phoneNumber: '010-2345-6789',
-      birthYear: '1992',
-    },
-    {
-      name: '이영희',
-      role: '멤버',
-      phoneNumber: '010-3456-7890',
-      birthYear: '1993',
-    },
-  ],
-};
-
-const mockAllNationList = [
-  { id: 1, name: '1순' },
-  { id: 2, name: '2순' },
-  { id: 3, name: '3순' },
-];
-
-const mockMembers = [
-  {
-    id: 1,
-    name: '홍길동',
-    email: 'hong@example.com',
-    roleName: '리더',
-  },
-  {
-    id: 2,
-    name: '김철수',
-    email: 'kim@example.com',
-    roleName: '멤버',
-  },
-  {
-    id: 3,
-    name: '이영희',
-    email: 'lee@example.com',
-    roleName: '멤버',
-  },
-];
+import type { CheckNameResponse } from '../api/name';
+import {
+  findUsersByName,
+  findUserById,
+  mockAllNationList,
+  mockMembers,
+} from './mock-data';
 
 /**
  * @author SeungrokYoon
@@ -74,22 +30,21 @@ export const handlers = [
 
     // userId로 검색하는 경우
     if (userId) {
-      const response: CheckNameResponse = {
-        data: [mockUserInfo],
-      };
+      const user = findUserById(Number(userId));
+      // 실제 API 응답처럼 null 값을 포함한 데이터를 반환 (타입 단언 사용)
+      const response = {
+        data: user ? [user] : [],
+      } as CheckNameResponse;
       return HttpResponse.json(response);
     }
 
     // name으로 검색하는 경우
     if (name) {
-      const response: CheckNameResponse = {
-        data: [
-          {
-            ...mockUserInfo,
-            name: name,
-          },
-        ],
-      };
+      const users = findUsersByName(name);
+      // 실제 API 응답처럼 null 값을 포함한 데이터를 반환 (타입 단언 사용)
+      const response = {
+        data: users,
+      } as CheckNameResponse;
       return HttpResponse.json(response);
     }
 
