@@ -111,6 +111,14 @@ const errorMockUserHasNullValue: MockUserInfo[] = [
     organization: '3순',
     organizationPeople: mockOrganizationPeople3,
   },
+  {
+    name: '윤승록',
+    birthYear: '1993',
+    phoneNumber: '010-1111-2224',
+    role: '멤버',
+    organization: '3순',
+    organizationPeople: mockOrganizationPeople3,
+  },
   // 에러 케이스: phoneNumber가 null인 케이스
   {
     name: '윤승순',
