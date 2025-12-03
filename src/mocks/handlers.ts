@@ -2,9 +2,9 @@ import { http, HttpResponse } from 'msw';
 import type { CheckNameResponse } from '../api/name';
 import {
   findUsersByName,
-  findUserById,
-  mockAllNationList,
-  mockMembers,
+  mockAllNationSoonList,
+  getAllNationMembersById,
+  findNextAllNationMemberByUserId,
 } from './mock-data';
 
 /**
@@ -23,17 +23,18 @@ import {
  */
 export const handlers = [
   // 이름으로 검색: GET /seasons/next?name={name}
+  // 또는 올네이션 멤버의 다음 회차 결과 조회: GET /seasons/next?userId={userId}
   http.get('/seasons/next', ({ request }) => {
     const url = new URL(request.url);
     const name = url.searchParams.get('name');
     const userId = url.searchParams.get('userId');
 
-    // userId로 검색하는 경우
+    // userId로 검색하는 경우 (올네이션 멤버의 다음 회차 결과)
     if (userId) {
-      const user = findUserById(Number(userId));
+      const users = findNextAllNationMemberByUserId(Number(userId));
       // 실제 API 응답처럼 null 값을 포함한 데이터를 반환 (타입 단언 사용)
       const response = {
-        data: user ? [user] : [],
+        data: users,
       } as CheckNameResponse;
       return HttpResponse.json(response);
     }
@@ -54,17 +55,20 @@ export const handlers = [
   // 올네이션 순 리스트: GET /seasons/all-nations
   http.get('/seasons/all-nations', () => {
     return HttpResponse.json({
-      data: mockAllNationList,
+      data: mockAllNationSoonList,
     });
   }),
 
   // 특정 순의 멤버 조회: GET /organizations/{id}/members
   http.get('/organizations/:id/members', ({ params }) => {
     const { id } = params;
+    const organizationId = Number(id);
+    const members = getAllNationMembersById(organizationId);
+
     return HttpResponse.json({
-      members: mockMembers.map((member, index) => ({
+      members: members.map((member, index) => ({
         ...member,
-        id: Number(id) * 10 + index + 1,
+        id: organizationId * 10 + index + 1,
       })),
     });
   }),
