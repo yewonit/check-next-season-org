@@ -1,12 +1,12 @@
 import axiosInstance from './axios';
 import type { UserInfo } from './name';
 
-interface AllNationSoonItem {
+export interface AllNationSoonItem {
   id: number;
   name: string;
 }
 
-interface AllNationSoonMemberItem {
+export interface AllNationSoonMemberItem {
   id: number;
   name: string;
   email: string | null;
