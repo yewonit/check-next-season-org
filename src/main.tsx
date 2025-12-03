@@ -3,6 +3,7 @@ import { createRoot } from 'react-dom/client';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import './styles/global.css';
 import App from './App.tsx';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 
 // QueryClient 생성
 const queryClient = new QueryClient({
@@ -32,6 +33,7 @@ enableMocking().then(() => {
     <StrictMode>
       <QueryClientProvider client={queryClient}>
         <App />
+        <ReactQueryDevtools initialIsOpen />
       </QueryClientProvider>
     </StrictMode>
   );
