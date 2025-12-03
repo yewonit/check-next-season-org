@@ -18,6 +18,7 @@ import coramdeoLogo from '../assets/coramdeo_logo.png';
 import { useCheckNameQuery } from '../api/checkNameQuery';
 import type { UserInfo } from '../api/name';
 import { useUserStore } from '../stores/userStore';
+import { ErrorBoundary } from 'react-error-boundary';
 
 // 디자인 시안 스타일 변수 (TextField 커스텀용)
 const PRIMARY_COLOR_CUSTOM = '#009E7F';
@@ -60,6 +61,54 @@ const RollingText = () => {
     >
       {ALL_NATION_TEXTS[index]}
     </Typography5_Semibold>
+  );
+};
+
+const UserRowContents = ({ user }: { user: UserInfo }) => {
+  return (
+    <div
+      style={{
+        display: 'flex',
+        alignItems: 'center',
+        gap: spacing.xs,
+      }}
+    >
+      <Typography3_Medium
+        style={{
+          fontSize: '15px',
+          fontWeight: 600,
+          letterSpacing: '-0.5px',
+          color: '#333D4B',
+        }}
+      >
+        {user.name}
+        {`(${user.birthYear.slice(-2)})`}
+      </Typography3_Medium>
+      {user.phoneNumber && (
+        <>
+          <Typography3_Medium
+            style={{
+              fontSize: '15px',
+              fontWeight: 600,
+              letterSpacing: '-0.5px',
+              color: '#333D4B',
+            }}
+          >
+            -
+          </Typography3_Medium>
+          <Typography3_Medium
+            style={{
+              fontSize: '15px',
+              fontWeight: 600,
+              letterSpacing: '-0.5px',
+              color: '#333D4B',
+            }}
+          >
+            {user.phoneNumber.slice(-4)}
+          </Typography3_Medium>
+        </>
+      )}
+    </div>
   );
 };
 
@@ -373,21 +422,17 @@ function MainPageContent() {
           }}
         >
           {data?.data?.map((user, index) => (
-            <ListRowBase
+            <ErrorBoundary
               key={`${user.phoneNumber || user.name}-${index}`}
-              onClick={() => handleUserSelect(user)}
-              style={{
-                backgroundColor: '#F9FAFB',
-                borderRadius: '12px',
-                padding: spacing.md, // ListRow 기본 패딩 오버라이드
-              }}
-              border="none"
-              contents={
+              fallbackRender={() => (
                 <div
                   style={{
+                    backgroundColor: '#F9FAFB',
+                    borderRadius: '12px',
+                    padding: spacing.md,
                     display: 'flex',
                     alignItems: 'center',
-                    gap: spacing.xs,
+                    justifyContent: 'space-between',
                   }}
                 >
                   <Typography3_Medium
@@ -395,42 +440,29 @@ function MainPageContent() {
                       fontSize: '15px',
                       fontWeight: 600,
                       letterSpacing: '-0.5px',
-                      color: '#333D4B',
+                      color: '#999',
                     }}
                   >
-                    {user.name}
-                    {user.birthYear && `(${user.birthYear})`}
+                    이 항목을 표시할 수 없습니다
                   </Typography3_Medium>
-                  {user.phoneNumber && (
-                    <>
-                      <Typography3_Medium
-                        style={{
-                          fontSize: '15px',
-                          fontWeight: 600,
-                          letterSpacing: '-0.5px',
-                          color: '#333D4B',
-                        }}
-                      >
-                        -
-                      </Typography3_Medium>
-                      <Typography3_Medium
-                        style={{
-                          fontSize: '15px',
-                          fontWeight: 600,
-                          letterSpacing: '-0.5px',
-                          color: '#333D4B',
-                        }}
-                      >
-                        {user.phoneNumber.slice(-4)}
-                      </Typography3_Medium>
-                    </>
-                  )}
                 </div>
-              }
-              right={
-                <Icon icon={ChevronRight} size="sm" color={colors.grey400} />
-              }
-            />
+              )}
+            >
+              <ListRowBase
+                key={`${user.phoneNumber || user.name}-${index}`}
+                onClick={() => handleUserSelect(user)}
+                style={{
+                  backgroundColor: '#F9FAFB',
+                  borderRadius: '12px',
+                  padding: spacing.md, // ListRow 기본 패딩 오버라이드
+                }}
+                border="none"
+                contents={<UserRowContents user={user} />}
+                right={
+                  <Icon icon={ChevronRight} size="sm" color={colors.grey400} />
+                }
+              />
+            </ErrorBoundary>
           ))}
         </div>
       </BottomSheet>
