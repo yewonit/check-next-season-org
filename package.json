@@ -14,7 +14,7 @@
   "dependencies": {
     "@tanstack/react-query": "^5.90.10",
     "@toss/tds-colors": "^0.1.0",
-    "axios": "^1.13.2",
+    "axios": "^1.13.5",
     "clsx": "^2.1.1",
     "lucide-react": "^0.554.0",
     "react": "^19.2.0",
