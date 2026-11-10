@@ -14,6 +14,7 @@ export interface TypographyProps {
   color?: string;
   style?: CSSProperties;
   className?: string;
+  id?: string;
   as?: 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'p' | 'span' | 'div';
   'aria-label'?: string;
 }
@@ -28,6 +29,7 @@ export const Typography = ({
   color = colors.textPrimary,
   style,
   className,
+  id,
   as = 'p',
   'aria-label': ariaLabel,
 }: TypographyProps) => {
@@ -43,6 +45,7 @@ export const Typography = ({
 
   return (
     <Component
+      id={id}
       style={typographyStyle}
       className={className}
       aria-label={ariaLabel}

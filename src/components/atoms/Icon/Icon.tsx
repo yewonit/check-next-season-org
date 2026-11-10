@@ -3,7 +3,7 @@
  * lucide-react 아이콘을 래핑하는 컴포넌트
  */
 
-import type { ComponentType, SVGProps } from 'react';
+import type { ComponentType, CSSProperties, SVGProps } from 'react';
 import { colors } from '../../../styles/foundation';
 
 export type IconSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl';
@@ -18,6 +18,7 @@ export interface IconProps {
   size?: IconSize | number;
   color?: string;
   className?: string;
+  style?: CSSProperties;
   'aria-label'?: string;
   'aria-hidden'?: boolean;
 }
@@ -35,6 +36,7 @@ export const Icon = ({
   size = 'md',
   color = colors.grey700,
   className,
+  style,
   'aria-label': ariaLabel,
   'aria-hidden': ariaHidden = !ariaLabel,
 }: IconProps) => {
@@ -45,6 +47,7 @@ export const Icon = ({
       size={iconSize}
       color={color}
       className={className}
+      style={style}
       aria-label={ariaLabel}
       aria-hidden={ariaHidden}
     />
