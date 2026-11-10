@@ -1,0 +1,613 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-11-10T00:18:49+00:00",
+  "title": "Design System: Kingdom Builders 2027",
+  "extensions": {
+    "colorMeta": {
+      "sky-950": {
+        "role": "neutral",
+        "displayName": "Night Cobalt",
+        "canonical": "oklch(23.5% 0.086 267)",
+        "tonalRamp": [
+          "oklch(15% 0.024 267)",
+          "oklch(26% 0.042 267)",
+          "oklch(38% 0.060 267)",
+          "oklch(49% 0.078 267)",
+          "oklch(61% 0.094 267)",
+          "oklch(72% 0.076 267)",
+          "oklch(84% 0.058 267)",
+          "oklch(95% 0.040 267)"
+        ]
+      },
+      "sky-900": {
+        "role": "neutral",
+        "displayName": "Deep Cobalt",
+        "canonical": "oklch(31.3% 0.119 265)",
+        "tonalRamp": [
+          "oklch(15% 0.033 265)",
+          "oklch(26% 0.057 265)",
+          "oklch(38% 0.082 265)",
+          "oklch(49% 0.107 265)",
+          "oklch(61% 0.129 265)",
+          "oklch(72% 0.104 265)",
+          "oklch(84% 0.079 265)",
+          "oklch(95% 0.054 265)"
+        ]
+      },
+      "sky-800": {
+        "role": "neutral",
+        "displayName": "Cobalt",
+        "canonical": "oklch(37.1% 0.137 265)",
+        "tonalRamp": [
+          "oklch(15% 0.038 265)",
+          "oklch(26% 0.066 265)",
+          "oklch(38% 0.095 265)",
+          "oklch(49% 0.124 265)",
+          "oklch(61% 0.149 265)",
+          "oklch(72% 0.120 265)",
+          "oklch(84% 0.092 265)",
+          "oklch(95% 0.063 265)"
+        ]
+      },
+      "sky-700": {
+        "role": "neutral",
+        "displayName": "Lit Cobalt",
+        "canonical": "oklch(43.2% 0.159 264)",
+        "tonalRamp": [
+          "oklch(15% 0.044 264)",
+          "oklch(26% 0.077 264)",
+          "oklch(38% 0.110 264)",
+          "oklch(49% 0.144 264)",
+          "oklch(61% 0.173 264)",
+          "oklch(72% 0.140 264)",
+          "oklch(84% 0.106 264)",
+          "oklch(95% 0.073 264)"
+        ]
+      },
+      "sky-ink": {
+        "role": "neutral",
+        "displayName": "Starlight",
+        "canonical": "oklch(95.6% 0.020 88)",
+        "tonalRamp": [
+          "oklch(15% 0.005 88)",
+          "oklch(26% 0.010 88)",
+          "oklch(38% 0.014 88)",
+          "oklch(49% 0.018 88)",
+          "oklch(61% 0.021 88)",
+          "oklch(72% 0.017 88)",
+          "oklch(84% 0.013 88)",
+          "oklch(95% 0.009 88)"
+        ]
+      },
+      "sky-ink-soft": {
+        "role": "neutral",
+        "displayName": "Haze",
+        "canonical": "oklch(86.9% 0.044 271)",
+        "tonalRamp": [
+          "oklch(15% 0.012 271)",
+          "oklch(26% 0.021 271)",
+          "oklch(38% 0.031 271)",
+          "oklch(49% 0.040 271)",
+          "oklch(61% 0.048 271)",
+          "oklch(72% 0.039 271)",
+          "oklch(84% 0.030 271)",
+          "oklch(95% 0.020 271)"
+        ]
+      },
+      "horizon": {
+        "role": "tertiary",
+        "displayName": "Dusk Horizon",
+        "canonical": "rgb(242 168 92 / 0.34)",
+        "tonalRamp": [
+          "oklch(15% 0.035 65)",
+          "oklch(26% 0.062 65)",
+          "oklch(38% 0.088 65)",
+          "oklch(49% 0.115 65)",
+          "oklch(61% 0.138 65)",
+          "oklch(72% 0.111 65)",
+          "oklch(84% 0.085 65)",
+          "oklch(95% 0.058 65)"
+        ]
+      },
+      "gold-lit": {
+        "role": "secondary",
+        "displayName": "Last-Light Gold",
+        "canonical": "oklch(88.3% 0.095 87)",
+        "tonalRamp": [
+          "oklch(15% 0.026 87)",
+          "oklch(26% 0.046 87)",
+          "oklch(38% 0.066 87)",
+          "oklch(49% 0.086 87)",
+          "oklch(61% 0.103 87)",
+          "oklch(72% 0.083 87)",
+          "oklch(84% 0.063 87)",
+          "oklch(95% 0.043 87)"
+        ]
+      },
+      "stone-1": {
+        "role": "neutral",
+        "displayName": "Honey Limestone",
+        "canonical": "oklch(84.8% 0.091 85)",
+        "tonalRamp": [
+          "oklch(15% 0.025 85)",
+          "oklch(26% 0.044 85)",
+          "oklch(38% 0.063 85)",
+          "oklch(49% 0.083 85)",
+          "oklch(61% 0.099 85)",
+          "oklch(72% 0.080 85)",
+          "oklch(84% 0.061 85)",
+          "oklch(95% 0.042 85)"
+        ]
+      },
+      "stone-3": {
+        "role": "neutral",
+        "displayName": "Amber Limestone",
+        "canonical": "oklch(75.3% 0.103 77)",
+        "tonalRamp": [
+          "oklch(15% 0.028 77)",
+          "oklch(26% 0.050 77)",
+          "oklch(38% 0.072 77)",
+          "oklch(49% 0.093 77)",
+          "oklch(61% 0.112 77)",
+          "oklch(72% 0.091 77)",
+          "oklch(84% 0.069 77)",
+          "oklch(95% 0.047 77)"
+        ]
+      },
+      "stone-4": {
+        "role": "neutral",
+        "displayName": "Ochre Limestone",
+        "canonical": "oklch(70.8% 0.099 71)",
+        "tonalRamp": [
+          "oklch(15% 0.027 71)",
+          "oklch(26% 0.048 71)",
+          "oklch(38% 0.069 71)",
+          "oklch(49% 0.089 71)",
+          "oklch(61% 0.107 71)",
+          "oklch(72% 0.087 71)",
+          "oklch(84% 0.066 71)",
+          "oklch(95% 0.045 71)"
+        ]
+      },
+      "mortar": {
+        "role": "neutral",
+        "displayName": "Mortar",
+        "canonical": "oklch(55.0% 0.064 69)",
+        "tonalRamp": [
+          "oklch(15% 0.017 69)",
+          "oklch(26% 0.031 69)",
+          "oklch(38% 0.044 69)",
+          "oklch(49% 0.057 69)",
+          "oklch(61% 0.069 69)",
+          "oklch(72% 0.056 69)",
+          "oklch(84% 0.042 69)",
+          "oklch(95% 0.029 69)"
+        ]
+      },
+      "mortar-deep": {
+        "role": "neutral",
+        "displayName": "Deep Mortar",
+        "canonical": "oklch(46.2% 0.057 65)",
+        "tonalRamp": [
+          "oklch(15% 0.016 65)",
+          "oklch(26% 0.028 65)",
+          "oklch(38% 0.039 65)",
+          "oklch(49% 0.051 65)",
+          "oklch(61% 0.062 65)",
+          "oklch(72% 0.050 65)",
+          "oklch(84% 0.038 65)",
+          "oklch(95% 0.026 65)"
+        ]
+      },
+      "earth": {
+        "role": "neutral",
+        "displayName": "Earth",
+        "canonical": "oklch(29.6% 0.038 65)",
+        "tonalRamp": [
+          "oklch(15% 0.010 65)",
+          "oklch(26% 0.018 65)",
+          "oklch(38% 0.026 65)",
+          "oklch(49% 0.034 65)",
+          "oklch(61% 0.041 65)",
+          "oklch(72% 0.033 65)",
+          "oklch(84% 0.025 65)",
+          "oklch(95% 0.017 65)"
+        ]
+      },
+      "passage": {
+        "role": "neutral",
+        "displayName": "Passage",
+        "canonical": "oklch(21.3% 0.028 63)",
+        "tonalRamp": [
+          "oklch(15% 0.008 63)",
+          "oklch(26% 0.013 63)",
+          "oklch(38% 0.019 63)",
+          "oklch(49% 0.025 63)",
+          "oklch(61% 0.030 63)",
+          "oklch(72% 0.024 63)",
+          "oklch(84% 0.019 63)",
+          "oklch(95% 0.013 63)"
+        ]
+      },
+      "carve": {
+        "role": "neutral",
+        "displayName": "Carved Ink",
+        "canonical": "oklch(28.8% 0.042 62)",
+        "tonalRamp": [
+          "oklch(15% 0.012 62)",
+          "oklch(26% 0.020 62)",
+          "oklch(38% 0.029 62)",
+          "oklch(49% 0.038 62)",
+          "oklch(61% 0.046 62)",
+          "oklch(72% 0.037 62)",
+          "oklch(84% 0.028 62)",
+          "oklch(95% 0.019 62)"
+        ]
+      },
+      "carve-sub": {
+        "role": "neutral",
+        "displayName": "Carved Sub-ink",
+        "canonical": "oklch(33.7% 0.050 61)",
+        "tonalRamp": [
+          "oklch(15% 0.014 61)",
+          "oklch(26% 0.024 61)",
+          "oklch(38% 0.035 61)",
+          "oklch(49% 0.045 61)",
+          "oklch(61% 0.054 61)",
+          "oklch(72% 0.044 61)",
+          "oklch(84% 0.033 61)",
+          "oklch(95% 0.023 61)"
+        ]
+      },
+      "carve-soft": {
+        "role": "neutral",
+        "displayName": "Weathered Ink",
+        "canonical": "oklch(39.9% 0.057 61)",
+        "tonalRamp": [
+          "oklch(15% 0.016 61)",
+          "oklch(26% 0.028 61)",
+          "oklch(38% 0.040 61)",
+          "oklch(49% 0.052 61)",
+          "oklch(61% 0.062 61)",
+          "oklch(72% 0.050 61)",
+          "oklch(84% 0.038 61)",
+          "oklch(95% 0.026 61)"
+        ]
+      },
+      "carve-faint": {
+        "role": "neutral",
+        "displayName": "Faint Ink",
+        "canonical": "oklch(49.3% 0.063 66)",
+        "tonalRamp": [
+          "oklch(15% 0.017 66)",
+          "oklch(26% 0.030 66)",
+          "oklch(38% 0.043 66)",
+          "oklch(49% 0.057 66)",
+          "oklch(61% 0.068 66)",
+          "oklch(72% 0.055 66)",
+          "oklch(84% 0.042 66)",
+          "oklch(95% 0.029 66)"
+        ]
+      },
+      "chalk": {
+        "role": "primary",
+        "displayName": "Chalk-Line Red",
+        "canonical": "oklch(54.8% 0.176 33)",
+        "tonalRamp": [
+          "oklch(15% 0.048 33)",
+          "oklch(26% 0.085 33)",
+          "oklch(38% 0.122 33)",
+          "oklch(49% 0.159 33)",
+          "oklch(61% 0.191 33)",
+          "oklch(72% 0.154 33)",
+          "oklch(84% 0.117 33)",
+          "oklch(95% 0.081 33)"
+        ]
+      },
+      "chalk-ink": {
+        "role": "primary",
+        "displayName": "Chalk Paper",
+        "canonical": "oklch(97.4% 0.016 59)",
+        "tonalRamp": [
+          "oklch(15% 0.005 59)",
+          "oklch(26% 0.008 59)",
+          "oklch(38% 0.011 59)",
+          "oklch(49% 0.014 59)",
+          "oklch(61% 0.017 59)",
+          "oklch(72% 0.014 59)",
+          "oklch(84% 0.011 59)",
+          "oklch(95% 0.007 59)"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "Display",
+        "purpose": "KINGDOM / BUILDERS lockup and result place name on the sky, gold, uppercase Latin."
+      },
+      "headline": {
+        "displayName": "Headline",
+        "purpose": "Page titles on the sky (All Nations, build title one step smaller)."
+      },
+      "title": {
+        "displayName": "Title",
+        "purpose": "Sheet titles, leader names, lintel and plaque titles on stone."
+      },
+      "title-stone": {
+        "displayName": "Title Stone",
+        "purpose": "A name or group carved on a stone (picks, cells, members)."
+      },
+      "action": {
+        "displayName": "Action",
+        "purpose": "Label carved on the primary stone button."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "Explanatory copy on the sky; lede capped at 28ch."
+      },
+      "body-sm": {
+        "displayName": "Body Sm",
+        "purpose": "Sheet descriptions, hints, back link, states."
+      },
+      "meta": {
+        "displayName": "Meta",
+        "purpose": "Birth years, phone digits, counts; tabular figures."
+      },
+      "label": {
+        "displayName": "Label",
+        "purpose": "Name-slot label, verse citation, English sub-lines."
+      }
+    },
+    "shadows": [
+      {
+        "name": "stone-bevel",
+        "value": "inset 0 2px 1px -1px rgb(255 248 228 / 0.7), inset 0 9px 10px -8px rgb(255 246 222 / 0.5), inset 3px 0 5px -3px rgb(255 246 222 / 0.3), inset 0 -3px 2px -1px rgb(64 36 10 / 0.5), inset 0 -12px 14px -10px rgb(70 40 12 / 0.42), inset -4px 0 6px -3px rgb(70 40 12 / 0.28)",
+        "purpose": "Top-left lit, bottom-right shaded edge on every stone."
+      },
+      {
+        "name": "mortar-cast",
+        "value": "drop-shadow(0 2px 2px rgb(40 22 8 / 0.45))",
+        "purpose": "filter on the wall or list container so the cast follows chipped silhouettes into the mortar."
+      },
+      {
+        "name": "sky-title-glow",
+        "value": "0 3px 12px rgb(6 12 40 / 0.7)",
+        "purpose": "text-shadow under gold display text on the sky."
+      },
+      {
+        "name": "sheet-lift",
+        "value": "0 -14px 44px rgb(6 12 40 / 0.5)",
+        "purpose": "Bottom sheet over a rgb(6 12 40 / 0.64) backdrop."
+      },
+      {
+        "name": "arch-recess",
+        "value": "inset 0 10px 18px rgb(0 0 0 / 0.55)",
+        "purpose": "All Nations passage; deepens to inset 0 14px 22px rgb(0 0 0 / 0.65) on press."
+      },
+      {
+        "name": "frame-lift",
+        "value": "0 0 0 1px rgb(255 255 255 / 0.04), 0 30px 80px rgb(0 0 0 / 0.45)",
+        "purpose": "The 480px app frame above 520px viewports."
+      }
+    ],
+    "motion": [
+      {
+        "name": "ease-out",
+        "value": "cubic-bezier(0.16, 1, 0.3, 1)",
+        "purpose": "All settles, presses, sheet rise, carve, member landing."
+      },
+      {
+        "name": "drop-fall",
+        "value": "cubic-bezier(.5,0,.9,.35)",
+        "purpose": "Gravity fall of a hoisted stone (WAAPI, BuildPage), then squash scaleY .96 +5px at 78%, rebound -2px at 90%, settle; 540ms, 760ms for the final stone."
+      },
+      {
+        "name": "press",
+        "value": "140ms; translateY(2px), brightness(0.96)",
+        "purpose": "Stone press feedback; stones sink, never lift."
+      },
+      {
+        "name": "hoist-swing",
+        "value": "rotate ±1.6deg, 2.8s ease-in-out infinite",
+        "purpose": "Stone hanging from the crane."
+      },
+      {
+        "name": "carve-in",
+        "value": "clip-path inset wipe left to right, 460ms, 140ms delay",
+        "purpose": "Inscription cut after a stone lands."
+      },
+      {
+        "name": "member-land",
+        "value": "translateY(-16px) to 0 with fade, 420ms, stagger 38ms",
+        "purpose": "Member stones dropping into the result wall."
+      },
+      {
+        "name": "sheet-up",
+        "value": "translateY(100%) to 0, 420ms",
+        "purpose": "Bottom sheet entrance; backdrop fades 300ms."
+      },
+      {
+        "name": "final-shake",
+        "value": "380ms ease-out, ±3px",
+        "purpose": "Site shake when the final (me) stone lands."
+      },
+      {
+        "name": "dawn",
+        "value": "opacity 1100ms ease-out",
+        "purpose": "Warm glow rising behind the finished wall."
+      },
+      {
+        "name": "rolling-text",
+        "value": "opacity 500ms ease-in-out",
+        "purpose": "Five-language crossfade (gate, All Nations title, build copy)."
+      },
+      {
+        "name": "reduced-motion",
+        "value": "fade 200ms linear",
+        "purpose": "Replaces fall, swing, shake, dust, landing; sheet fades 160ms."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "frame",
+        "value": "480px",
+        "purpose": "Max app width; single column."
+      },
+      {
+        "name": "frame-lift",
+        "value": "520px",
+        "purpose": "Frame gains hairline and ambient shadow over the cobalt page."
+      }
+    ],
+    "materials": [
+      {
+        "name": "stone-faces",
+        "value": "192px tiling webp plates: honey, gold, amber, ochre, wheat; fresh for slot, me, plaque",
+        "purpose": "src/kingdom/assets/stones, generated by scripts/stone-plates/generator.html with .json provenance."
+      },
+      {
+        "name": "chip-mask",
+        "value": "four intersecting linear-gradient masks; per corner depth 0 (40%) or 1.5–8px, tilt ±17deg",
+        "purpose": "Seeded per stone in src/kingdom/lib/stone.ts and rng.ts."
+      },
+      {
+        "name": "grain",
+        "value": "SVG fractalNoise 180px",
+        "purpose": "Earth strip and bottom sheet surface."
+      },
+      {
+        "name": "chalk-line",
+        "value": "chalk-line.webp raster",
+        "purpose": "Snapped red line under the primary CTA and the final me stone."
+      },
+      {
+        "name": "wood",
+        "value": "wood-h.webp, wood-v.webp",
+        "purpose": "Crane mast, boom, struts, scaffold poles and planks."
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "Stone CTA",
+      "kind": "button",
+      "refersTo": "stone-cta",
+      "description": "Primary action: a wide stone pressed into the wall, chalk line beneath and red arrow.",
+      "html": "<div class=\"ds-wall\"><button class=\"ds-stone ds-cta\">내 자리 확인하기 <svg width=\"22\" height=\"22\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M5 12h14\"/><path d=\"m12 5 7 7-7 7\"/></svg></button></div>",
+      "css": ".ds-wall { padding: 4px; background: #8a6b48; filter: drop-shadow(0 2px 2px rgb(40 22 8 / 0.45)); } .ds-stone { position: relative; display: block; color: #3a2614; background: var(--face-default, linear-gradient(170deg, #f0d596, #e3be7c 55%, #d4a660)); background-size: 192px 192px; box-shadow: inset 0 2px 1px -1px rgb(255 248 228 / 0.7), inset 0 9px 10px -8px rgb(255 246 222 / 0.5), inset 3px 0 5px -3px rgb(255 246 222 / 0.3), inset 0 -3px 2px -1px rgb(64 36 10 / 0.5), inset 0 -12px 14px -10px rgb(70 40 12 / 0.42), inset -4px 0 6px -3px rgb(70 40 12 / 0.28); -webkit-mask-image: linear-gradient(140deg, transparent 5px, #000 5.7px), linear-gradient(225deg, #000, #000), linear-gradient(305deg, transparent 3px, #000 3.7px), linear-gradient(52deg, transparent 6px, #000 6.7px); mask-image: linear-gradient(140deg, transparent 5px, #000 5.7px), linear-gradient(225deg, #000, #000), linear-gradient(305deg, transparent 3px, #000 3.7px), linear-gradient(52deg, transparent 6px, #000 6.7px); -webkit-mask-composite: source-in; mask-composite: intersect; border: 0; } .ds-cta { display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; min-height: 64px; padding: 0 25px 6px; font-family: 'Hahmlet Variable', 'Pretendard Variable', Pretendard, 'Apple SD Gothic Neo', serif; font-size: 19px; font-weight: 800; letter-spacing: -0.01em; cursor: pointer; transition: transform 140ms cubic-bezier(0.16, 1, 0.3, 1), filter 140ms cubic-bezier(0.16, 1, 0.3, 1); } .ds-cta::after { content: ''; position: absolute; left: 4px; right: 4px; bottom: 5px; height: 13px; background: var(--chalk-line, linear-gradient(180deg, transparent 40%, #c23b22 40% 62%, transparent 62%)) center / 100% 100% no-repeat; transform: rotate(-0.6deg); pointer-events: none; } .ds-cta svg { color: #c23b22; flex: none; } .ds-cta:hover { filter: brightness(1.05); } .ds-cta:active { transform: translateY(2px); filter: brightness(0.96); } .ds-cta:focus-visible { outline: 3px solid #1a3887; outline-offset: 3px; }"
+    },
+    {
+      "name": "Stone CTA (disabled)",
+      "kind": "button",
+      "refersTo": "stone-cta-disabled",
+      "description": "The stone stays in the wall; ink weathers and the chalk line and arrow vanish.",
+      "html": "<div class=\"ds-wall\"><button class=\"ds-stone ds-cta-off\" disabled>내 자리 확인하기</button></div>",
+      "css": ".ds-wall { padding: 4px; background: #8a6b48; } .ds-stone { position: relative; display: block; color: #3a2614; background: var(--face-default, linear-gradient(170deg, #f0d596, #e3be7c 55%, #d4a660)); background-size: 192px 192px; box-shadow: inset 0 2px 1px -1px rgb(255 248 228 / 0.7), inset 0 9px 10px -8px rgb(255 246 222 / 0.5), inset 3px 0 5px -3px rgb(255 246 222 / 0.3), inset 0 -3px 2px -1px rgb(64 36 10 / 0.5), inset 0 -12px 14px -10px rgb(70 40 12 / 0.42), inset -4px 0 6px -3px rgb(70 40 12 / 0.28); -webkit-mask-image: linear-gradient(140deg, transparent 5px, #000 5.7px), linear-gradient(225deg, #000, #000), linear-gradient(305deg, transparent 3px, #000 3.7px), linear-gradient(52deg, transparent 6px, #000 6.7px); mask-image: linear-gradient(140deg, transparent 5px, #000 5.7px), linear-gradient(225deg, #000, #000), linear-gradient(305deg, transparent 3px, #000 3.7px), linear-gradient(52deg, transparent 6px, #000 6.7px); -webkit-mask-composite: source-in; mask-composite: intersect; border: 0; } .ds-cta-off { display: flex; align-items: center; justify-content: center; width: 100%; min-height: 64px; padding: 0 25px; font-family: 'Hahmlet Variable', 'Pretendard Variable', Pretendard, 'Apple SD Gothic Neo', serif; font-size: 19px; font-weight: 800; color: #5e4026; cursor: not-allowed; }"
+    },
+    {
+      "name": "Name Slot",
+      "kind": "input",
+      "refersTo": "name-slot",
+      "description": "An empty fresh-cut stone outlined in dashed chalk; solid chalk on focus, outline gone once filled.",
+      "html": "<div class=\"ds-wall\"><label class=\"ds-stone ds-slot\"><span class=\"ds-slot-label\">이름 (성과 이름 모두)</span><input class=\"ds-slot-input\" placeholder=\"예) 홍길동\" /></label></div>",
+      "css": ".ds-wall { padding: 4px; background: #8a6b48; } .ds-stone { position: relative; display: block; color: #3a2614; background: var(--face-default, linear-gradient(170deg, #f0d596, #e3be7c 55%, #d4a660)); background-size: 192px 192px; box-shadow: inset 0 2px 1px -1px rgb(255 248 228 / 0.7), inset 0 9px 10px -8px rgb(255 246 222 / 0.5), inset 3px 0 5px -3px rgb(255 246 222 / 0.3), inset 0 -3px 2px -1px rgb(64 36 10 / 0.5), inset 0 -12px 14px -10px rgb(70 40 12 / 0.42), inset -4px 0 6px -3px rgb(70 40 12 / 0.28); -webkit-mask-image: linear-gradient(140deg, transparent 5px, #000 5.7px), linear-gradient(225deg, #000, #000), linear-gradient(305deg, transparent 3px, #000 3.7px), linear-gradient(52deg, transparent 6px, #000 6.7px); mask-image: linear-gradient(140deg, transparent 5px, #000 5.7px), linear-gradient(225deg, #000, #000), linear-gradient(305deg, transparent 3px, #000 3.7px), linear-gradient(52deg, transparent 6px, #000 6.7px); -webkit-mask-composite: source-in; mask-composite: intersect; border: 0; } .ds-slot { display: flex; flex-direction: column; justify-content: center; gap: 2px; min-height: 80px; padding: 13px 20px; background: var(--face-fresh, linear-gradient(170deg, #f8ead0, #f1dcae 60%, #e9cf9c)); outline: 2px dashed rgb(194 59 34 / 0.8); outline-offset: -4px; cursor: text; transition: outline-color 160ms cubic-bezier(0.16, 1, 0.3, 1); } .ds-slot:focus-within { outline: 2px solid #c23b22; outline-offset: -4px; } .ds-slot-label { font-family: 'Pretendard Variable', Pretendard, -apple-system, 'Apple SD Gothic Neo', system-ui, sans-serif; font-size: 13px; font-weight: 600; color: #5e4026; } .ds-slot-input { width: 100%; border: 0; background: transparent; padding: 0; font-family: 'Hahmlet Variable', 'Pretendard Variable', Pretendard, 'Apple SD Gothic Neo', serif; font-size: 26px; font-weight: 700; line-height: 1.2; color: #3a2614; caret-color: #c23b22; outline: none; } .ds-slot-input::placeholder { color: #7a5a3a; font-weight: 400; font-size: 22px; }"
+    },
+    {
+      "name": "Selection Stone",
+      "kind": "card",
+      "refersTo": "stone-pick",
+      "description": "A selectable row as a stone: carved name, tabular meta, chevron. Same-name sheet and All Nations lists.",
+      "html": "<div class=\"ds-wall\"><button class=\"ds-stone ds-pick\"><span class=\"ds-pick-main\"><span class=\"ds-pick-name\">홍길동</span><span class=\"ds-pick-meta\">1999년생 · 2222</span></span><svg width=\"22\" height=\"22\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.25\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"m9 18 6-6-6-6\"/></svg></button></div>",
+      "css": ".ds-wall { padding: 4px; background: #8a6b48; } .ds-stone { position: relative; display: block; color: #3a2614; background: var(--face-default, linear-gradient(170deg, #f0d596, #e3be7c 55%, #d4a660)); background-size: 192px 192px; box-shadow: inset 0 2px 1px -1px rgb(255 248 228 / 0.7), inset 0 9px 10px -8px rgb(255 246 222 / 0.5), inset 3px 0 5px -3px rgb(255 246 222 / 0.3), inset 0 -3px 2px -1px rgb(64 36 10 / 0.5), inset 0 -12px 14px -10px rgb(70 40 12 / 0.42), inset -4px 0 6px -3px rgb(70 40 12 / 0.28); -webkit-mask-image: linear-gradient(140deg, transparent 5px, #000 5.7px), linear-gradient(225deg, #000, #000), linear-gradient(305deg, transparent 3px, #000 3.7px), linear-gradient(52deg, transparent 6px, #000 6.7px); mask-image: linear-gradient(140deg, transparent 5px, #000 5.7px), linear-gradient(225deg, #000, #000), linear-gradient(305deg, transparent 3px, #000 3.7px), linear-gradient(52deg, transparent 6px, #000 6.7px); -webkit-mask-composite: source-in; mask-composite: intersect; border: 0; } .ds-pick { display: flex; align-items: center; gap: 12px; width: 100%; min-height: 72px; padding: 11px 16px 11px 20px; text-align: left; cursor: pointer; transition: transform 140ms cubic-bezier(0.16, 1, 0.3, 1), filter 140ms cubic-bezier(0.16, 1, 0.3, 1); } .ds-pick-main { display: flex; flex: 1; flex-direction: column; gap: 2px; } .ds-pick-name { font-family: 'Hahmlet Variable', 'Pretendard Variable', Pretendard, 'Apple SD Gothic Neo', serif; font-size: 20px; font-weight: 700; line-height: 1.25; } .ds-pick-meta { font-family: 'Pretendard Variable', Pretendard, -apple-system, 'Apple SD Gothic Neo', system-ui, sans-serif; font-size: 14px; font-weight: 500; font-variant-numeric: tabular-nums; color: #5e4026; } .ds-pick svg { color: #5e4026; flex: none; } .ds-pick:hover { filter: brightness(1.05); } .ds-pick:active { transform: translateY(2px); } .ds-pick:focus-visible { outline: 3px solid #1a3887; outline-offset: 3px; }"
+    },
+    {
+      "name": "All Nations Gate",
+      "kind": "custom",
+      "refersTo": "gate",
+      "description": "Round-arched stone frame around a dark passage with gold rolling multilingual text.",
+      "html": "<div class=\"ds-gatecourse\"><button class=\"ds-gate\"><span class=\"ds-gate-open\"><svg width=\"22\" height=\"22\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><circle cx=\"12\" cy=\"12\" r=\"10\"/><path d=\"M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20\"/><path d=\"M2 12h20\"/></svg><span class=\"ds-gate-text\">올네이션국은 여기를 클릭해주세요</span></span></button></div>",
+      "css": ".ds-gatecourse { display: flex; height: 92px; padding: 4px 4px 0; background: #8a6b48; } .ds-gate { flex: 1; display: block; padding: 11px 11px 0; border: 0; border-radius: 999px 999px 0 0 / 66px 66px 0 0; background: repeating-conic-gradient(from -90deg at 50% 100%, rgb(111 82 54 / 0.95) 0deg 1.4deg, transparent 1.4deg 15deg), linear-gradient(180deg, #e9c987, #d4a660); box-shadow: inset 0 2px 0 rgb(255 243 212 / 0.5), inset 0 -2px 0 rgb(80 52 22 / 0.3); cursor: pointer; } .ds-gate-open { display: flex; height: 100%; align-items: center; justify-content: center; gap: 10px; padding: 16px 16px 6px; border-radius: 999px 999px 0 0 / 56px 56px 0 0; background: radial-gradient(90% 80% at 50% 120%, rgb(242 168 92 / 0.28), transparent 70%), #22160b; box-shadow: inset 0 10px 18px rgb(0 0 0 / 0.55); color: #f4d58f; } .ds-gate-text { font-family: 'Pretendard Variable', Pretendard, -apple-system, 'Apple SD Gothic Neo', system-ui, sans-serif; font-size: 15px; font-weight: 600; line-height: 1.35; } .ds-gate:hover .ds-gate-open { background: radial-gradient(90% 90% at 50% 120%, rgb(242 168 92 / 0.42), transparent 72%), #22160b; } .ds-gate:active .ds-gate-open { box-shadow: inset 0 14px 22px rgb(0 0 0 / 0.65); } .ds-gate:focus-visible { outline: 3px solid #f4d58f; outline-offset: 4px; }"
+    },
+    {
+      "name": "Back Link",
+      "kind": "nav",
+      "refersTo": "back-link",
+      "description": "Sky-zone navigation: chevron plus haze text on a 44px pill hit area.",
+      "html": "<div class=\"ds-sky\"><a class=\"ds-back\" href=\"#\"><svg width=\"22\" height=\"22\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.25\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"m15 18-6-6 6-6\"/></svg>처음으로</a></div>",
+      "css": ".ds-sky { padding: 12px 20px; background: linear-gradient(180deg, #0c1946, #132a6c); } .ds-back { display: inline-flex; align-items: center; gap: 2px; min-height: 44px; padding: 0 12px 0 4px; border-radius: 999px; font-family: 'Pretendard Variable', Pretendard, -apple-system, 'Apple SD Gothic Neo', system-ui, sans-serif; font-size: 15px; font-weight: 600; color: #c9d3f2; text-decoration: none; transition: background 140ms cubic-bezier(0.16, 1, 0.3, 1); } .ds-back:hover { background: rgb(255 255 255 / 0.07); } .ds-back:focus-visible { outline: 3px solid #f4d58f; outline-offset: 3px; }"
+    },
+    {
+      "name": "Me Stone",
+      "kind": "card",
+      "refersTo": "me-tag",
+      "description": "The visitor's own member stone: fresh-cut face, chalk underline, red 나 tag.",
+      "html": "<div class=\"ds-wall\"><div class=\"ds-stone ds-member\"><span class=\"ds-member-name\">홍길동<span class=\"ds-year\">(99)</span></span><span class=\"ds-tag\">나</span><span class=\"ds-phone\">2222</span></div></div>",
+      "css": ".ds-wall { padding: 4px; background: #8a6b48; } .ds-stone { position: relative; display: block; color: #3a2614; background: var(--face-default, linear-gradient(170deg, #f0d596, #e3be7c 55%, #d4a660)); background-size: 192px 192px; box-shadow: inset 0 2px 1px -1px rgb(255 248 228 / 0.7), inset 0 9px 10px -8px rgb(255 246 222 / 0.5), inset 3px 0 5px -3px rgb(255 246 222 / 0.3), inset 0 -3px 2px -1px rgb(64 36 10 / 0.5), inset 0 -12px 14px -10px rgb(70 40 12 / 0.42), inset -4px 0 6px -3px rgb(70 40 12 / 0.28); -webkit-mask-image: linear-gradient(140deg, transparent 5px, #000 5.7px), linear-gradient(225deg, #000, #000), linear-gradient(305deg, transparent 3px, #000 3.7px), linear-gradient(52deg, transparent 6px, #000 6.7px); mask-image: linear-gradient(140deg, transparent 5px, #000 5.7px), linear-gradient(225deg, #000, #000), linear-gradient(305deg, transparent 3px, #000 3.7px), linear-gradient(52deg, transparent 6px, #000 6.7px); -webkit-mask-composite: source-in; mask-composite: intersect; border: 0; } .ds-member { display: block; min-height: 72px; padding: 11px 16px; background: var(--face-fresh, linear-gradient(170deg, #f8ead0, #f1dcae 60%, #e9cf9c)); } .ds-member-name { font-family: 'Hahmlet Variable', 'Pretendard Variable', Pretendard, 'Apple SD Gothic Neo', serif; font-size: 18px; font-weight: 700; line-height: 1.25; text-decoration: underline; text-decoration-color: #c23b22; text-decoration-thickness: 2.5px; text-underline-offset: 6px; text-decoration-skip-ink: none; } .ds-year { font-family: 'Pretendard Variable', Pretendard, -apple-system, 'Apple SD Gothic Neo', system-ui, sans-serif; font-size: 14px; font-weight: 500; color: #5e4026; } .ds-tag { display: inline-block; margin-left: 6px; padding: 1px 7px 2px; border-radius: 4px; font-family: 'Pretendard Variable', Pretendard, -apple-system, 'Apple SD Gothic Neo', system-ui, sans-serif; font-size: 12px; font-weight: 700; vertical-align: 3px; color: #fff4ec; background: #c23b22; } .ds-phone { display: block; margin-top: 2px; font-family: 'Pretendard Variable', Pretendard, -apple-system, 'Apple SD Gothic Neo', system-ui, sans-serif; font-size: 14px; font-weight: 600; font-variant-numeric: tabular-nums; color: #5e4026; }"
+    },
+    {
+      "name": "Wall Note",
+      "kind": "custom",
+      "refersTo": "wall-note",
+      "description": "Inline error or wait band in deep mortar under the wall courses; gold text, never red.",
+      "html": "<div class=\"ds-note\"><svg width=\"18\" height=\"18\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.25\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><circle cx=\"12\" cy=\"12\" r=\"10\"/><path d=\"M12 8v4\"/><path d=\"M12 16h.01\"/></svg><span>이름을 찾지 못했어요. 성과 이름을 모두 넣어 주세요.</span></div>",
+      "css": ".ds-note { display: flex; align-items: flex-start; gap: 8px; padding: 10px 14px; font-family: 'Pretendard Variable', Pretendard, -apple-system, 'Apple SD Gothic Neo', system-ui, sans-serif; font-size: 14px; font-weight: 600; line-height: 1.45; color: #f4d58f; background: #6f5236; } .ds-note svg { flex: none; margin-top: 1px; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Nehemiah Wall at Dusk",
+    "overview": "Every screen is a slice of the same place: a deep cobalt sky just after sunset, a few first stars and a distant wall-and-tower silhouette at the top, and a honey limestone wall rising from the bottom of the screen. The interface does not sit on top of the wall. It is built from the wall. Inputs are empty stone slots, buttons are wide stones, list rows are stones laid in courses, and the result page is the wall itself, with mortar joints between every item. The sky carries what you read; the wall carries what you touch, and the wall is always where the thumb reaches.\n\nDensity is low and ceremonial on the sky and practical on the wall: names, roles, and phone numbers are set large in carved Hahmlet so they read the way an inscription reads. Material does the decorating. Raster limestone faces, chipped corners that differ from stone to stone, a soft top-lit bevel, and the cast shadow into the mortar give the depth. There is no card, no panel, and no flat UI chrome. The one red, a snapped chalk line, appears only where the visitor acts and where the visitor is \"me\".\n\nThe world rejects the event-page frame of gift boxes, confetti, and a white result card. It also avoids cream paper as a flat surface, black granite, and a lone tombstone-like slab: every stone sits in a course with neighbors.",
+    "keyCharacteristics": [
+      "Two zones on every page: cobalt sky above (reading), limestone wall below (acting).",
+      "UI elements are stones: seeded widths, per-corner chips, raster faces, 4px mortar joints.",
+      "Text on stone is carved: dark ink clipped through the stone texture, in Hahmlet.",
+      "Chalk red marks only the primary action and \"me\".",
+      "One motion word: landing. Things fall into place from above and settle with a short bounce.",
+      "Mobile-first single column, capped at 480px."
+    ],
+    "rules": [
+      {
+        "name": "The Chalk-Line Rule",
+        "body": "Red marks the next action and \"me\", nothing else. If a red element is neither the thing to press nor the visitor's own name, it is wrong. Errors use gold on deep mortar, not red.",
+        "section": "colors"
+      },
+      {
+        "name": "The Two-Zones Rule",
+        "body": "Light text goes on the sky; carved dark ink goes on stone. Never put sky-ink on stone or carve on the sky.",
+        "section": "colors"
+      },
+      {
+        "name": "The Carved-Name Rule",
+        "body": "Every person, group, or place name is set in Hahmlet at weight 700 or heavier. On stone it is carved: ink at 86% opacity is clipped through the stone face texture, so the grain shows through the letters.",
+        "section": "typography"
+      },
+      {
+        "name": "The Korean-First Pairing Rule",
+        "body": "Where two languages pair, Korean leads in Hahmlet and English follows below in a smaller Pretendard line (carve-sub). Words are never broken mid-word (`word-break: keep-all`).",
+        "section": "typography"
+      },
+      {
+        "name": "The Lit-From-Above Rule",
+        "body": "Light comes from the upper left of the sky. Highlights go on top and left edges, shade on bottom and right. Pressed stones sink 2px; they never lift.",
+        "section": "elevation"
+      }
+    ],
+    "dos": [
+      "Do build every wall-zone control (inputs, primary actions, selectable rows) as a stone: a raster face, seeded chips, the stone bevel, and 4px mortar to its neighbors (8px in the bottom-sheet list).",
+      "Do keep reading on the sky and acting on the wall, with the primary action inside the bottom wall within thumb reach.",
+      "Do carve names in Hahmlet 700–900 in carved ink, and put English as a smaller Pretendard line beneath Korean.",
+      "Do reserve chalk red (#c23b22) for the next action and for \"me\".",
+      "Do use landing as the motion vocabulary: fall from above, ease in, short bounce, settle. Pair every motion with a reduced-motion fade.",
+      "Do generate new stone or wood textures with `scripts/stone-plates/generator.html` and ship each raster with its provenance `.json`.",
+      "Do keep focus visible: a 3px gold ring on the sky, switched to cobalt on stone and in the sheet."
+    ],
+    "donts": [
+      "Don't use gift boxes, confetti, or a white result card. The reveal is a wall being built.",
+      "Don't float a stone slab or card alone on the sky. Stones sit in a wall course or rest on the earth strip.",
+      "Don't use cream paper as a flat surface or black granite. The dark arch passage is a void in the wall, not a material.",
+      "Don't round stone corners with border-radius or give stones borders. Corners chip; edges are lit and shaded.",
+      "Don't use red for errors or emphasis. Errors are gold on deep mortar.",
+      "Don't add hard offset shadows or flat UI elevation. Depth comes from the bevel and the mortar cast.",
+      "Don't link leader phone numbers. They show as text only."
+    ]
+  }
+}
