@@ -27,7 +27,7 @@ export const checkNameApiRequest = async (
   name: string
 ): Promise<CheckNameResponse> => {
   const response = await axiosInstance.get<CheckNameResponse>(
-    `/seasons/next?name=${name}`
+    `/seasons/next?name=${encodeURIComponent(name)}`
   );
   return response.data;
 };

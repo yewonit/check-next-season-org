@@ -1,0 +1,255 @@
+<!doctype html>
+<!--
+  Kingdom Builders 2027: 석회암 돌 래스터 생성기 (절차적 생성, 외부 이미지 없음)
+
+  사용법: 이 파일을 브라우저로 열면 window.renderAll()이 돌 면(face),
+  먹줄(chalk) 이미지를 WebP data URL로 만든다. 같은 시드로 언제나 같은 결과가 나온다.
+  scripts/stone-plates/README.md 에 다시 만드는 방법이 있다.
+-->
+<html lang="ko">
+  <head>
+    <meta charset="utf-8" />
+    <title>stone plates</title>
+  </head>
+  <body>
+    <script>
+      function rng(seed) {
+        let h = 1779033703 ^ seed;
+        return () => {
+          h = Math.imul(h ^ (h >>> 16), 2246822507);
+          h = Math.imul(h ^ (h >>> 13), 3266489909);
+          h ^= h >>> 16;
+          return (h >>> 0) / 4294967296;
+        };
+      }
+
+      // 주기(타일 가능)를 가진 값 노이즈
+      function makeNoise(seed, period) {
+        const r = rng(seed);
+        const grid = new Float32Array(period * period).map(() => r());
+        const at = (x, y) =>
+          grid[(((y % period) + period) % period) * period + (((x % period) + period) % period)];
+        const fade = (t) => t * t * (3 - 2 * t);
+        return (x, y) => {
+          const xi = Math.floor(x), yi = Math.floor(y);
+          const xf = fade(x - xi), yf = fade(y - yi);
+          const a = at(xi, yi), b = at(xi + 1, yi), c = at(xi, yi + 1), d = at(xi + 1, yi + 1);
+          return a + (b - a) * xf + (c - a) * yf + (a - b - c + d) * xf * yf;
+        };
+      }
+
+      function fbm(noises, x, y, size) {
+        let v = 0, amp = 0.5, total = 0;
+        noises.forEach((n, i) => {
+          const f = n.period / size;
+          v += n.fn(x * f, y * f) * amp;
+          total += amp;
+          amp *= 0.5;
+        });
+        return v / total;
+      }
+
+      function octaves(seed, base, count) {
+        return Array.from({ length: count }, (_, i) => {
+          const period = base * 2 ** i;
+          return { period, fn: makeNoise(seed + i * 101, period) };
+        });
+      }
+
+      const clamp = (v) => Math.max(0, Math.min(255, v));
+
+      // 돌 면: 정으로 쪼아 낸 거친 가운데(보스). 사방 이음 없이 타일된다.
+      function face(tone, seed, size = 384) {
+        const c = document.createElement('canvas');
+        c.width = c.height = size;
+        const ctx = c.getContext('2d');
+        const img = ctx.createImageData(size, size);
+        const mottle = octaves(seed, 3, 3);
+        const grain = octaves(seed + 7, 48, 2);
+        const r = rng(seed + 3);
+        const pits = new Float32Array(size * size);
+        for (let i = 0; i < size * 3.2; i++) {
+          const px = Math.floor(r() * size), py = Math.floor(r() * size);
+          const rad = 0.8 + r() * 2.4, depth = 0.3 + r() * 0.5;
+          for (let dy = -3; dy <= 3; dy++)
+            for (let dx = -3; dx <= 3; dx++) {
+              const dd = Math.hypot(dx, dy);
+              if (dd > rad) continue;
+              const x = (px + dx + size) % size, y = (py + dy + size) % size;
+              pits[y * size + x] = Math.max(pits[y * size + x], depth * (1 - dd / rad));
+            }
+        }
+        for (let y = 0; y < size; y++)
+          for (let x = 0; x < size; x++) {
+            const m = fbm(mottle, x, y, size) - 0.5;
+            const g = fbm(grain, x, y, size) - 0.5;
+            const p = pits[y * size + x];
+            const k = 1 + m * 0.18 + g * 0.12 - p * 0.3;
+            const i = (y * size + x) * 4;
+            img.data[i] = clamp(tone[0] * k + m * 10);
+            img.data[i + 1] = clamp(tone[1] * k);
+            img.data[i + 2] = clamp(tone[2] * k - m * 8);
+            img.data[i + 3] = 255;
+          }
+        ctx.putImageData(img, 0, 0);
+        return c;
+      }
+
+      // 돌 테두리: 같은 색조의 면 텍스처 위에 날의 베벨과 모서리 이빠짐만 더한다.
+      // (면과 같은 픽셀에서 시작하므로 테두리와 면 사이에 경계선이 생기지 않는다)
+      function frame(faceCanvas, seed, size = 192, band = 14) {
+        const c = document.createElement('canvas');
+        c.width = c.height = size;
+        const ctx = c.getContext('2d');
+        const fsz = faceCanvas.width;
+        const src = faceCanvas.getContext('2d').getImageData(0, 0, fsz, fsz).data;
+        const img = ctx.createImageData(size, size);
+        const r = rng(seed);
+        const ox = Math.floor(r() * fsz), oy = Math.floor(r() * fsz);
+        const edge = makeNoise(seed + 23, 16);
+        // 이빠짐은 늘어나지 않는 모서리 조각 안에만 둔다
+        const zone = band / size;
+        const chips = Array.from({ length: 2 + Math.floor(r() * 3) }, () => ({
+          side: Math.floor(r() * 4),
+          at: r() < 0.5 ? zone * (0.25 + r() * 0.6) : 1 - zone * (0.25 + r() * 0.6),
+          w: zone * (0.25 + r() * 0.35),
+          d: 2 + r() * 3,
+        }));
+        const corner = 2 + r() * 3.5;
+        const bevelTop = 3 + r() * 4;
+        const bevelBottom = 6 + r() * 6;
+        for (let y = 0; y < size; y++)
+          for (let x = 0; x < size; x++) {
+            const dl = x, dr = size - 1 - x, dt = y, db = size - 1 - y;
+            const d = Math.min(dl, dr, dt, db);
+            const side = d === dt ? 0 : d === db ? 1 : d === dl ? 2 : 3;
+            const along = side < 2 ? x / size : y / size;
+            // 날은 거의 곧게, 아주 느린 굴곡만
+            let bite = (edge(along * 3, side * 4) - 0.5) * 0.5 + 0.3;
+            chips.forEach((ch) => {
+              if (ch.side !== side) return;
+              const t = Math.abs(along - ch.at) / ch.w;
+              if (t < 1) bite += ch.d * (1 - t);
+            });
+            const cx = Math.min(dl, dr), cy = Math.min(dt, db);
+            let dEff = d;
+            if (cx < corner && cy < corner) {
+              dEff = Math.min(d, corner - Math.hypot(corner - cx, corner - cy));
+            }
+            const alpha = Math.max(0, Math.min(1, dEff - bite + 0.5));
+            // 위·왼쪽은 빛을 받고 아래·오른쪽은 그늘진 깎은 날
+            const topLit = Math.max(0, 1 - (y - bite) / bevelTop);
+            const leftLit = Math.max(0, 1 - (x - bite) / (bevelTop * 0.8));
+            const bottomShade = Math.max(0, 1 - (size - 1 - y - bite) / bevelBottom);
+            const rightShade = Math.max(0, 1 - (size - 1 - x - bite) / (bevelBottom * 0.7));
+            const k =
+              1 +
+              topLit ** 1.3 * 0.24 +
+              leftLit ** 1.3 * 0.1 -
+              bottomShade ** 1.2 * 0.42 -
+              rightShade ** 1.2 * 0.2;
+            const si = (((y + oy) % fsz) * fsz + ((x + ox) % fsz)) * 4;
+            const i = (y * size + x) * 4;
+            img.data[i] = clamp(src[si] * k);
+            img.data[i + 1] = clamp(src[si + 1] * k);
+            img.data[i + 2] = clamp(src[si + 2] * k);
+            img.data[i + 3] = Math.round(alpha * 255);
+          }
+        ctx.putImageData(img, 0, 0);
+        return c;
+      }
+
+      // 먹줄: 탁 튕겨 그은 빨간 분필 줄
+      function chalk(seed, w = 1024, h = 40) {
+        const c = document.createElement('canvas');
+        c.width = w;
+        c.height = h;
+        const ctx = c.getContext('2d');
+        const img = ctx.createImageData(w, h);
+        const r = rng(seed);
+        const wob = makeNoise(seed + 5, 32);
+        const dust = makeNoise(seed + 9, 256);
+        for (let x = 0; x < w; x++) {
+          const mid = h / 2 + (wob(x / 32, 0) - 0.5) * 2.4;
+          const thick = 4.2 + (wob(x / 16, 3) - 0.5) * 1.6;
+          for (let y = 0; y < h; y++) {
+            const dd = Math.abs(y - mid);
+            let a = Math.max(0, 1 - Math.max(0, dd - thick / 2) / 1.2);
+            const halo = Math.max(0, 1 - dd / 14) * 0.16;
+            const speck = dust(x / 4, y / 4) > 0.62 + r() * 0.3 ? 0.5 : 1;
+            a = Math.min(1, a * speck + halo * (r() > 0.55 ? 1 : 0));
+            const i = (y * w + x) * 4;
+            img.data[i] = 196;
+            img.data[i + 1] = 58;
+            img.data[i + 2] = 34;
+            img.data[i + 3] = Math.round(a * 235);
+          }
+        }
+        ctx.putImageData(img, 0, 0);
+        return c;
+      }
+
+      // 나무: 결이 길이 방향으로 흐르는 크레인·비계 목재 (길이 방향으로 타일)
+      function wood(seed, len = 512, across = 48, vertical = false) {
+        const w = vertical ? across : len, h = vertical ? len : across;
+        const c = document.createElement('canvas');
+        c.width = w;
+        c.height = h;
+        const ctx = c.getContext('2d');
+        const img = ctx.createImageData(w, h);
+        const r = rng(seed);
+        const wav = makeNoise(seed + 3, 8);
+        const fine = makeNoise(seed + 5, 128);
+        const knots = Array.from({ length: 2 }, () => ({ at: r() * len, off: 0.25 + r() * 0.5, s: 5 + r() * 6 }));
+        for (let y = 0; y < h; y++)
+          for (let x = 0; x < w; x++) {
+            const L = vertical ? y : x; // 길이 방향
+            const A = vertical ? x : y; // 폭 방향
+            const t = A / across;
+            let warp = (wav((L / len) * 8, t * 4) - 0.5) * 6;
+            knots.forEach((kn) => {
+              const dx = L - kn.at, dy = A - kn.off * across;
+              const dd = Math.hypot(dx * 0.5, dy);
+              if (dd < kn.s * 3) warp += (kn.s * 3 - dd) * 0.35 * Math.sign(dy || 1);
+            });
+            const ring = Math.sin((A + warp) * 0.9) * 0.5 + 0.5;
+            const streak = fine((L / len) * 128, A * 2) - 0.5;
+            // 둥근 목재: 가운데 밝고 가장자리 어둡게
+            const round = 1 - Math.pow(Math.abs(t - 0.42) * 2, 2) * 0.45;
+            const k = (0.78 + ring ** 3 * 0.22 + streak * 0.16) * round;
+            const i = (y * w + x) * 4;
+            img.data[i] = clamp(150 * k);
+            img.data[i + 1] = clamp(98 * k);
+            img.data[i + 2] = clamp(54 * k);
+            img.data[i + 3] = 255;
+          }
+        ctx.putImageData(img, 0, 0);
+        return c;
+      }
+
+      // 꿀빛 석회암 색조 (마지막은 새로 깎은 돌)
+      const TONES = {
+        honey: [229, 196, 131],
+        gold: [221, 182, 112],
+        amber: [211, 165, 97],
+        ochre: [200, 151, 90],
+        wheat: [232, 203, 141],
+        fresh: [242, 222, 177],
+      };
+
+      window.renderAll = () => {
+        const out = {};
+        const webp = (cv, q = 0.84) => cv.toDataURL('image/webp', q);
+        const faces = {};
+        Object.entries(TONES).forEach(([name, tone], i) => {
+          faces[name] = face(tone, 1000 + i * 37);
+          out[`face-${name}`] = webp(faces[name], 0.8);
+        });
+        out['chalk-line'] = webp(chalk(31), 0.9);
+        out['wood-h'] = webp(wood(41, 512, 48, false), 0.82);
+        out['wood-v'] = webp(wood(43, 512, 48, true), 0.82);
+        return out;
+      };
+    </script>
+  </body>
+</html>

@@ -1,7 +1,9 @@
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import '@fontsource-variable/hahmlet';
 import './styles/global.css';
+import './kingdom/kingdom.css';
 import App from './App.tsx';
 
 // QueryClient 생성

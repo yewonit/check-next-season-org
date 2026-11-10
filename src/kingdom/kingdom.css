@@ -1,0 +1,1854 @@
+/*
+ * Kingdom Builders 2027: 해 질 녘 성벽과 코발트 하늘
+ * 돌 질감은 SVG 노이즈로 절차적으로 만든다.
+ */
+
+:root {
+  /* 하늘 */
+  --sky-950: #0c1946;
+  --sky-900: #132a6c;
+  --sky-800: #1a3887;
+  --sky-700: #2247a6;
+  --sky-500: #3f6bd6;
+  --sky-ink: #f6f0e2;
+  --sky-ink-soft: #c9d3f2;
+  --horizon: rgb(242 168 92 / 0.34);
+
+  /* 석회암 */
+  --gold-lit: #f4d58f;
+  --stone-1: #e9c987;
+  --stone-2: #dfb670;
+  --stone-3: #d4a660;
+  --stone-4: #c89659;
+  --stone-5: #e3be7c;
+  --stone-new: #f1dcae;
+  --mortar: #8a6b48;
+  --mortar-deep: #6f5236;
+  --earth: #3a2918;
+  --passage: #22160b;
+
+  /* 새김 글씨 */
+  --carve: #3a2614;
+  --carve-soft: #5e4026;
+  --carve-faint: #7a5a3a;
+
+  /* 먹줄 (행동과 '나'에만 쓰는 빨강) */
+  --chalk: #c23b22;
+  --chalk-deep: #9e2c17;
+  --chalk-ink: #fff4ec;
+
+  --font-display:
+    'Hahmlet Variable', 'Pretendard Variable', Pretendard,
+    'Apple SD Gothic Neo', serif;
+  --font-body:
+    'Pretendard Variable', Pretendard, -apple-system, BlinkMacSystemFont,
+    'Apple SD Gothic Neo', 'Noto Sans KR', 'Malgun Gothic', system-ui,
+    sans-serif;
+
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in: cubic-bezier(0.55, 0, 0.85, 0.2);
+
+  --course-h: clamp(44px, 6.6dvh, 58px);
+  --face-default: url('./assets/stones/face-honey.webp');
+  --face-fresh: url('./assets/stones/face-fresh.webp');
+  --chalk-line: url('./assets/stones/chalk-line.webp');
+  --wood-h: url('./assets/stones/wood-h.webp');
+  --wood-v: url('./assets/stones/wood-v.webp');
+  /* 돌이 줄눈 안으로 드리우는 그늘 */
+  --stone-shadow: drop-shadow(0 2px 2px rgb(40 22 8 / 0.45));
+
+  --grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .3 0 0 0 0 .19 0 0 0 0 .08 .62 0 0 0 -.2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E");
+  --mottle: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='420' height='420'%3E%3Cfilter id='m'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.011' numOctaves='2' seed='7' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .42 0 0 0 0 .27 0 0 0 0 .1 .55 0 0 0 -.2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23m)'/%3E%3C/svg%3E");
+}
+
+html,
+body {
+  background:
+    radial-gradient(
+        90% 30% at 50% 100%,
+        rgb(242 168 92 / 0.18),
+        transparent 70%
+      )
+      fixed,
+    linear-gradient(180deg, var(--sky-950), var(--sky-800)) fixed;
+  background-color: var(--sky-950);
+  scrollbar-color: var(--stone-4) var(--sky-950);
+}
+
+body {
+  font-family: var(--font-body);
+  color: var(--sky-ink);
+  -webkit-tap-highlight-color: transparent;
+}
+
+html:has(dialog[open]) {
+  overflow: hidden;
+}
+
+::selection {
+  background: var(--chalk);
+  color: var(--chalk-ink);
+}
+
+.kb :focus-visible {
+  outline: 3px solid var(--gold-lit);
+  outline-offset: 3px;
+}
+
+.kb-on-stone:focus-visible,
+.kb-on-stone :focus-visible,
+.kb-sheet :focus-visible {
+  outline-color: var(--sky-800);
+}
+
+:lang(zh),
+:lang(ja) {
+  font-family: var(--font-body);
+}
+
+/* ─── 앱 틀 ─────────────────────────────────────── */
+
+.kb {
+  position: relative;
+  container-type: inline-size;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  word-break: keep-all;
+  overflow-wrap: break-word;
+  max-width: 480px;
+  min-height: 100dvh;
+  margin-inline: auto;
+  overflow-x: clip;
+  background:
+    radial-gradient(130% 34% at 50% 100%, var(--horizon), transparent 72%),
+    linear-gradient(
+      180deg,
+      var(--sky-950) 0%,
+      var(--sky-900) 38%,
+      var(--sky-800) 70%,
+      var(--sky-700) 100%
+    );
+}
+
+@media (min-width: 520px) {
+  .kb {
+    box-shadow:
+      0 0 0 1px rgb(255 255 255 / 0.04),
+      0 30px 80px rgb(0 0 0 / 0.45);
+  }
+}
+
+.kb-logo {
+  width: 104px;
+  height: auto;
+  filter: brightness(0) invert(1);
+  opacity: 0.92;
+}
+
+.kb-logo-link {
+  display: inline-flex;
+  padding: 10px 6px;
+  margin: -10px -6px;
+  border-radius: 8px;
+}
+
+/* ─── 돌 ──────────────────────────────────────── */
+
+.kb-stone {
+  position: relative;
+  display: block;
+  min-width: 0;
+  color: var(--carve);
+  background: var(--face, var(--face-default)) 0 0 / 192px 192px repeat;
+  /* 깎은 날: 위·왼쪽은 빛, 아래·오른쪽은 그늘이 면으로 부드럽게 번진다 */
+  box-shadow:
+    inset 0 2px 1px -1px rgb(255 248 228 / 0.7),
+    inset 0 9px 10px -8px rgb(255 246 222 / 0.5),
+    inset 3px 0 5px -3px rgb(255 246 222 / 0.3),
+    inset 0 -3px 2px -1px rgb(64 36 10 / 0.5),
+    inset 0 -12px 14px -10px rgb(70 40 12 / 0.42),
+    inset -4px 0 6px -3px rgb(70 40 12 / 0.28);
+  /* 모서리 이빠짐 (돌마다 다르게) */
+  -webkit-mask-image: var(--chips, none);
+  mask-image: var(--chips, none);
+  -webkit-mask-composite: source-in;
+  mask-composite: intersect;
+}
+
+/* 돌에 판 글씨: 돌 면을 어둡게 비춘 홈 */
+.kb-carved {
+  color: var(--carve);
+  background-image:
+    linear-gradient(rgb(50 30 12 / 0.86), rgb(50 30 12 / 0.86)),
+    var(--face, var(--face-default));
+  background-size:
+    auto,
+    192px 192px;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.kb-courses {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.kb-course {
+  display: flex;
+  gap: 4px;
+  height: var(--course-h);
+}
+
+.kb-course--ragged {
+  height: calc(var(--course-h) * 0.72);
+}
+
+.kb-course--ragged .kb-stone:nth-child(2n) {
+  align-self: flex-end;
+  height: 70%;
+}
+
+.kb-course--ragged .kb-stone:last-child {
+  opacity: 0;
+}
+
+/* 주요 행동: 돌 위에 탁 튕겨 그은 먹줄 */
+.kb-cta {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 64px;
+  padding: 0 25px 6px;
+  font-family: var(--font-display);
+  font-size: 19px;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  color: var(--carve);
+  cursor: pointer;
+  transition:
+    transform 140ms var(--ease-out),
+    filter 140ms var(--ease-out);
+}
+
+.kb-cta::after {
+  content: '';
+  position: absolute;
+  right: 4px;
+  bottom: 5px;
+  left: 4px;
+  height: 13px;
+  background: var(--chalk-line) center / 100% 100% no-repeat;
+  pointer-events: none;
+  transform: rotate(-0.6deg);
+  transition: opacity 200ms var(--ease-out);
+}
+
+.kb-cta svg {
+  flex: none;
+  color: var(--chalk);
+}
+
+.kb-cta:hover:not(:disabled) {
+  filter: brightness(1.05);
+}
+
+.kb-cta:active:not(:disabled) {
+  transform: translateY(2px);
+  filter: brightness(0.96);
+}
+
+.kb-cta:disabled {
+  color: var(--carve-soft);
+  cursor: not-allowed;
+}
+
+.kb-cta:disabled::after,
+.kb-cta:disabled svg {
+  opacity: 0;
+}
+
+.kb-cta[aria-busy='true'] {
+  cursor: progress;
+}
+
+.kb-cta--quiet::after,
+.kb-cta--quiet svg {
+  display: none;
+}
+
+.kb-cta--quiet {
+  padding-bottom: 0;
+}
+
+.kb-dots {
+  display: inline-flex;
+  gap: 4px;
+}
+
+.kb-dots span {
+  width: 6px;
+  height: 6px;
+  border-radius: 1.5px;
+  background: currentColor;
+  animation: kb-dots 900ms var(--ease-out) infinite;
+}
+
+.kb-dots span:nth-child(2) {
+  animation-delay: 150ms;
+}
+
+.kb-dots span:nth-child(3) {
+  animation-delay: 300ms;
+}
+
+.kb-home__wall,
+.kb-bwall,
+.kb-result__wall,
+.kb-an__list,
+.kb-sheet__list {
+  filter: var(--stone-shadow);
+}
+
+/* ─── 메인 ─────────────────────────────────────── */
+
+.kb-home__sky {
+  position: relative;
+  background: radial-gradient(
+    130% 30% at 50% 100%,
+    rgb(242 168 92 / 0.34),
+    rgb(242 168 92 / 0) 72%
+  );
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  padding: calc(18px + env(safe-area-inset-top)) 22px 104px;
+}
+
+.kb-home__sky > * {
+  position: relative;
+}
+
+/* 해 진 직후의 첫 별들 */
+.kb-stars {
+  position: absolute !important;
+  inset: 0 0 45% 0;
+  pointer-events: none;
+  background:
+    radial-gradient(
+      1.6px 1.6px at 18% 22%,
+      rgb(255 244 214 / 0.9),
+      transparent
+    ),
+    radial-gradient(1.2px 1.2px at 34% 9%, rgb(255 244 214 / 0.7), transparent),
+    radial-gradient(2px 2px at 71% 16%, rgb(255 244 214 / 0.95), transparent),
+    radial-gradient(
+      1.2px 1.2px at 86% 31%,
+      rgb(255 244 214 / 0.6),
+      transparent
+    ),
+    radial-gradient(
+      1.4px 1.4px at 56% 38%,
+      rgb(255 244 214 / 0.55),
+      transparent
+    ),
+    radial-gradient(1px 1px at 9% 47%, rgb(255 244 214 / 0.5), transparent),
+    radial-gradient(1.3px 1.3px at 92% 6%, rgb(255 244 214 / 0.7), transparent),
+    radial-gradient(1px 1px at 44% 58%, rgb(255 244 214 / 0.4), transparent);
+}
+
+/* 멀리 보이는 성벽과 망대 */
+.kb-skyline {
+  position: absolute !important;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 92px;
+  pointer-events: none;
+}
+
+.kb-home__hero {
+  margin-top: auto;
+  padding-top: 36px;
+}
+
+.kb-title {
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: clamp(42px, 14.2cqi, 70px);
+  line-height: 0.9;
+  letter-spacing: -0.03em;
+  text-transform: uppercase;
+  color: var(--gold-lit);
+  text-shadow: 0 3px 12px rgb(6 12 40 / 0.7);
+}
+
+.kb-title > span {
+  display: block;
+}
+
+.kb-verse {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 4px 10px;
+  margin-top: 22px;
+  font-family: var(--font-display);
+  font-size: 21px;
+  font-weight: 700;
+  color: var(--sky-ink);
+}
+
+.kb-verse cite {
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-style: normal;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  color: var(--sky-ink-soft);
+}
+
+.kb-lede {
+  max-width: 28ch;
+  margin-top: 10px;
+  font-size: 16px;
+  line-height: 1.55;
+  color: var(--sky-ink-soft);
+  text-wrap: pretty;
+}
+
+.kb-home__wall {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 0 4px;
+  background: linear-gradient(
+    180deg,
+    transparent calc(var(--course-h) * 0.4),
+    var(--mortar) 0
+  );
+}
+
+.kb-home__wall::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  background: linear-gradient(
+    105deg,
+    rgb(255 196 120 / 0.22),
+    rgb(255 196 120 / 0) 46%,
+    rgb(20 30 80 / 0.16)
+  );
+  mix-blend-mode: soft-light;
+  pointer-events: none;
+}
+
+.kb-home__wall > .kb-courses {
+  margin-bottom: 0;
+}
+
+.kb-flank {
+  flex: 0.6 1 0;
+}
+
+.kb-slot {
+  display: flex;
+  flex: 5 1 0;
+  flex-direction: column;
+  justify-content: center;
+  gap: 2px;
+  min-height: 80px;
+  padding: 13px 20px;
+  cursor: text;
+  outline: 2px dashed rgb(194 59 34 / 0.8);
+  outline-offset: -4px;
+  transition: outline-color 160ms var(--ease-out);
+}
+
+.kb-slot:focus-within {
+  outline: 2px solid var(--chalk);
+  outline-offset: -4px;
+}
+
+.kb-slot.is-filled:not(:focus-within) {
+  outline-color: transparent;
+}
+
+.kb-slot__label {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--carve-soft);
+}
+
+.kb-slot__input {
+  width: 100%;
+  min-width: 0;
+  font-family: var(--font-display);
+  font-size: 26px;
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+  color: var(--carve);
+  caret-color: var(--chalk);
+}
+
+.kb-slot__input::placeholder {
+  color: var(--carve-faint);
+  font-weight: 400;
+  font-size: 22px;
+}
+
+.kb-home__cta {
+  flex: 5 1 0;
+}
+
+.kb-note {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 10px 14px;
+  margin: 0 -4px;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.45;
+  color: var(--gold-lit);
+  background: var(--mortar-deep);
+}
+
+.kb-note svg {
+  flex: none;
+  margin-top: 1px;
+}
+
+.kb-note--wait {
+  color: var(--sky-ink);
+}
+
+/* 올네이션 아치 문 */
+.kb-gate-course {
+  display: flex;
+  gap: 4px;
+  height: 92px;
+}
+
+.kb-gate-course .kb-flank {
+  flex: 0.25 1 0;
+}
+
+.kb-gate {
+  position: relative;
+  display: block;
+  flex: 6 1 0;
+  padding: 11px 11px 0;
+  border-radius: 999px 999px 0 0 / 66px 66px 0 0;
+  background:
+    repeating-conic-gradient(
+      from -90deg at 50% 100%,
+      rgb(111 82 54 / 0.95) 0deg 1.4deg,
+      transparent 1.4deg 15deg
+    ),
+    var(--face-default) 0 0 / 192px 192px,
+    linear-gradient(180deg, var(--stone-1), var(--stone-3));
+  box-shadow:
+    inset 0 2px 0 rgb(255 243 212 / 0.5),
+    inset 0 -2px 0 rgb(80 52 22 / 0.3);
+  cursor: pointer;
+}
+
+.kb-gate__opening {
+  display: flex;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 16px 16px 6px;
+  border-radius: 999px 999px 0 0 / 56px 56px 0 0;
+  background:
+    radial-gradient(
+      90% 80% at 50% 120%,
+      rgb(242 168 92 / 0.28),
+      transparent 70%
+    ),
+    var(--passage);
+  box-shadow: inset 0 10px 18px rgb(0 0 0 / 0.55);
+  color: var(--gold-lit);
+}
+
+.kb-gate__text {
+  min-width: 0;
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1.35;
+  letter-spacing: -0.01em;
+  text-align: center;
+  transition: opacity 500ms ease-in-out;
+}
+
+.kb-gate:hover .kb-gate__opening {
+  background:
+    radial-gradient(
+      90% 90% at 50% 120%,
+      rgb(242 168 92 / 0.42),
+      transparent 72%
+    ),
+    var(--passage);
+}
+
+.kb-gate:active .kb-gate__opening {
+  box-shadow: inset 0 14px 22px rgb(0 0 0 / 0.65);
+}
+
+.kb-gate:focus-visible {
+  outline-offset: 4px;
+}
+
+.kb-ground {
+  height: calc(20px + env(safe-area-inset-bottom));
+  margin: 0 -4px;
+  background: var(--grain), linear-gradient(180deg, #4a3520, var(--earth));
+  background-size:
+    180px 180px,
+    100% 100%;
+}
+
+/* ─── 바텀시트 ──────────────────────────────────── */
+
+.kb-sheet {
+  width: min(100%, 480px);
+  max-width: 100%;
+  max-height: min(84dvh, 680px);
+  margin: auto auto 0;
+  padding: 0;
+  border: 0;
+  border-radius: 22px 22px 0 0;
+  color: var(--carve);
+  background-color: var(--stone-1);
+  background-image:
+    var(--grain),
+    linear-gradient(180deg, rgb(255 246 222 / 0.35), rgb(255 246 222 / 0) 30%);
+  background-size:
+    180px 180px,
+    100% 100%;
+  box-shadow: 0 -14px 44px rgb(6 12 40 / 0.5);
+}
+
+.kb-sheet[open] {
+  animation: kb-sheet-up 420ms var(--ease-out);
+}
+
+.kb-sheet::backdrop {
+  background: rgb(6 12 40 / 0.64);
+  animation: kb-fade 300ms var(--ease-out);
+}
+
+.kb-sheet__body {
+  display: flex;
+  flex-direction: column;
+  max-height: inherit;
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+.kb-sheet__handle {
+  width: 44px;
+  height: 5px;
+  margin: 10px auto 0;
+  border-radius: 3px;
+  background: rgb(58 38 20 / 0.28);
+}
+
+.kb-sheet__head {
+  position: relative;
+  padding: 14px 64px 14px 22px;
+}
+
+.kb-sheet__title {
+  font-family: var(--font-display);
+  font-size: 22px;
+  font-weight: 800;
+  line-height: 1.32;
+  letter-spacing: -0.01em;
+  white-space: pre-line;
+  text-wrap: balance;
+}
+
+.kb-sheet__desc {
+  margin-top: 6px;
+  font-size: 15px;
+  line-height: 1.5;
+  color: var(--carve-soft);
+}
+
+.kb-sheet__close {
+  position: absolute;
+  top: 6px;
+  right: 10px;
+  display: grid;
+  width: 44px;
+  height: 44px;
+  place-items: center;
+  border-radius: 50%;
+  color: var(--carve);
+  transition: background 140ms var(--ease-out);
+}
+
+.kb-sheet__close:hover {
+  background: rgb(58 38 20 / 0.08);
+}
+
+.kb-sheet__list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 4px 16px 22px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+.kb-pick {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  min-height: 72px;
+  padding: 11px 16px 11px 20px;
+  text-align: left;
+  cursor: pointer;
+  transition:
+    transform 140ms var(--ease-out),
+    filter 140ms var(--ease-out);
+}
+
+.kb-pick:hover:not(:disabled) {
+  filter: brightness(1.05);
+}
+
+.kb-pick:active:not(:disabled) {
+  transform: translateY(2px);
+}
+
+.kb-pick:disabled {
+  cursor: progress;
+}
+
+.kb-pick__main {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.kb-pick__name {
+  font-family: var(--font-display);
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 1.25;
+  overflow-wrap: anywhere;
+}
+
+.kb-pick__meta {
+  font-size: 14px;
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+  color: var(--carve-soft);
+}
+
+.kb-pick svg {
+  flex: none;
+  color: var(--carve-soft);
+}
+
+.kb-sheet__state {
+  padding: 18px 6px;
+  font-size: 15px;
+  line-height: 1.5;
+  color: var(--carve-soft);
+}
+
+/* ─── 올네이션 ──────────────────────────────────── */
+
+.kb-an__sky {
+  padding: calc(10px + env(safe-area-inset-top)) 20px 26px;
+}
+
+.kb-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  min-height: 44px;
+  padding: 0 12px 0 4px;
+  margin-left: -8px;
+  border-radius: 999px;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--sky-ink-soft);
+  transition: background 140ms var(--ease-out);
+}
+
+.kb-back:hover {
+  background: rgb(255 255 255 / 0.07);
+}
+
+.kb-an__title {
+  min-height: calc(2 * 1.24em);
+  margin-top: 22px;
+  font-family: var(--font-display);
+  font-size: clamp(28px, 8.4vw, 34px);
+  font-weight: 800;
+  line-height: 1.24;
+  letter-spacing: -0.015em;
+  color: var(--sky-ink);
+  white-space: pre-line;
+  transition: opacity 500ms ease-in-out;
+}
+
+.kb-an__wall {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 4px;
+  padding: 4px 4px calc(4px + env(safe-area-inset-bottom));
+  background: var(--mortar);
+}
+
+.kb-an__fill {
+  position: relative;
+  flex: 1 1 0;
+  min-height: 0;
+  overflow: hidden;
+}
+
+/* 목록 아래로 이어지는 성벽: 그늘에 잠겨 눌리지 않는 벽 */
+.kb-an__fill .kb-courses {
+  filter: brightness(0.56) saturate(0.7);
+}
+
+.kb-an__fill::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: linear-gradient(
+    180deg,
+    rgb(28 18 8 / 0.6),
+    rgb(28 18 8 / 0.15) 40%,
+    rgb(28 18 8 / 0.5)
+  );
+  pointer-events: none;
+}
+
+.kb-an__list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.kb-an__list > li {
+  display: flex;
+  min-width: 0;
+}
+
+.kb-an__stone {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  justify-content: center;
+  gap: 2px;
+  min-height: 84px;
+  padding: 15px 18px;
+  text-align: left;
+  cursor: pointer;
+  transition:
+    transform 140ms var(--ease-out),
+    filter 140ms var(--ease-out);
+}
+
+.kb-an__stone:hover {
+  filter: brightness(1.05);
+}
+
+.kb-an__stone:active {
+  transform: translateY(2px);
+}
+
+.kb-an__cell {
+  font-family: var(--font-display);
+  font-size: 20px;
+  font-weight: 800;
+  line-height: 1.2;
+  overflow-wrap: anywhere;
+}
+
+.kb-an__group {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--carve-soft);
+}
+
+.kb-an__skeleton {
+  min-height: 84px;
+  animation: kb-breathe 1.6s ease-in-out infinite;
+}
+
+.kb-wall-message {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 22px 20px;
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+.kb-wall-message .kb-cta {
+  min-height: 52px;
+  font-size: 16px;
+}
+
+/* ─── 리빌: 성벽 쌓기 ───────────────────────────── */
+
+.kb-build {
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  height: 100dvh;
+  min-height: 560px;
+}
+
+.kb-build__sky {
+  position: relative;
+  z-index: 2;
+  padding: calc(18px + env(safe-area-inset-top)) 22px 6px;
+  min-height: 150px;
+}
+
+.kb-build__title {
+  font-family: var(--font-display);
+  font-size: clamp(23px, 6.8vw, 28px);
+  font-weight: 800;
+  line-height: 1.3;
+  letter-spacing: -0.015em;
+  color: var(--sky-ink);
+  white-space: pre-line;
+  text-wrap: balance;
+  transition: opacity 500ms ease-in-out;
+}
+
+.kb-build__hint {
+  margin-top: 8px;
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--sky-ink-soft);
+  transition: opacity 500ms ease-in-out;
+}
+
+.kb-build__site {
+  position: relative;
+  container-type: size;
+  min-height: 0;
+  cursor: pointer;
+  touch-action: manipulation;
+  user-select: none;
+  -webkit-user-select: none;
+  --wall-w: min(300px, calc(100cqi - 84px));
+}
+
+.kb-build.is-done .kb-build__site {
+  cursor: default;
+}
+
+.kb-scaffold {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.kb-scaffold > span {
+  position: absolute;
+  display: block;
+}
+
+.kb-scaffold__mast,
+.kb-scaffold__pole {
+  background: var(--wood-v) center top / 100% auto repeat-y;
+  border-radius: 3px;
+  box-shadow: 2px 0 4px rgb(0 0 0 / 0.25);
+}
+
+/* 왼쪽: 지브 크레인 기둥과 팔 */
+.kb-scaffold__mast {
+  top: 6px;
+  bottom: 0;
+  left: 20px;
+  width: 14px;
+}
+
+.kb-scaffold__boom {
+  top: 22px;
+  left: 4px;
+  width: calc(50% + 14px);
+  height: 12px;
+  border-radius: 3px;
+  background: var(--wood-h) left center / auto 100% repeat-x;
+  box-shadow: 0 3px 6px rgb(0 0 0 / 0.28);
+  transform: rotate(-3deg);
+  transform-origin: 0 50%;
+}
+
+.kb-scaffold__strut {
+  top: 96px;
+  left: 30px;
+  width: 112px;
+  height: 7px;
+  border-radius: 4px;
+  background: var(--wood-h) left center / auto 100% repeat-x;
+  transform: rotate(-36deg);
+  transform-origin: 0 50%;
+}
+
+.kb-scaffold__line {
+  background: #e2cfa6;
+}
+
+/* 도르래에서 팔을 따라 기둥 꼭대기로 가는 밧줄 */
+.kb-scaffold__line--boom {
+  top: 33px;
+  left: 30px;
+  width: calc(50% - 30px);
+  height: 2px;
+  transform: rotate(-3deg);
+  transform-origin: 0 50%;
+}
+
+/* 기둥을 따라 드럼까지 내려가는 밧줄 */
+.kb-scaffold__line--mast {
+  top: 30px;
+  bottom: 30px;
+  left: 37px;
+  width: 2px;
+}
+
+/* 팔 뒤쪽 균형추 */
+.kb-scaffold__counter-rope {
+  top: 30px;
+  left: 9px;
+  width: 2px;
+  height: 22px;
+  background: #e2cfa6;
+}
+
+.kb-scaffold__counter {
+  top: 50px;
+  left: 2px;
+  width: 16px;
+  height: 22px;
+  border-radius: 2px;
+  background:
+    var(--face-default) 0 0 / 96px 96px,
+    #c89659;
+  box-shadow:
+    inset 0 -3px 0 rgb(70 42 14 / 0.35),
+    0 3px 6px rgb(0 0 0 / 0.3);
+}
+
+/* 권양 드럼과 손잡이 */
+.kb-scaffold__drum {
+  bottom: 14px;
+  left: 8px;
+  width: 40px;
+  height: 26px;
+  border-radius: 6px;
+  background:
+    repeating-linear-gradient(
+      90deg,
+      rgb(226 207 166 / 0.95) 0 2px,
+      rgb(150 118 74 / 0.95) 2px 4px
+    ),
+    var(--wood-h) left center / auto 100% repeat-x;
+  background-size:
+    28px 100%,
+    100% 100%;
+  background-position: center;
+  background-repeat: no-repeat;
+  box-shadow:
+    inset 0 4px 4px rgb(255 255 255 / 0.18),
+    inset 0 -5px 6px rgb(0 0 0 / 0.35),
+    0 3px 6px rgb(0 0 0 / 0.3);
+}
+
+.kb-scaffold__crank {
+  bottom: 26px;
+  left: 44px;
+  width: 16px;
+  height: 4px;
+  border-radius: 2px;
+  background: #3d2814;
+  transform: rotate(-35deg);
+  transform-origin: 0 50%;
+}
+
+.kb-scaffold__pulley {
+  top: 7px;
+  left: 50%;
+  width: 26px;
+  height: 26px;
+  margin-left: -13px;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle, #d9c39a 0 3px, transparent 3.5px),
+    radial-gradient(
+      circle,
+      transparent 0 7px,
+      #b08a5a 7.5px 9.5px,
+      transparent 10px
+    ),
+    #3d2814;
+}
+
+/* 오른쪽: 벽에 붙여 세운 비계 */
+.kb-scaffold__pole {
+  top: 34%;
+  bottom: 0;
+  width: 11px;
+}
+
+.kb-scaffold__pole--a {
+  right: 16px;
+}
+
+.kb-scaffold__pole--b {
+  right: 58px;
+  top: 46%;
+}
+
+.kb-scaffold__plank {
+  right: 6px;
+  width: 78px;
+  height: 9px;
+  border-radius: 2px;
+  background: var(--wood-h) left center / auto 100% repeat-x;
+  box-shadow: 0 3px 6px rgb(0 0 0 / 0.28);
+}
+
+.kb-scaffold__plank--hi {
+  top: 46%;
+}
+
+.kb-scaffold__plank--lo {
+  top: 72%;
+}
+
+.kb-scaffold__brace {
+  top: 50%;
+  right: 22px;
+  width: 52px;
+  height: 6px;
+  border-radius: 3px;
+  background: var(--wood-h) left center / auto 100% repeat-x;
+  transform: rotate(58deg);
+  transform-origin: 100% 50%;
+}
+
+.kb-hoist {
+  position: absolute;
+  top: 20px;
+  left: 50%;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  /* 가운데 돌과 같은 폭: (벽 안쪽 폭 × 64%) − 줄눈 */
+  --block-w: calc((var(--wall-w) - 8px) * 0.64 - 8px);
+  width: var(--block-w);
+  margin-left: calc(var(--block-w) * -0.5);
+  transform-origin: 50% 0;
+  animation: kb-swing 2.8s ease-in-out infinite;
+}
+
+.kb-hoist__rope {
+  width: 2px;
+  height: clamp(36px, calc(100cqh - var(--course-h) * 6.4 - 120px), 150px);
+  background: #e2cfa6;
+}
+
+.kb-hoist__hook {
+  width: 10px;
+  height: 10px;
+  margin-top: -1px;
+  border: 2.5px solid #b9a27a;
+  border-top-color: transparent;
+  border-radius: 50%;
+}
+
+.kb-hoist__sling {
+  display: block;
+  width: 100%;
+  height: 20px;
+  margin-top: -3px;
+  overflow: visible;
+}
+
+.kb-hoist__stone {
+  width: 100%;
+  height: var(--course-h);
+}
+
+/* 돌을 감싼 밧줄 */
+.kb-hoist__stone::before,
+.kb-hoist__stone::after {
+  content: '';
+  position: absolute;
+  top: -2px;
+  bottom: -2px;
+  z-index: 1;
+  width: 4px;
+  border-radius: 2px;
+  background: repeating-linear-gradient(160deg, #e8d6ae 0 3px, #b99d6c 3px 5px);
+  box-shadow:
+    -1px 0 0 rgb(60 36 12 / 0.45),
+    1px 0 0 rgb(60 36 12 / 0.45);
+}
+
+.kb-hoist__stone::before {
+  left: 22%;
+}
+
+.kb-hoist__stone::after {
+  right: 22%;
+}
+
+.kb-hoist.is-lowering .kb-hoist__stone,
+.kb-hoist.is-lowering .kb-hoist__sling {
+  visibility: hidden;
+}
+
+.kb-hoist__rope {
+  transition: height 800ms var(--ease-out);
+}
+
+/* 다 쌓은 뒤: 빈 갈고리를 도르래 밑으로 감아올린다 */
+.kb-hoist.is-resting {
+  animation: none;
+}
+
+.kb-hoist.is-resting .kb-hoist__rope {
+  height: 8px;
+}
+
+.kb-hoist.is-resting .kb-hoist__stone,
+.kb-hoist.is-resting .kb-hoist__sling {
+  visibility: hidden;
+}
+
+.kb-bwall {
+  position: absolute;
+  z-index: 1;
+  isolation: isolate;
+  bottom: 0;
+  left: 50%;
+  width: var(--wall-w);
+  margin-left: calc(var(--wall-w) * -0.5);
+  display: flex;
+  flex-direction: column-reverse;
+  gap: 4px;
+  padding: 0 4px;
+}
+
+.kb-bslot {
+  position: relative;
+  height: var(--course-h);
+  border-radius: 4px;
+  outline: 2px dashed rgb(244 213 143 / 0.5);
+  outline-offset: -3px;
+}
+
+.kb-bslot--final {
+  height: auto;
+  min-height: calc(var(--course-h) * 1.36);
+}
+
+.kb-bslot--final .kb-bcourse {
+  position: relative;
+  min-height: calc(var(--course-h) * 1.36);
+}
+
+.kb-bslot--final .kb-bblock {
+  padding: 11px 13px 19px;
+  overflow: visible;
+}
+
+.kb-bslot.is-set {
+  outline-color: transparent;
+}
+
+.kb-bslot.is-next {
+  outline-color: rgb(244 213 143 / 0.9);
+}
+
+.kb-bflank {
+  animation: kb-fade 260ms var(--ease-out) both;
+}
+
+.kb-bcourse {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  gap: 4px;
+}
+
+.kb-bcourse::before {
+  /* 줄눈 */
+  content: '';
+  position: absolute;
+  inset: -4px -4px 0;
+  z-index: -1;
+  background: var(--mortar);
+}
+
+.kb-bblock {
+  container-type: inline-size;
+  display: grid;
+  flex: 5 1 0;
+  place-items: center;
+  padding: 0 13px;
+  overflow: hidden;
+}
+
+.kb-bblock--final {
+}
+
+/* 내 이름 아래 먹줄로 그은 표시 */
+.kb-member.is-me .kb-member__name {
+  text-decoration: underline;
+  text-decoration-color: var(--chalk);
+  text-decoration-thickness: 2.5px;
+  text-underline-offset: 6px;
+  text-decoration-skip-ink: none;
+}
+
+.kb-bblock__text {
+  font-family: var(--font-display);
+  /* 글자 수에 맞춰 돌 폭 안에 한 줄로 */
+  font-size: clamp(
+    12px,
+    min(calc(96cqi / var(--len, 6)), calc(var(--course-h) - 22px)),
+    22px
+  );
+  font-weight: 800;
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+}
+
+.kb-bblock--final .kb-bblock__text {
+  /* 이름은 아래 줄들의 글씨보다 작아지지 않는다. 길면 두 줄로 쌓고 돌이 높아진다 */
+  font-size: clamp(
+    20px,
+    min(calc(96cqi / var(--len, 4)), calc(var(--course-h) * 1.36 - 24px)),
+    30px
+  );
+  font-weight: 900;
+  white-space: normal;
+  text-align: center;
+  text-wrap: balance;
+  overflow-wrap: anywhere;
+}
+
+/* 내 이름 아래 탁 튕겨 그은 먹줄 */
+.kb-bblock--final::after {
+  content: '';
+  position: absolute;
+  right: 12%;
+  bottom: 2px;
+  left: 12%;
+  height: 9px;
+  background: var(--chalk-line) center / 100% 100% no-repeat;
+  pointer-events: none;
+  animation: kb-fade 300ms 620ms var(--ease-out) both;
+}
+
+.kb-carve-in {
+  animation: kb-carve 460ms 140ms var(--ease-out) both;
+}
+
+.kb-dust {
+  position: absolute;
+  z-index: 3;
+  width: var(--s, 6px);
+  height: var(--s, 6px);
+  border-radius: 50%;
+  background: rgb(241 220 174 / 0.9);
+  pointer-events: none;
+  animation: kb-dust 760ms var(--ease-out) forwards;
+}
+
+.kb-build__site.is-shaking {
+  animation: kb-shake 380ms ease-out;
+}
+
+.kb-dawn {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0;
+  background:
+    radial-gradient(
+      85% 55% at 50% 78%,
+      rgb(255 214 140 / 0.7),
+      transparent 70%
+    ),
+    linear-gradient(180deg, rgb(43 75 168 / 0) 0%, rgb(231 150 82 / 0.55) 100%);
+  transition: opacity 1100ms var(--ease-out);
+}
+
+.kb-build.is-done .kb-dawn {
+  opacity: 1;
+}
+
+.kb-build__foot {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 14px 18px calc(14px + env(safe-area-inset-bottom));
+  background: var(--grain), linear-gradient(180deg, #4a3520, var(--earth));
+  background-size:
+    180px 180px,
+    100% 100%;
+}
+
+.kb-build__count {
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+  opacity: 0.85;
+}
+
+.kb-build__bottom {
+  min-height: 1.45em;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.45;
+  text-align: center;
+  color: var(--gold-lit);
+  transition: opacity 500ms ease-in-out;
+}
+
+.kb-build__path {
+  margin-top: 10px;
+  font-family: var(--font-display);
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--gold-lit);
+  animation: kb-rise 600ms 200ms var(--ease-out) both;
+}
+
+/* ─── 결과 ─────────────────────────────────────── */
+
+.kb-result__sky {
+  padding: calc(8px + env(safe-area-inset-top)) 20px 30px;
+}
+
+.kb-result__bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.kb-result__place {
+  display: block;
+  margin-top: 30px;
+  font-family: var(--font-display);
+  font-size: clamp(42px, 13vw, 58px);
+  font-weight: 900;
+  line-height: 1.02;
+  letter-spacing: -0.025em;
+  color: var(--gold-lit);
+  text-shadow: 0 3px 12px rgb(6 12 40 / 0.65);
+  overflow-wrap: anywhere;
+}
+
+.kb-result__tail {
+  display: block;
+  margin-top: 10px;
+  font-family: var(--font-display);
+  font-size: 19px;
+  font-weight: 700;
+  color: var(--sky-ink);
+}
+
+.kb-result__wall {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 4px;
+  background: var(--mortar);
+}
+
+.kb-plaque {
+  padding: 20px 18px 18px;
+  text-align: center;
+}
+
+.kb-plaque__path {
+  font-family: var(--font-display);
+  font-size: 19px;
+  font-weight: 800;
+  line-height: 1.35;
+  text-wrap: balance;
+}
+
+.kb-plaque__theme {
+  margin-top: 4px;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--carve-soft);
+}
+
+.kb-lintel {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 15px 18px;
+  text-align: left;
+}
+
+.kb-lintel__titles {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 1px;
+  min-width: 0;
+}
+
+.kb-lintel__title {
+  font-family: var(--font-display);
+  font-size: 19px;
+  font-weight: 800;
+  line-height: 1.3;
+}
+
+.kb-lintel__en {
+  font-size: 13px;
+  font-weight: 600;
+  color: #4a311b;
+}
+
+.kb-lintel__count {
+  font-size: 15px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+button.kb-lintel {
+  cursor: pointer;
+}
+
+button.kb-lintel svg {
+  flex: none;
+  transition: transform 300ms var(--ease-out);
+}
+
+button.kb-lintel[aria-expanded='true'] svg {
+  transform: rotate(180deg);
+}
+
+.kb-leader {
+  display: flex;
+  gap: 4px;
+  min-height: 76px;
+}
+
+.kb-leader__role {
+  display: flex;
+  flex: 0 0 34%;
+  flex-direction: column;
+  justify-content: center;
+  gap: 1px;
+  padding: 11px 16px;
+}
+
+.kb-leader__role-ko {
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.kb-leader__role-en {
+  font-size: 12px;
+  font-weight: 600;
+  color: #4a311b;
+}
+
+.kb-leader__who {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  justify-content: center;
+  gap: 2px;
+  min-width: 0;
+  padding: 11px 18px;
+}
+
+.kb-leader__name {
+  font-family: var(--font-display);
+  font-size: 22px;
+  font-weight: 800;
+  line-height: 1.2;
+  overflow-wrap: anywhere;
+}
+
+.kb-leader__phone {
+  font-size: 16px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.01em;
+  color: var(--carve-soft);
+}
+
+.kb-members {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.kb-member {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 2px;
+  min-width: 0;
+  min-height: 72px;
+  padding: 11px 16px;
+  animation: kb-land 420ms var(--ease-out) both;
+  animation-delay: calc(var(--i, 0) * 38ms);
+}
+
+.kb-member__name {
+  font-family: var(--font-display);
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 1.25;
+  overflow-wrap: anywhere;
+}
+
+.kb-member__year {
+  font-family: var(--font-body);
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--carve-soft);
+}
+
+.kb-member__phone {
+  font-size: 14px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  color: var(--carve-soft);
+}
+
+.kb-member.is-me {
+}
+
+.kb-member.is-me .kb-member__year,
+.kb-member.is-me .kb-member__year {
+  -webkit-text-fill-color: var(--carve-soft);
+}
+
+.kb-me-tag {
+  -webkit-text-fill-color: var(--chalk-ink);
+  text-decoration: none;
+  display: inline-block;
+}
+
+.kb-me-tag {
+  display: inline-block;
+  margin-left: 6px;
+  padding: 1px 7px 2px;
+  border-radius: 4px;
+  font-family: var(--font-body);
+  font-size: 12px;
+  font-weight: 700;
+  vertical-align: 3px;
+  color: var(--chalk-ink);
+  background: var(--chalk);
+}
+
+.kb-result__ground {
+  display: flex;
+  flex: 1;
+  align-items: flex-start;
+  justify-content: center;
+  min-height: 88px;
+  padding: 28px 20px calc(28px + env(safe-area-inset-bottom));
+  background: var(--grain), linear-gradient(180deg, #4a3520, var(--earth));
+  background-size:
+    180px 180px,
+    100% 100%;
+}
+
+.kb-result__ground .kb-logo {
+  width: 96px;
+  opacity: 0.7;
+}
+
+/* ─── 모션 ─────────────────────────────────────── */
+
+@keyframes kb-swing {
+  0%,
+  100% {
+    transform: rotate(-1.6deg);
+  }
+  50% {
+    transform: rotate(1.6deg);
+  }
+}
+
+@keyframes kb-carve {
+  from {
+    clip-path: inset(0 100% 0 0);
+  }
+  to {
+    clip-path: inset(0 0 0 0);
+  }
+}
+
+@keyframes kb-dust {
+  from {
+    opacity: 0.95;
+    transform: translate(0, 0) scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: translate(var(--dx, 0), var(--dy, -20px)) scale(0.35);
+  }
+}
+
+@keyframes kb-shake {
+  0%,
+  100% {
+    transform: translate(0, 0);
+  }
+  20% {
+    transform: translate(-3px, 2px);
+  }
+  40% {
+    transform: translate(3px, -1px);
+  }
+  60% {
+    transform: translate(-2px, 1px);
+  }
+  80% {
+    transform: translate(1px, 0);
+  }
+}
+
+@keyframes kb-land {
+  from {
+    opacity: 0;
+    transform: translateY(-16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes kb-lower {
+  from {
+    transform: translateY(-36px);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+@keyframes kb-rise {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes kb-sheet-up {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+@keyframes kb-fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes kb-dots {
+  0%,
+  100% {
+    transform: translateY(0);
+    opacity: 0.55;
+  }
+  40% {
+    transform: translateY(-5px);
+    opacity: 1;
+  }
+}
+
+@keyframes kb-breathe {
+  0%,
+  100% {
+    filter: brightness(1);
+  }
+  50% {
+    filter: brightness(1.08);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .kb-hoist {
+    animation: none;
+  }
+
+  .kb-build__site.is-shaking {
+    animation: none;
+  }
+
+  .kb-dust {
+    display: none;
+  }
+
+  .kb-carve-in {
+    animation: kb-fade 200ms linear both;
+  }
+
+  .kb-member {
+    animation: kb-fade 200ms linear both;
+    animation-delay: 0ms;
+  }
+
+  .kb-sheet[open] {
+    animation: kb-fade 160ms linear;
+  }
+
+  .kb-dots span,
+  .kb-an__skeleton {
+    animation: none;
+  }
+}
